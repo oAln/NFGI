@@ -33,7 +33,7 @@
               "src/styles.scss",
               "node_modules/bootstrap/scss/bootstrap.scss",
               "node_modules/bootstrap-icons/font/bootstrap-icons.scss",
-              "src/styles/fonts.scss"
+              "src/styles/_font.scss"
             ],
             "scripts": ["node_modules/bootstrap/dist/js/bootstrap.js"]
           },
