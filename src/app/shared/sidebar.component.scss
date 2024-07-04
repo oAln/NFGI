@@ -4,7 +4,7 @@
     top: 65px;
     height: 100vh;
     transition: 0.3s;
-    width: 150px;
+    width: 220px;
     background: #1d1e2c;
     color: #6d6e7e;
 
@@ -48,11 +48,15 @@
 
           .title {
             flex: 1;
-            // display: none;
             color: #6d6e7e;
             transition: 0.3s;
-            max-width: 100px;
             overflow: hidden;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 75px;
           }
         }
       }

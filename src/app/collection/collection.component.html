@@ -1,0 +1,303 @@
+<div class="collection-list" *ngIf="false">
+    <div class="row justify-content-between m-0">
+        <h3 class="col-4">
+            Collection & Disbursement
+        </h3>
+    </div>
+
+    <div class="row row-gap justify-content-between">
+        <div class="col-5">
+            <div class="row">
+                <label class="col-4 col-form-label">Customer Name</label>
+                <div class="col-7">
+                    <input type="text" class="form-control" formControlName="username">
+                </div>
+            </div>
+        </div>
+        <div class="col-5">
+            <div class="row">
+                <label class="col-5 col-form-label">Membership Number</label>
+                <div class="col-7">
+                    <input type="text" class="form-control" formControlName="username">
+                </div>
+            </div>
+        </div>
+        <div class="col-2 verticle-align">
+            <input type="button" class="btn btn-primary" value="Search" />
+        </div>
+    </div>
+    <div class="row row-gap">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Membership Name</th>
+                    <th>Account No</th>
+                    <th>Loan Id</th>
+                    <th>Customer Name</th>
+                    <th>Loan Amount</th>
+                    <th>Loan Duration</th>
+                    <th>Payment Days</th>
+                    <th>Ammount Recieved</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>
+                        <div class="custom-btn-group">
+                            <button type="button" class="btn btn-primary"
+                                (click)="createCollection()">Collection</button>
+                            <button type="button" class="btn btn-primary ml-10"
+                                (click)="createDisbursement()">Disbursement</button>
+                        </div>
+                    </td>
+                </tr>
+                <!-- <tr>
+                    <td>2</td>
+                    <td>Jacob</td>
+                    <td>tdornton</td>
+                    <td>@fat</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>
+                        <div class="custom-btn-group">
+                            <button type="button" class="btn btn-primary">Collection</button>
+                            <button type="button" class="btn btn-primary ml-10">Disbursement</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Larry the Bird</td>
+                    <td>Larry the Bird</td>
+                    <td>@twitter</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>
+                        <div class="custom-btn-group">
+                            <button type="button" class="btn btn-primary">Collection</button>
+                            <button type="button" class="btn btn-primary ml-10">Disbursement</button>
+                        </div>
+                    </td>
+                </tr> -->
+            </tbody>
+        </table>
+    </div>
+    <div class="row m-0">
+        <form [formGroup]="collectionForm" class="row g-3">
+            <div class="row row-gap p-0">
+                <h5>Bulk Upload</h5>
+            </div>
+            <div class="row row-gap p-0">
+                <div class="col-md-6">
+                    <div class="row">
+                        <label class="col-5 col-form-label">Upload Collection</label>
+                        <div class="col-7">
+                            <input type="file" class="form-control" id="inputGroupFile02">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 text-center">
+                    <button type="submit" class="btn btn-primary" (click)="collectionTemplate()">Template
+                        Download</button>
+                </div>
+            </div>
+            <div class="row row-gap p-0">
+                <div class="col-md-6">
+                    <div class="row">
+                        <label class="col-5 col-form-label">Upload Disbursement</label>
+                        <div class="col-7">
+                            <input type="file" class="form-control" id="inputGroupFile02">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 text-center">
+                    <button type="submit" class="btn btn-primary" (click)="disbursementTemplate()">Template
+                        Download</button>
+                </div>
+            </div>
+            <div class="col-12 text-center row-gap">
+                <button type="submit" class="btn btn-primary" (click)="submitForm()">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div class="collection-list" *ngIf="false">
+    <div class="row justify-content-between m-0">
+        <h3 class="col-4">
+            Collection
+        </h3>
+    </div>
+    <form>
+        <div class="row row-gap justify-content-between">
+            <div class="col-4">
+                <div class="row">
+                    <label class="col-5 col-form-label">Customer Name</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="username">
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    <label class="col-5 col-form-label">Loan Amount</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="username">
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    <label class="col-5 col-form-label">Place</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="username">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row row-gap justify-content-between">
+            <div class="col-4">
+                <div class="row">
+                    <label class="col-5 col-form-label">Date</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="username">
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    <label class="col-5 col-form-label">Amount Recieved</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="username">
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    <label class="col-5 col-form-label">Late Fees<small>(If Applicable)</small></label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="username">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row row-gap justify-content-between">
+            <div class="col-4">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Tick to mark the load id as closed
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 text-center row-gap">
+            <button type="submit" class="btn btn-primary" (click)="submitForm()">Submit</button>
+        </div>
+    </form>
+</div>
+
+<div class="collection-list" *ngIf="true">
+    <div class="row justify-content-between m-0">
+        <h3 class="col-4">
+            Disbursement
+        </h3>
+    </div>
+    <form>
+        <div class="row row-gap justify-content-between">
+            <div class="col-4">
+                <div class="row">
+                    <label class="col-5 col-form-label">Customer Name</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="username">
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    <label class="col-5 col-form-label">Membership Id</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="username">
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row align-center">
+                    <label class="col-5 col-form-label">Loan Id</label>
+                    <div class="col-7">
+                        <p formControlName="username" class="m-0">auto generated</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row row-gap justify-content-between">
+            <div class="col-4">
+                <div class="row">
+                    <label class="col-5 col-form-label">Place</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="username">
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    <label class="col-5 col-form-label">Status</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="username">
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    <label class="col-5 col-form-label">Disbursement Date</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="username">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row row-gap">
+            <div class="col-4">
+                <div class="row">
+                    <label class="col-5 col-form-label">Amount</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="username">
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    <label class="col-5 col-form-label">Installment</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="username">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 text-center row-gap">
+            <button type="submit" class="btn btn-primary" (click)="submitForm()">Submit</button>
+        </div>
+    </form>
+</div>

@@ -2,14 +2,27 @@
   <div class="content">
     <div class="link">
       <div class="content" [routerLink]="['/home']" [routerLinkActive]="'active'">
-        <div class="title">Home</div>
+        <div class="title">
+          <i class="bi bi-house-fill"></i>
+          <span>Home</span>
+        </div>
       </div>
     </div>
     <div class="link">
-      <div class="content" [routerLink]="['/bookings']" [routerLinkActive]="'active'">
-        <div class="title">Bookings</div>
+      <div class="content" [routerLink]="['/members']" [routerLinkActive]="'active'">
+        <div class="title">
+          <i class="bi bi-people-fill"></i>
+          <span>New Member</span>
+        </div>
+      </div>
+    </div>
+    <div class="link">
+      <div class="content" [routerLink]="['/collections']" [routerLinkActive]="'active'">
+        <div class="title">
+          <i class="bi bi-collection-fill"></i>
+          <span>Collection & Disbursement</span>
+        </div>
       </div>
     </div>
   </div>
-  <div class="footer"></div>
 </div>
