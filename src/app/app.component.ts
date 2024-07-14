@@ -17,8 +17,6 @@ export class AppComponent {
       private authenticationService: AuthenticationService
   ) {
       this.authenticationService.currentUser.subscribe(data => {
-        console.log(data);
-        
         this.currentUser = !(typeof data.username === 'undefined')
       });
   }
