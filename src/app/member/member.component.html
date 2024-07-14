@@ -1,0 +1,324 @@
+<div class="member-list" *ngIf="showMember">
+    <div class="row justify-content-between m-0">
+        <h3 class="col-4">
+            Member List
+        </h3>
+        <div class="col-2 text-end">
+            <button class="btn btn-primary" (click)="createMember()">Create</button>
+        </div>
+    </div>
+    
+    <div class="row row-gap justify-content-between">
+        <div class="col-5">
+            <div class="row">
+                <label class="col-4 col-form-label">Customer Name</label>
+                <div class="col-7">
+                    <input type="text" class="form-control" formControlName="username">
+                </div>
+            </div>
+        </div>
+        <div class="col-5">
+            <div class="row">
+                <label class="col-4 col-form-label">Membership Number</label>
+                <div class="col-7">
+                    <input type="text" class="form-control" formControlName="username">
+                </div>
+            </div>
+        </div>
+        <div class="col-2 text-end">
+            <button class="btn btn-primary">Search</button>
+        </div>
+    </div>
+    <div class="row row-gap">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Customer Name</th>
+                    <th>Membership Id</th>
+                    <th>Account No</th>
+                    <th>Loan Id</th>
+                    <th>Place</th>
+                    <th>Loan Amount</th>
+                    <th>Loan Start Date</th>
+                    <th>Status</th>
+                    <th>Document</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Jacob</td>
+                    <td>tdornton</td>
+                    <td>@fat</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Larry the Bird</td>
+                    <td>Larry the Bird</td>
+                    <td>@twitter</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="create-member" *ngIf="!showMember">
+    <div class="row justify-content-between m-0">
+        <h3 class="col-4">
+            Create New Member
+        </h3>
+    </div>
+    <div class="row m-0">
+        <form [formGroup]="memberForm" class="row g-3">
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">First Name</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="firstName">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Last Name</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="lastName">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Member ID</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="memberId">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Account No.</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="accountNo">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Gender</label>
+                    <div class="col-7">
+                        <select class="form-select" style="width: 100%;" formControlName="gender">
+                            <option>Daily</option>
+                          </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Account Status</label>
+                    <div class="col-7">
+                        <select class="form-select" style="width: 100%;" formControlName="accountStatus">
+                            <option>Daily</option>
+                          </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Occupation</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="occupation">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Date of Birth</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="dob">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Town/City</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="town">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Branch</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="branch">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Area/Landmark</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="area">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">State</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="state">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Pin Code</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="pinCode">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Contact</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="contact">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Loan Amount</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="loanAmount">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Installment</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="installment">
+                    </div>
+                </div>
+            </div>
+            <div class="row row-gap p-0">
+                <h5>Bank Details</h5>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Holder Name</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="bankHolderName">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Account No.</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="bankAccountNo">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Bank Name</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="bankName">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Bank Address</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="bankAddress">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">IFSC Code</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="ifscCode">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Annual Income (&#8377;)</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="income">
+                    </div>
+                </div>
+            </div>
+            <div class="row row-gap p-0">
+                <h5>Guarantor Details</h5>
+            </div>
+            <div class="col-md-4">
+                <div class="row">
+                    <label class="col-3 col-form-label">Name</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="guarantorName">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="row">
+                    <label class="col-3 col-form-label">Business Name</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="guarantorBusinessName">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="row">
+                    <label class="col-3 col-form-label">Contact</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="guarantorContact">
+                    </div>
+                </div>
+            </div>
+            <div class="row row-gap p-0">
+                <h5>Upload Documents</h5>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-4 col-form-label">Document</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="document">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 text-center row-gap">
+              <button type="submit" class="btn btn-primary" (click)="submitForm()">Submit</button>
+            </div>
+          </form>
+    </div>
+</div>

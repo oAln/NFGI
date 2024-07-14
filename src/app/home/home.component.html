@@ -1,0 +1,85 @@
+<div class="row">
+    <h3 class="col-4">
+        Dashboard
+    </h3>
+</div>
+<div class="row row-gap">
+    <div class="col-4">
+        <select>
+            <option>Daily</option>
+          </select>
+    </div>
+</div>
+<div class="row row-gap">
+    <div class="col-3">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body custom-card">
+                <div class="col-6">Text</div>
+                <div class="col-6 text-end">Value</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body custom-card">
+                <div class="col-6">Text</div>
+                <div class="col-6 text-end">Value</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body custom-card">
+                <div class="col-6">Text</div>
+                <div class="col-6 text-end">Value</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body custom-card">
+                <div class="col-6">Text</div>
+                <div class="col-6 text-end">Value</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row row-gap custom-box">
+    <div class="col-4">
+        Branch Wise Details
+    </div>
+    <div class="row row-gap">
+        <div class="col-4 p-0">
+            <select name="countryName" [(ngModel)]="selectedCountry" (ngModelChange)="onCountrySelect($event)">
+                <option *ngFor="let c of countries" value="{{ c }}">{{ c }}</option>
+              </select>
+        </div>
+        <div class="col-4">
+            <select name="states" id="states" [(ngModel)]="selectedState">
+                <option *ngFor="let s of filteredStates" value="{{ s }}">{{ s }}</option>
+              </select>
+        </div>
+    </div>
+    <div class="col-8">
+        <div class="row row-gap custom-box">
+            <div class="row">
+                Branch Name
+            </div>
+            <div class="row">
+                <div class="col-8 p-0">
+                    <div class="custom-list" *ngFor="let state of states">
+                        <div class="key">{{state.country}}</div>
+                        <div class="value">{{state.country}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<p>the value of selectedCountry :  {{ selectedCountry }}</p>
+<p>the value of selectedState :  {{ selectedState }}</p>
+<p>the value of filteredStates :  {{ filteredStates | json }}</p>

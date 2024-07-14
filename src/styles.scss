@@ -1,1 +1,51 @@
 /* You can add global styles to this file, and also import other style files */
+.custom-card {
+    height: 110px;
+    display: flex;
+    align-items: center;
+}
+
+.custom-box {
+    padding: 20px;
+    border: 1px solid grey;
+}
+
+select {
+    min-width: 180px;
+}
+
+.p-0 {
+    padding: 0;
+}
+
+.row-gap {
+    margin: 20px 0 0 0 !important;
+}
+
+table {
+    th, td {
+        text-align: center;
+    }
+}
+
+
+.verticle-align {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.custom-btn-group {
+    display: flex;
+}
+
+.ml-10 {
+    margin-left: 10px;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.wp-30 {
+    width: 30%;
+}
