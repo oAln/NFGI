@@ -10,6 +10,7 @@ import { MemberComponent } from './member/member.component';
 import { CollectionComponent } from './collection/collection.component';
 import { PasswordComponent } from './user/change-password/password.component';
 import { CreateUserComponent } from './user/create-user/create-user.component';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { CreateUserComponent } from './user/create-user/create-user.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
@@ -10,7 +11,7 @@ export class MemberComponent implements OnInit {
   showMember = true;
   public memberForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private httpClient:HttpClient, private formBuilder: FormBuilder) {
     this.memberForm = this.formBuilder.group({
       firstName: new FormControl(''),
       lastName: new FormControl(''),
@@ -52,6 +53,13 @@ export class MemberComponent implements OnInit {
   submitForm() {
     this.showMember = true;
     console.log(JSON.stringify(this.memberForm.value));
-
+    let url = `localhost:3000/member`;
+    let obje1 = JSON.stringify(this.memberForm.value);
+    //this.httpClient.post(`http://127.0.0.1:12201/gelf`,{name:'mark',age:'32'}).subscribe(
+      this.httpClient.post(url,obje1).subscribe(
+      (data) => {
+          console.log(data);
+      }
+    )
   }
 }
