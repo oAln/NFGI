@@ -11,6 +11,8 @@ import { CollectionComponent } from './collection/collection.component';
 import { PasswordComponent } from './user/change-password/password.component';
 import { CreateUserComponent } from './user/create-user/create-user.component';
 import {HttpClientModule} from '@angular/common/http';
+import { LoginComponent } from './login/login.component';
+import { fakeBackendProvider } from './helper/fake.backend';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,8 @@ import {HttpClientModule} from '@angular/common/http';
     MemberComponent,
     CollectionComponent,
     PasswordComponent,
-    CreateUserComponent
+    CreateUserComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +32,7 @@ import {HttpClientModule} from '@angular/common/http';
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [fakeBackendProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

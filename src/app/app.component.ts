@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { User } from './model/user';
+import { Router } from '@angular/router';
+import { AuthenticationService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +10,21 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'NFGI';
+  currentUser= false;
+
+  constructor(
+      private router: Router,
+      private authenticationService: AuthenticationService
+  ) {
+      this.authenticationService.currentUser.subscribe(data => {
+        console.log(data);
+        
+        this.currentUser = !(typeof data.username === 'undefined')
+      });
+  }
+
+  logout() {
+    this.authenticationService.logout();
+        this.router.navigate(['/login']);
+  }
 }
