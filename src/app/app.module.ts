@@ -10,9 +10,13 @@ import { MemberComponent } from './member/member.component';
 import { CollectionComponent } from './collection/collection.component';
 import { PasswordComponent } from './user/change-password/password.component';
 import { CreateUserComponent } from './user/create-user/create-user.component';
-import {HttpClientModule} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { fakeBackendProvider } from './helper/fake.backend';
+import { AuthGuard } from './helper/auth.guard';
+import { JwtInterceptor } from './helper/jwt.interceptor';
+import { HttpRequestInterceptor } from './helper/http.interceptor';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -30,9 +34,22 @@ import { fakeBackendProvider } from './helper/fake.backend';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    CommonModule,
     HttpClientModule
   ],
-  providers: [fakeBackendProvider],
+  providers: [ AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpRequestInterceptor,
+      multi: true
+    },
+    fakeBackendProvider
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,0 +1,3 @@
+https://www.codemag.com/Article/2005051/NestJS-Step-by-Step-Connecting-NestJS-with-Angular-Part-4
+
+https://medium.com/disney-streaming/combining-multiple-angular-applications-into-a-single-one-e87d530d6527

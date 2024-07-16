@@ -7,13 +7,13 @@
             <button class="btn btn-primary" (click)="createMember()">Create</button>
         </div>
     </div>
-    
+
     <div class="row row-gap justify-content-between">
         <div class="col-5">
             <div class="row">
                 <label class="col-4 col-form-label">Customer Name</label>
                 <div class="col-7">
-                    <input type="text" class="form-control" formControlName="username">
+                    <input type="text" class="form-control" id="username">
                 </div>
             </div>
         </div>
@@ -21,16 +21,16 @@
             <div class="row">
                 <label class="col-4 col-form-label">Membership Number</label>
                 <div class="col-7">
-                    <input type="text" class="form-control" formControlName="username">
+                    <input type="text" class="form-control" id="username">
                 </div>
             </div>
         </div>
         <div class="col-2 text-end">
-            <button class="btn btn-primary">Search</button>
+            <button class="btn btn-primary" (click)="getMemberData()">Search</button>
         </div>
     </div>
     <div class="row row-gap">
-        <table class="table table-bordered">
+        <table class="table table-bordered member-table">
             <thead>
                 <tr>
                     <th>S.No</th>
@@ -46,42 +46,20 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Jacob</td>
-                    <td>tdornton</td>
-                    <td>@fat</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Larry the Bird</td>
-                    <td>Larry the Bird</td>
-                    <td>@twitter</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
+                <ng-container *ngFor="let member of memberData; let sNo = index">
+                    <tr>
+                        <td>{{sNo +1}}</td>
+                        <td>{{member?.firstName}}</td>
+                        <td>{{member?.memberId}}</td>
+                        <td>{{member?.accountNo}}</td>
+                        <td>Loan Id</td>
+                        <td>{{member?.townCity}}</td>
+                        <td>{{member?.loanAmount}}</td>
+                        <td>StartDate</td>
+                        <td>{{member?.accountStatus}}</td>
+                        <td (click)="downloadFile(member?.documentPath)"><a target="_blank"><i class="bi bi-file-earmark-arrow-down"></i></a></td>
+                    </tr>
+                </ng-container>
             </tbody>
         </table>
     </div>
@@ -132,8 +110,9 @@
                     <label class="col-3 col-form-label">Gender</label>
                     <div class="col-7">
                         <select class="form-select" style="width: 100%;" formControlName="gender">
-                            <option>Daily</option>
-                          </select>
+                            <option>Male</option>
+                            <option>Female</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -142,8 +121,9 @@
                     <label class="col-3 col-form-label">Account Status</label>
                     <div class="col-7">
                         <select class="form-select" style="width: 100%;" formControlName="accountStatus">
-                            <option>Daily</option>
-                          </select>
+                            <option>Active</option>
+                            <option>Inactive</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -159,7 +139,7 @@
                 <div class="row">
                     <label class="col-3 col-form-label">Date of Birth</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="dob">
+                        <input type="text" class="form-control" formControlName="dateOfBirth">
                     </div>
                 </div>
             </div>
@@ -167,7 +147,7 @@
                 <div class="row">
                     <label class="col-3 col-form-label">Town/City</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="town">
+                        <input type="text" class="form-control" formControlName="townCity">
                     </div>
                 </div>
             </div>
@@ -183,7 +163,7 @@
                 <div class="row">
                     <label class="col-3 col-form-label">Area/Landmark</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="area">
+                        <input type="text" class="form-control" formControlName="areaLandmark">
                     </div>
                 </div>
             </div>
@@ -234,7 +214,7 @@
                 <div class="row">
                     <label class="col-3 col-form-label">Holder Name</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="bankHolderName">
+                        <input type="text" class="form-control" formControlName="holderName">
                     </div>
                 </div>
             </div>
@@ -242,7 +222,7 @@
                 <div class="row">
                     <label class="col-3 col-form-label">Account No.</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="bankAccountNo">
+                        <input type="text" class="form-control" formControlName="holderBankAccount">
                     </div>
                 </div>
             </div>
@@ -274,7 +254,7 @@
                 <div class="row">
                     <label class="col-3 col-form-label">Annual Income (&#8377;)</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="income">
+                        <input type="text" class="form-control" formControlName="annualIncome">
                     </div>
                 </div>
             </div>
@@ -312,13 +292,13 @@
                 <div class="row">
                     <label class="col-4 col-form-label">Document</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="document">
+                        <input type="file" class="form-control" (change)="uploadDoc($event)">
                     </div>
                 </div>
             </div>
             <div class="col-12 text-center row-gap">
-              <button type="submit" class="btn btn-primary" (click)="submitForm()">Submit</button>
+                <button type="submit" class="btn btn-primary" (click)="submitForm()">Submit</button>
             </div>
-          </form>
+        </form>
     </div>
 </div>
