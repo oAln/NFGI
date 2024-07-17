@@ -11,6 +11,7 @@ import { AuthenticationService } from './services/auth.service';
 export class AppComponent {
   title = 'NFGI';
   currentUser= false;
+  userMenu = false;
 
   constructor(
       private router: Router,
@@ -24,5 +25,9 @@ export class AppComponent {
   logout() {
     this.authenticationService.logout();
         this.router.navigate(['/login']);
+  }
+
+  showUserMenu() {
+    this.userMenu = !this.userMenu;
   }
 }

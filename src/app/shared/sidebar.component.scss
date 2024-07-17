@@ -5,8 +5,8 @@
     height: 100vh;
     transition: 0.3s;
     width: 220px;
-    background: #1d1e2c;
-    color: #6d6e7e;
+    background: #328f9a;
+    color: #fff;
 
     .content {
       .link {
@@ -19,7 +19,7 @@
           transition: 0.3s;
 
           &:hover {
-            background: #0f1017;
+            background: #39a5b1;
 
             .title {
               color: white;
@@ -31,7 +31,7 @@
           }
 
           &.active {
-            background: #0f1017;
+            background: #39a5b1;
 
             .title {
               color: white;
@@ -48,7 +48,7 @@
 
           .title {
             flex: 1;
-            color: #6d6e7e;
+            color: #fff;
             transition: 0.3s;
             overflow: hidden;
             text-align: center;

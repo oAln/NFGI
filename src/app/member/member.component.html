@@ -4,7 +4,7 @@
             Member List
         </h3>
         <div class="col-2 text-end">
-            <button class="btn btn-primary" (click)="createMember()">Create</button>
+            <button class="custom-button" (click)="createMember()">Create New Member</button>
         </div>
     </div>
 
@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="col-2 text-end">
-            <button class="btn btn-primary" (click)="getMemberData()">Search</button>
+            <button class="custom-button" (click)="getMemberData()">Search</button>
         </div>
     </div>
     <div class="row row-gap">
@@ -37,12 +37,13 @@
                     <th>Customer Name</th>
                     <th>Membership Id</th>
                     <th>Account No</th>
-                    <th>Loan Id</th>
-                    <th>Place</th>
+                    <th>Loan Id(auto generate when loan amount entered)</th>
+                    <th>Branch</th>
                     <th>Loan Amount</th>
-                    <th>Loan Start Date</th>
+                    <th>Loan Start Date(loan amount saved)</th>
                     <th>Status</th>
-                    <th>Document</th>
+                    <th>Document(Name)</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,6 +59,8 @@
                         <td>StartDate</td>
                         <td>{{member?.accountStatus}}</td>
                         <td (click)="downloadFile(member?.documentPath)"><a target="_blank"><i class="bi bi-file-earmark-arrow-down"></i></a></td>
+                        <td (click)="downloadFile(member?.documentPath)"><a target="_blank"><i class="bi bi-file-earmark-arrow-down"></i></a>
+                            <a target="_blank"><i class="bi bi-file-earmark-arrow-down"></i></a></td>
                     </tr>
                 </ng-container>
             </tbody>
@@ -122,7 +125,8 @@
                     <div class="col-7">
                         <select class="form-select" style="width: 100%;" formControlName="accountStatus">
                             <option>Active</option>
-                            <option>Inactive</option>
+                            <option>Closed</option>
+                            <option>Dorment</option>
                         </select>
                     </div>
                 </div>
@@ -207,6 +211,14 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Purpose of Loan</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="installment">
+                    </div>
+                </div>
+            </div>
             <div class="row row-gap p-0">
                 <h5>Bank Details</h5>
             </div>
@@ -220,7 +232,7 @@
             </div>
             <div class="col-md-6">
                 <div class="row">
-                    <label class="col-3 col-form-label">Account No.</label>
+                    <label class="col-3 col-form-label">Bank Account No.</label>
                     <div class="col-7">
                         <input type="text" class="form-control" formControlName="holderBankAccount">
                     </div>
@@ -255,6 +267,65 @@
                     <label class="col-3 col-form-label">Annual Income (&#8377;)</label>
                     <div class="col-7">
                         <input type="text" class="form-control" formControlName="annualIncome">
+                    </div>
+                </div>
+            </div>
+            <div class="row row-gap p-0">
+                <h5>Nominee Details</h5>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Nominee Name</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="guarantorName">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Relation</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="guarantorBusinessName">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Date of Birth</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="guarantorContact">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Phone No.</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="guarantorContact">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">Address</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="guarantorContact">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">City/Town</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="guarantorContact">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-3 col-form-label">District</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="guarantorContact">
                     </div>
                 </div>
             </div>
@@ -297,7 +368,7 @@
                 </div>
             </div>
             <div class="col-12 text-center row-gap">
-                <button type="submit" class="btn btn-primary" (click)="submitForm()">Submit</button>
+                <button type="submit" class="custom-button" (click)="submitForm()">Submit</button>
             </div>
         </form>
     </div>
