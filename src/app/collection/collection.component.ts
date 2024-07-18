@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { HTTPService } from '../services/http.service';
 
 @Component({
   selector: 'app-collection',
@@ -7,48 +8,52 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./collection.component.scss']
 })
 export class CollectionComponent implements OnInit {
-  showCollection = true;
   public collectionForm: FormGroup;
+  public disbursementForm: FormGroup;
+  memberData: any;
+  showMemberData = true;
+  showCollectionForm = false;
+  showDisbursementForm = false;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private http:HTTPService, private formBuilder: FormBuilder) {
     this.collectionForm = this.formBuilder.group({
-      firstName: new FormControl(''),
-      lastName: new FormControl(''),
-      memberId: new FormControl(''),
-      accountNo: new FormControl(''),
-      gender: new FormControl(''),
-      accountStatus: new FormControl(''),
-      occupation: new FormControl(''),
-      dob: new FormControl(''),
-      town: new FormControl(''),
-      branch: new FormControl(''),
-      area: new FormControl(''),
-      state: new FormControl(''),
-      pinCode: new FormControl(''),
-      contact: new FormControl(''),
-      loanAmount: new FormControl(''),
-      installment: new FormControl(''),
-      bankHolderName: new FormControl(''),
-      bankAccountNo: new FormControl(''),
-      bankName: new FormControl(''),
-      bankAddress: new FormControl(''),
-      ifscCode: new FormControl(''),
-      income: new FormControl(''),
-      guarantorName: new FormControl(''),
-      guarantorBusinessName: new FormControl(''),
-      guarantorContact: new FormControl(''),
-      document: new FormControl(''),
+      collectionDate: new FormControl(''),
+      collectionAmount: new FormControl(''),
+      lateFees: new FormControl(''),
+      status: new FormControl('')
     });
+
+
+    this.disbursementForm = this.formBuilder.group({
+      disbursementDate: new FormControl(''),
+      disbursementAmount: new FormControl(''),
+      disbursementInstallment: new FormControl('')
+    });
+
+    this.getMemberData();
   }
 
-  createCollection() {
-    this.showCollection = false;
+  getMemberData() {
+    const apiEndPoint = 'member'
+    this.http.get(apiEndPoint).subscribe(
+      (data) => {
+        console.log(data);
+        
+          this.memberData = data;
+      });
+  }
+
+  showCollection() {
+    this.showCollectionForm = true;
+    this.showMemberData = false;
+    this.showDisbursementForm = false;
   }
 
 
-  createDisbursement() {
-    console.log('disbures');
-    
+  showDisbursement() {
+    this.showDisbursementForm = true;
+    this.showMemberData = false;
+    this.showCollectionForm = false;
   }
 
   ngOnInit() {
@@ -56,14 +61,30 @@ export class CollectionComponent implements OnInit {
   }
 
   collectionTemplate () {
-
+    console.log('download collection excel');
   }
 
   disbursementTemplate() {
+    console.log('download disburse excel');
+  }
+
+  submitTemplateData() {
+    console.log('submit template data');
     
   }
-  submitForm() {
-    this.showCollection = true;
+
+  submitCollectionForm() {
+    this.showMemberData = true;
+    this.showDisbursementForm = false;
+    this.showCollectionForm = false;
+    console.log(JSON.stringify(this.collectionForm.value));
+
+  }
+
+  submitDisbursementForm() {
+    this.showMemberData = true;
+    this.showDisbursementForm = false;
+    this.showCollectionForm = false;
     console.log(JSON.stringify(this.collectionForm.value));
 
   }

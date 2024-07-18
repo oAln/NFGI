@@ -32,8 +32,8 @@
             </div>
             <div class="menu" [ngClass]="{ 'active': userMenu }">
                 <ul>
-                    <li><a> <i class="bi bi-person-add mr-10"></i>Create User</a></li>
-                    <li><a><i class="bi bi-box-arrow-right mr-10" (click)="logout()"></i>Sign Out</a></li>
+                    <li (click)="createUser()"><a> <i class="bi bi-person-add mr-10"></i>Create User</a></li>
+                    <li  (click)="logout()"><a><i class="bi bi-box-arrow-right mr-10"></i>LogOut</a></li>
                 </ul>
             </div>
         </nav>

@@ -36,6 +36,7 @@ nav {
     transform: translateY(-10px);
     visibility: hidden;
     transition: 300ms;
+    cursor: pointer;
 }
 
 .menu::before {

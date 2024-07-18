@@ -30,4 +30,8 @@ export class AppComponent {
   showUserMenu() {
     this.userMenu = !this.userMenu;
   }
+
+  createUser() {
+    this.router.navigate(['/create-user']);
+  }
 }

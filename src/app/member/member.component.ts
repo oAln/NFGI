@@ -75,7 +75,7 @@ export class MemberComponent implements OnInit {
         console.log(data);
         
           this.memberData = data;
-      })
+      });
   }
 
   uploadDoc(event: any) {

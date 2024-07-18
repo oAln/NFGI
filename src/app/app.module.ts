@@ -17,6 +17,7 @@ import { AuthGuard } from './helper/auth.guard';
 import { JwtInterceptor } from './helper/jwt.interceptor';
 import { HttpRequestInterceptor } from './helper/http.interceptor';
 import { CommonModule } from '@angular/common';
+import { ReportsComponent } from './reports/reports.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { CommonModule } from '@angular/common';
     CollectionComponent,
     PasswordComponent,
     CreateUserComponent,
-    LoginComponent
+    LoginComponent,
+    ReportsComponent
   ],
   imports: [
     BrowserModule,

@@ -7,6 +7,7 @@ import { PasswordComponent } from './user/change-password/password.component';
 import { CreateUserComponent } from './user/create-user/create-user.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './helper/auth.guard';
+import { ReportsComponent } from './reports/reports.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -30,6 +31,10 @@ export const routes: Routes = [
   {
     path: 'create-user',
     component: CreateUserComponent,
+  },
+  {
+    path: 'reports',
+    component: ReportsComponent,
   },
   {
     path: 'login',

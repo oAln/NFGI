@@ -1,4 +1,4 @@
-<div class="collection-list" *ngIf="true">
+<div class="collection-list" *ngIf="showMemberData">
     <div class="row justify-content-between m-0">
         <h3 class="col-4">
             Collection & Disbursement
@@ -10,7 +10,7 @@
             <div class="row">
                 <label class="col-4 col-form-label">Customer Name</label>
                 <div class="col-7">
-                    <input type="text" class="form-control" formControlName="username">
+                    <input type="text" class="form-control">
                 </div>
             </div>
         </div>
@@ -18,7 +18,7 @@
             <div class="row">
                 <label class="col-5 col-form-label">Membership Number</label>
                 <div class="col-7">
-                    <input type="text" class="form-control" formControlName="username">
+                    <input type="text" class="form-control">
                 </div>
             </div>
         </div>
@@ -26,12 +26,12 @@
             <input type="button" class="custom-button" value="Search" />
         </div>
     </div>
-    <div class="row row-gap">
+    <div class="row row-gap mt-30">
         <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>S.No</th>
-                    <th>Membership Name</th>
+                    <th>Membership Id</th>
                     <th>Account No</th>
                     <th>Loan Id</th>
                     <th>Customer Name</th>
@@ -43,67 +43,32 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>
-                        <div class="custom-btn-group">
-                            <button type="button" class="custom-button"
-                                (click)="createCollection()">Collection</button>
-                            <button type="button" class="custom-button ml-10"
-                                (click)="createDisbursement()">Disbursement</button>
-                        </div>
-                    </td>
-                </tr>
-                <!-- <tr>
-                    <td>2</td>
-                    <td>Jacob</td>
-                    <td>tdornton</td>
-                    <td>@fat</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>
-                        <div class="custom-btn-group">
-                            <button type="button" class="custom-button">Collection</button>
-                            <button type="button" class="custom-button ml-10">Disbursement</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Larry the Bird</td>
-                    <td>Larry the Bird</td>
-                    <td>@twitter</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>
-                        <div class="custom-btn-group">
-                            <button type="button" class="custom-button">Collection</button>
-                            <button type="button" class="custom-button ml-10">Disbursement</button>
-                        </div>
-                    </td>
-                </tr> -->
+                <ng-container *ngFor="let member of memberData; let sNo = index">
+                    <tr>
+                        <td>{{sNo +1}}</td>
+                        <td>{{member?.memberId}}</td>
+                        <td>{{member?.accountNo}}</td>
+                        <td>Loan Id</td>
+                        <td>{{member?.firstName}}</td>
+                        <td>{{member?.loanAmount}}</td>
+                        <td>Payment Days</td>
+                        <td>Amount Recieved</td>
+                        <td>{{member?.accountStatus}}</td>
+                        <td>
+                            <div class="custom-btn-group">
+                                <button type="button" class="custom-button"
+                                    (click)="showCollection()">Collection</button>
+                                <button type="button" class="custom-button ml-10"
+                                    (click)="showDisbursement()">Disbursement</button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-container>
             </tbody>
         </table>
     </div>
     <div class="row m-0">
-        <form [formGroup]="collectionForm" class="row g-3">
+        <form class="row g-3">
             <div class="row row-gap p-0">
                 <h5>Bulk Upload</h5>
             </div>
@@ -136,43 +101,37 @@
                 </div>
             </div>
             <div class="col-12 text-center row-gap">
-                <button type="submit" class="custom-button" (click)="submitForm()">Submit</button>
+                <button type="submit" class="custom-button" (click)="submitTemplateData()">Submit</button>
             </div>
         </form>
     </div>
 </div>
 
 
-<div class="collection-list" *ngIf="true">
+<div class="collection-list" *ngIf="showCollectionForm">
     <div class="row justify-content-between m-0">
         <h3 class="col-4">
             Collection
         </h3>
     </div>
-    <form>
+    <form [formGroup]="collectionForm">
         <div class="row row-gap justify-content-between">
             <div class="col-4">
-                <div class="row">
+                <div class="row align-center">
                     <label class="col-5 col-form-label">Customer Name</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="username">
-                    </div>
+                    <div class="col-7"> Customer Name </div>
                 </div>
             </div>
             <div class="col-4">
-                <div class="row">
+                <div class="row align-center">
                     <label class="col-5 col-form-label">Loan Amount</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="username">
-                    </div>
+                    <div class="col-7"> Loan Amount </div>
                 </div>
             </div>
             <div class="col-4">
-                <div class="row">
-                    <label class="col-5 col-form-label">Place</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="username">
-                    </div>
+                <div class="row align-center">
+                    <label class="col-5 col-form-label">Branch</label>
+                    <div class="col-7"> Branch </div>
                 </div>
             </div>
         </div>
@@ -181,7 +140,7 @@
                 <div class="row">
                     <label class="col-5 col-form-label">Date</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="username">
+                        <input type="text" class="form-control" formControlName="collectionDate">
                     </div>
                 </div>
             </div>
@@ -189,7 +148,7 @@
                 <div class="row">
                     <label class="col-5 col-form-label">Amount Recieved</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="username">
+                        <input type="text" class="form-control" formControlName="collectionAmount">
                     </div>
                 </div>
             </div>
@@ -197,15 +156,15 @@
                 <div class="row">
                     <label class="col-5 col-form-label">Late Fees<small>(If Applicable)</small></label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="username">
+                        <input type="text" class="form-control" formControlName="lateFees">
                     </div>
                 </div>
             </div>
         </div>
         <div class="row row-gap justify-content-between">
             <div class="col-4">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <div class="form-check custom-checkbox">
+                    <input class="form-check-input" type="checkbox" formControlName="status">
                     <label class="form-check-label" for="flexCheckDefault">
                         Tick to mark the load id as closed
                     </label>
@@ -213,76 +172,66 @@
             </div>
         </div>
         <div class="col-12 text-center row-gap">
-            <button type="submit" class="custom-button" (click)="submitForm()">Submit</button>
+            <button type="submit" class="custom-button" (click)="submitCollectionForm()">Submit</button>
         </div>
     </form>
 </div>
 
-<div class="collection-list" *ngIf="true">
+<div class="collection-list" *ngIf="showDisbursementForm">
     <div class="row justify-content-between m-0">
         <h3 class="col-4">
             Disbursement
         </h3>
     </div>
-    <form>
-        <div class="row row-gap justify-content-between">
+    <form [formGroup]="disbursementForm">
+        <div class="row row-gap">
             <div class="col-4">
-                <div class="row">
+                <div class="row align-center">
                     <label class="col-5 col-form-label">Customer Name</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="username">
-                    </div>
+                    <div class="col-7"> Customer Name </div>
                 </div>
             </div>
             <div class="col-4">
-                <div class="row">
+                <div class="row align-center">
                     <label class="col-5 col-form-label">Membership Id</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="username">
-                    </div>
+                    <div class="col-7"> Membership Id </div>
                 </div>
             </div>
             <div class="col-4">
                 <div class="row align-center">
                     <label class="col-5 col-form-label">Loan Id</label>
-                    <div class="col-7">
-                        <p formControlName="username" class="m-0">auto generated</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row row-gap justify-content-between">
-            <div class="col-4">
-                <div class="row">
-                    <label class="col-5 col-form-label">Place</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="username">
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="row">
-                    <label class="col-5 col-form-label">Status</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="username">
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="row">
-                    <label class="col-5 col-form-label">Disbursement Date</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="username">
-                    </div>
+                    <div class="col-7"> Loan Id </div>
                 </div>
             </div>
         </div>
         <div class="row row-gap">
             <div class="col-4">
+                <div class="row align-center">
+                    <label class="col-5 col-form-label">Branch</label>
+                    <div class="col-7"> Branch </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row align-center">
+                    <label class="col-5 col-form-label">Status</label>
+                    <div class="col-7"> Status </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-30">
+            <div class="col-4">
+                <div class="row">
+                    <label class="col-5 col-form-label">Disbursement Date</label>
+                    <div class="col-7">
+                        <input type="text" class="form-control" formControlName="disbursementDate">
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
                 <div class="row">
                     <label class="col-5 col-form-label">Amount</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="username">
+                        <input type="text" class="form-control" formControlName="disbursementAmount">
                     </div>
                 </div>
             </div>
@@ -290,13 +239,13 @@
                 <div class="row">
                     <label class="col-5 col-form-label">Installment</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="username">
+                        <input type="text" class="form-control" formControlName="disbursementInstallment">
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-12 text-center row-gap">
-            <button type="submit" class="custom-button" (click)="submitForm()">Submit</button>
+        <div class="col-12 text-center mt-30">
+            <button type="submit" class="custom-button" (click)="submitDisbursementForm()">Submit</button>
         </div>
     </form>
 </div>
