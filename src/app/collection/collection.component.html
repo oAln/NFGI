@@ -8,7 +8,7 @@
     <div class="row row-gap justify-content-between">
         <div class="col-5">
             <div class="row">
-                <label class="col-4 col-form-label">Customer Name</label>
+                <label class="col-4 form-label">Customer Name</label>
                 <div class="col-7">
                     <input type="text" class="form-control">
                 </div>
@@ -16,7 +16,7 @@
         </div>
         <div class="col-5">
             <div class="row">
-                <label class="col-5 col-form-label">Membership Number</label>
+                <label class="col-5 form-label">Membership Number</label>
                 <div class="col-7">
                     <input type="text" class="form-control">
                 </div>
@@ -57,9 +57,9 @@
                         <td>
                             <div class="custom-btn-group">
                                 <button type="button" class="custom-button"
-                                    (click)="showCollection()">Collection</button>
+                                    (click)="showCollection(member)">Collection</button>
                                 <button type="button" class="custom-button ml-10"
-                                    (click)="showDisbursement()">Disbursement</button>
+                                    (click)="showDisbursement(member)">Disbursement</button>
                             </div>
                         </td>
                     </tr>
@@ -75,7 +75,7 @@
             <div class="row row-gap p-0">
                 <div class="col-md-6">
                     <div class="row">
-                        <label class="col-5 col-form-label">Upload Collection</label>
+                        <label class="col-5 form-label">Upload Collection</label>
                         <div class="col-7">
                             <input type="file" class="form-control" id="inputGroupFile02">
                         </div>
@@ -89,7 +89,7 @@
             <div class="row row-gap p-0">
                 <div class="col-md-6">
                     <div class="row">
-                        <label class="col-5 col-form-label">Upload Disbursement</label>
+                        <label class="col-5 form-label">Upload Disbursement</label>
                         <div class="col-7">
                             <input type="file" class="form-control" id="inputGroupFile02">
                         </div>
@@ -117,44 +117,44 @@
     <form [formGroup]="collectionForm">
         <div class="row row-gap justify-content-between">
             <div class="col-4">
-                <div class="row align-center">
-                    <label class="col-5 col-form-label">Customer Name</label>
-                    <div class="col-7"> Customer Name </div>
+                <div class="row">
+                    <label class="col-5 form-label">Customer Name</label>
+                    <div class="col-7"> {{this.memberDetails.firstName}} </div>
                 </div>
             </div>
             <div class="col-4">
-                <div class="row align-center">
-                    <label class="col-5 col-form-label">Loan Amount</label>
-                    <div class="col-7"> Loan Amount </div>
+                <div class="row">
+                    <label class="col-5 form-label">Loan Amount</label>
+                    <div class="col-7"> {{this.memberDetails.loanAmount}} </div>
                 </div>
             </div>
             <div class="col-4">
-                <div class="row align-center">
-                    <label class="col-5 col-form-label">Branch</label>
-                    <div class="col-7"> Branch </div>
+                <div class="row">
+                    <label class="col-5 form-label">Branch</label>
+                    <div class="col-7"> {{this.memberDetails.branch}} </div>
                 </div>
             </div>
         </div>
         <div class="row row-gap justify-content-between">
             <div class="col-4">
-                <div class="row">
-                    <label class="col-5 col-form-label">Date</label>
+                <div class="row align-center">
+                    <label class="col-5 form-label">Date</label>
                     <div class="col-7">
                         <input type="text" class="form-control" formControlName="collectionDate">
                     </div>
                 </div>
             </div>
             <div class="col-4">
-                <div class="row">
-                    <label class="col-5 col-form-label">Amount Recieved</label>
+                <div class="row align-center">
+                    <label class="col-5 form-label">Amount Recieved</label>
                     <div class="col-7">
                         <input type="text" class="form-control" formControlName="collectionAmount">
                     </div>
                 </div>
             </div>
             <div class="col-4">
-                <div class="row">
-                    <label class="col-5 col-form-label">Late Fees<small>(If Applicable)</small></label>
+                <div class="row align-center">
+                    <label class="col-5 form-label">Late Fees<small>(If Applicable)</small></label>
                     <div class="col-7">
                         <input type="text" class="form-control" formControlName="lateFees">
                     </div>
@@ -186,58 +186,58 @@
     <form [formGroup]="disbursementForm">
         <div class="row row-gap">
             <div class="col-4">
-                <div class="row align-center">
-                    <label class="col-5 col-form-label">Customer Name</label>
-                    <div class="col-7"> Customer Name </div>
+                <div class="row">
+                    <label class="col-5 form-label">Customer Name</label>
+                    <div class="col-7"> {{this.memberDetails.firstName}} </div>
                 </div>
             </div>
             <div class="col-4">
-                <div class="row align-center">
-                    <label class="col-5 col-form-label">Membership Id</label>
-                    <div class="col-7"> Membership Id </div>
+                <div class="row">
+                    <label class="col-5 form-label">Membership Id</label>
+                    <div class="col-7"> {{this.memberDetails.memberId}} </div>
                 </div>
             </div>
             <div class="col-4">
-                <div class="row align-center">
-                    <label class="col-5 col-form-label">Loan Id</label>
-                    <div class="col-7"> Loan Id </div>
+                <div class="row">
+                    <label class="col-5 form-label">Loan Id</label>
+                    <div class="col-7"> XXX </div>
                 </div>
             </div>
         </div>
         <div class="row row-gap">
             <div class="col-4">
-                <div class="row align-center">
-                    <label class="col-5 col-form-label">Branch</label>
-                    <div class="col-7"> Branch </div>
+                <div class="row">
+                    <label class="col-5 form-label">Branch</label>
+                    <div class="col-7"> {{this.memberDetails.branch}} </div>
                 </div>
             </div>
             <div class="col-4">
-                <div class="row align-center">
-                    <label class="col-5 col-form-label">Status</label>
-                    <div class="col-7"> Status </div>
+                <div class="row">
+                    <label class="col-5 form-label">Status</label>
+                    <div class="col-7"> {{this.memberDetails.status}} </div>
                 </div>
             </div>
         </div>
         <div class="row mt-30">
             <div class="col-4">
-                <div class="row">
-                    <label class="col-5 col-form-label">Disbursement Date</label>
+                <div class="row align-center">
+                    <label class="col-5 form-label">Disbursement Date</label>
                     <div class="col-7">
                         <input type="text" class="form-control" formControlName="disbursementDate">
                     </div>
                 </div>
             </div>
             <div class="col-4">
-                <div class="row">
-                    <label class="col-5 col-form-label">Amount</label>
+                <div class="row align-center">
+                    <label class="col-5 form-label">Amount</label>
                     <div class="col-7">
                         <input type="text" class="form-control" formControlName="disbursementAmount">
                     </div>
                 </div>
             </div>
             <div class="col-4">
-                <div class="row">
-                    <label class="col-5 col-form-label">Installment</label>
+                <div class="row align-center">
+                    <label class="col-5 form-label">Installment</label>
                     <div class="col-7">
                         <input type="text" class="form-control" formControlName="disbursementInstallment">
                     </div>

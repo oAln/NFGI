@@ -83,6 +83,10 @@ table {
     }
 }
 
+i {
+    color: #448390;
+}
+
 
 select,
 input[type='text'],
@@ -100,4 +104,8 @@ input[type='number'] {
 
 input[type='checkbox'] {
     border: 1px solid grey !important;
+}
+
+.cursor-poniter {
+    cursor: pointer;
 }

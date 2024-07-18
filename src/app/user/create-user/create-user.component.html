@@ -8,7 +8,7 @@
         <div class="row row-gap">
             <form [formGroup]="createUserForm" class="row g-3">
                 <div class="row m-0 justify-content-center">
-                    <label class="col-2 col-form-label">Name</label>
+                    <label class="col-2 form-label">Name</label>
                     <div class="col-4">
                         <input type="text" class="form-control" formControlName="name">
                         <div *ngIf="submitted" class="form-error">
@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div class="row row-gap justify-content-center">
-                    <label class="col-2 col-form-label">Login Id</label>
+                    <label class="col-2 form-label">Login Id</label>
                     <div class="col-4">
                         <input type="text" class="form-control" formControlName="loginId">
                         <div *ngIf="submitted" class="form-error">
@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="row row-gap justify-content-center">
-                    <label class="col-2 col-form-label">Password</label>
+                    <label class="col-2 form-label">Password</label>
                     <div class="col-4">
                         <input type="text" class="form-control" formControlName="password">
                         <div *ngIf="submitted" class="form-error">
@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 <div class="row row-gap justify-content-center">
-                    <label class="col-2 col-form-label">Confirm Password</label>
+                    <label class="col-2 form-label">Confirm Password</label>
                     <div class="col-4">
                         <input type="text" class="form-control" formControlName="confirmPassword">
                         <div *ngIf="submitted" class="form-error">
@@ -70,7 +70,7 @@
         <div class="row row-gap justify-content-between">
             <div class="col-5">
                 <div class="row">
-                    <label class="col-4 col-form-label">Name</label>
+                    <label class="col-4 form-label">Name</label>
                     <div class="col-7">
                         <input type="text" class="form-control">
                     </div>
@@ -78,7 +78,7 @@
             </div>
             <div class="col-5">
                 <div class="row">
-                    <label class="col-5 col-form-label">Login Id</label>
+                    <label class="col-5 form-label">Login Id</label>
                     <div class="col-7">
                         <input type="text" class="form-control">
                     </div>
@@ -130,7 +130,7 @@
         <div class="row row-gap">
             <form [formGroup]="passwordForm" class="row g-3">
                 <div class="row m-0 justify-content-center">
-                    <label class="col-2 col-form-label">Old Password</label>
+                    <label class="col-2 form-label">Old Password</label>
                     <div class="col-4">
                         <input type="text" class="form-control" formControlName="oldPassword">
                         <div *ngIf="pswrdFormSubmitted" class="form-error">
@@ -141,7 +141,7 @@
                     </div>
                 </div>
                 <div class="row row-gap justify-content-center">
-                    <label class="col-2 col-form-label">New Password</label>
+                    <label class="col-2 form-label">New Password</label>
                     <div class="col-4">
                         <input type="text" class="form-control" formControlName="newPassword">
                         <div *ngIf="pswrdFormSubmitted" class="form-error">
@@ -152,7 +152,7 @@
                     </div>
                 </div>
                 <div class="row row-gap justify-content-center">
-                    <label class="col-2 col-form-label">Confirm Password</label>
+                    <label class="col-2 form-label">Confirm Password</label>
                     <div class="col-4">
                         <input type="text" class="form-control" formControlName="confirmNewPassword">
                         <div *ngIf="pswrdFormSubmitted" class="form-error">

@@ -14,6 +14,13 @@ export class CollectionComponent implements OnInit {
   showMemberData = true;
   showCollectionForm = false;
   showDisbursementForm = false;
+  memberDetails = {
+    firstName: '',
+    memberId: 0,
+    loanAmount: 0,
+    branch: '',
+    status: ''
+  }
 
   constructor(private http:HTTPService, private formBuilder: FormBuilder) {
     this.collectionForm = this.formBuilder.group({
@@ -43,14 +50,21 @@ export class CollectionComponent implements OnInit {
       });
   }
 
-  showCollection() {
+  showCollection(member: any) {
+    this.memberDetails.firstName = member?.firstName || '';
+    this.memberDetails.loanAmount = member?.loanAmount || 0;
+    this.memberDetails.branch = member?.branch || '';
     this.showCollectionForm = true;
     this.showMemberData = false;
     this.showDisbursementForm = false;
   }
 
 
-  showDisbursement() {
+  showDisbursement(member: any) {
+    this.memberDetails.firstName = member?.firstName || '';
+    this.memberDetails.memberId = member?.memberId || 0;
+    this.memberDetails.branch = member?.branch || '';
+    this.memberDetails.status = member?.accountStatus || '';
     this.showDisbursementForm = true;
     this.showMemberData = false;
     this.showCollectionForm = false;

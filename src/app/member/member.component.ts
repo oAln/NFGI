@@ -98,4 +98,12 @@ export class MemberComponent implements OnInit {
         document.body.removeChild(a);
       });
   }
+
+  editMemberData(memberDetails: any) {
+    console.log(memberDetails);
+  }
+
+  deleteMemberData(memberDetails: any) {
+    console.log(memberDetails);    
+  }
 }
