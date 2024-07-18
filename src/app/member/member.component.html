@@ -19,7 +19,7 @@
         </div>
         <div class="col-5">
             <div class="row">
-                <label class="col-4 form-label">Membership Number</label>
+                <label class="col-5 form-label">Membership Number</label>
                 <div class="col-7">
                     <input type="text" class="form-control" id="username">
                 </div>
@@ -59,15 +59,15 @@
                         <td>StartDate</td>
                         <td>{{member?.accountStatus}}</td>
                         <td>
-                            <span class="cursor-poniter" (click)="downloadFile(member?.documentPath)">
+                            <span class="action-icon" (click)="downloadFile(member?.documentPath)">
                                 <i class="bi bi-file-earmark-arrow-down"></i>
                             </span>
                         </td>
                         <td>
-                            <span class="mr-10 cursor-poniter" (click)="editMemberData(member)">
+                            <span class="mr-10 action-icon" (click)="editMemberData(member)">
                                 <i class="bi bi-pencil-square"></i>
                             </span>
-                            <span class="cursor-poniter" (click)="deleteMemberData(member)">
+                            <span class="action-icon" (click)="deleteMemberData(member)">
                                 <i class="bi bi-trash3"></i>
                             </span>
                         </td>
@@ -81,7 +81,7 @@
 <div class="create-member" *ngIf="!showMember">
     <div class="row justify-content-between m-0">
         <h3 class="col-4">
-            Create New Member
+            {{createMemberTitle}}
         </h3>
     </div>
     <div class="row m-0">
@@ -112,9 +112,9 @@
             </div>
             <div class="col-md-6">
                 <div class="row">
-                    <label class="col-3 form-label">Account No.</label>
+                    <label class="col-3 form-label">Account Id</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="accountNo">
+                        <input type="text" class="form-control" formControlName="accountId">
                     </div>
                 </div>
             </div>
@@ -225,7 +225,7 @@
                 <div class="row">
                     <label class="col-3 form-label">Purpose of Loan</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="installment">
+                        <input type="text" class="form-control" formControlName="loanPurpose">
                     </div>
                 </div>
             </div>
@@ -244,7 +244,7 @@
                 <div class="row">
                     <label class="col-3 form-label">Bank Account No.</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="holderBankAccount">
+                        <input type="text" class="form-control" formControlName="bankAccount">
                     </div>
                 </div>
             </div>
@@ -287,7 +287,7 @@
                 <div class="row">
                     <label class="col-3 form-label">Nominee Name</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="guarantorName">
+                        <input type="text" class="form-control" formControlName="nomineeName">
                     </div>
                 </div>
             </div>
@@ -295,7 +295,7 @@
                 <div class="row">
                     <label class="col-3 form-label">Relation</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="guarantorBusinessName">
+                        <input type="text" class="form-control" formControlName="nomineeRelation">
                     </div>
                 </div>
             </div>
@@ -303,7 +303,7 @@
                 <div class="row">
                     <label class="col-3 form-label">Date of Birth</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="guarantorContact">
+                        <input type="text" class="form-control" formControlName="nomineeDOB">
                     </div>
                 </div>
             </div>
@@ -311,7 +311,7 @@
                 <div class="row">
                     <label class="col-3 form-label">Phone No.</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="guarantorContact">
+                        <input type="text" class="form-control" formControlName="nomineeContact">
                     </div>
                 </div>
             </div>
@@ -319,7 +319,7 @@
                 <div class="row">
                     <label class="col-3 form-label">Address</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="guarantorContact">
+                        <input type="text" class="form-control" formControlName="nomineeAddress">
                     </div>
                 </div>
             </div>
@@ -327,7 +327,7 @@
                 <div class="row">
                     <label class="col-3 form-label">City/Town</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="guarantorContact">
+                        <input type="text" class="form-control" formControlName="nomineeCity">
                     </div>
                 </div>
             </div>
@@ -335,7 +335,7 @@
                 <div class="row">
                     <label class="col-3 form-label">District</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="guarantorContact">
+                        <input type="text" class="form-control" formControlName="nomineeDistrict">
                     </div>
                 </div>
             </div>

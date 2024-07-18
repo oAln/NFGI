@@ -12,29 +12,38 @@ import { environment } from '../../enviornment/enviornment';
 export class MemberComponent implements OnInit {
   showMember = true;
   memberData: any;
+  createMemberTitle = 'Create New Member';
   public memberForm = this.formBuilder.group({
     firstName: new FormControl('abc'),
     lastName: new FormControl('efg'),
     memberId: new FormControl('16'),
+    accountId: new FormControl('1234456789 '),
     gender: new FormControl('Male'),
-    occupation: new FormControl('farmer'),
-    townCity: new FormControl('Allahapur'),
-    areaLandmark: new FormControl('Gita Niketan'),
-    pinCode: new FormControl('211006'),
-    accountNo: new FormControl('1234456789 '),
     accountStatus: new FormControl('Active'),
+    occupation: new FormControl('farmer'),
     dateOfBirth: new FormControl('21/12/2021'),
+    townCity: new FormControl('Allahapur'),
     branch: new FormControl('allahpur'),
+    areaLandmark: new FormControl('Gita Niketan'),
     state: new FormControl('Uttar Pradesh'),
+    pinCode: new FormControl('211006'),
     contact: new FormControl('123456789'),
     loanAmount: new FormControl('12123'),
     installment: new FormControl('1'),
+    loanPurpose: new FormControl('1'),
     holderName: new FormControl('Abc'),
     bankName: new FormControl('UCO'),
-    ifscCode: new FormControl('uco0000211'),
+    bankAccount: new FormControl('432543523'),
     bankAddress: new FormControl('Civil Lines'),
+    ifscCode: new FormControl('uco0000211'),
     annualIncome: new FormControl('2311244'),
-    holderBankAccount: new FormControl('432543523'),
+    nomineeName: new FormControl('Abc'),
+    nomineeRelation: new FormControl('Abc'),
+    nomineeDOB: new FormControl('Abc'),
+    nomineeContact: new FormControl('Abc'),
+    nomineeAddress: new FormControl('Abc'),
+    nomineeCity: new FormControl('Abc'),
+    nomineeDistrict: new FormControl('Abc'),
     guarantorName: new FormControl('xyz'),
     guarantorBusinessName: new FormControl('Loan'),
     guarantorContact: new FormControl('542535432'),
@@ -54,6 +63,7 @@ export class MemberComponent implements OnInit {
   }
 
   submitForm() {
+    this.createMemberTitle = 'Create New Member';
     this.showMember = true;
     console.log(JSON.stringify(this.memberForm.value));
     let formParams = new FormData();
@@ -100,7 +110,9 @@ export class MemberComponent implements OnInit {
   }
 
   editMemberData(memberDetails: any) {
-    console.log(memberDetails);
+    this.createMemberTitle = 'Edit Member';
+    this.showMember = false;
+    this.memberForm.patchValue(memberDetails);
   }
 
   deleteMemberData(memberDetails: any) {
