@@ -63,16 +63,21 @@ export class CreateUserComponent implements OnInit {
     this.showUsertemplate = false;
   }
 
-  deleteUser() {
-
+  deleteUser(id: any) {
+    const apiEndPoint = 'user';
+    this.http.delete(apiEndPoint, id).subscribe(
+      (data) => {
+        console.log(data);
+      }
+    )
   }
 
   submitForm() {
     this.submitted = true;
     console.log(JSON.stringify(this.createUserForm.value));
     const apiEndPoint = 'user'
-    let obje1 = JSON.stringify(this.createUserForm.value);
-    this.http.post(apiEndPoint, obje1).subscribe(
+    const body = JSON.stringify(this.createUserForm.value);
+    this.http.create(apiEndPoint, body).subscribe(
       (data) => {
         console.log(data);
       }
@@ -83,8 +88,8 @@ export class CreateUserComponent implements OnInit {
     this.pswrdFormSubmitted = true;
     console.log(JSON.stringify(this.passwordForm.value));
     const apiEndPoint = 'auth/reset/password'
-    let obje1 = JSON.stringify(this.passwordForm.value);
-    this.http.post(apiEndPoint, obje1).subscribe(
+    const body = JSON.stringify(this.passwordForm.value);
+    this.http.create(apiEndPoint, body).subscribe(
       (data) => {
         console.log(data);
         this.showUsertemplate = true;

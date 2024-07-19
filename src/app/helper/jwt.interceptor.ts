@@ -8,7 +8,7 @@ export class JwtInterceptor implements HttpInterceptor {
         // add authorization header with jwt token if available
 
         const token = {
-            "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwic3ViIjoxLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MjEzMDUxNTEsImV4cCI6MTcyMTMwODc1MX0.X3-qZQH0KxoyUqOAxFTvsfrgxB03yw6iviZ6W25bUeY"
+            "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwic3ViIjoxLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MjEzOTM1MTIsImV4cCI6MTcyMTM5NzExMn0.dCSGle0Qj_PEfcefTzTgY9ogjNSIxXmv1G5tTn_HlJs"
           }
         let currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
         if (currentUser && currentUser.token) {

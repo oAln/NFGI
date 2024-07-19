@@ -14,9 +14,18 @@ export class HTTPService {
     return this.http.get(`${this.baseUrl}/${url}`, options);
   }
 
-  post(url: string, body: any, headers?: HttpHeaders) {
+  create(url: string, body: any, headers?: HttpHeaders) {
     const options = { headers };
     return this.http.post(`${this.baseUrl}/${url}`, body, options);
+  }
+
+  delete(url: string, body: any, headers?: HttpHeaders) {
+    return this.http.delete(`${this.baseUrl}/${url}/${body}`,);
+  }
+
+  update(url: string, body: any, headers?: HttpHeaders) {
+    const options = { headers };
+    return this.http.patch(`${this.baseUrl}/${url}`, body, options);
   }
 
   // Add methods for other HTTP verbs like put, patch, delete, etc.

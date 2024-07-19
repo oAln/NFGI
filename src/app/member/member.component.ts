@@ -13,6 +13,8 @@ export class MemberComponent implements OnInit {
   showMember = true;
   memberData: any;
   createMemberTitle = 'Create New Member';
+  updateMember = false;
+
   public memberForm = this.formBuilder.group({
     firstName: new FormControl('abc'),
     lastName: new FormControl('efg'),
@@ -50,7 +52,7 @@ export class MemberComponent implements OnInit {
     documentPath: new FormControl(''),
   });
 
-  constructor(private http:HTTPService, private httpClient:HttpClient, private formBuilder: FormBuilder) {
+  constructor(private http: HTTPService, private httpClient: HttpClient, private formBuilder: FormBuilder) {
     this.getMemberData();
   }
 
@@ -67,15 +69,26 @@ export class MemberComponent implements OnInit {
     this.showMember = true;
     console.log(JSON.stringify(this.memberForm.value));
     let formParams = new FormData();
-    let url = `http://localhost:3000/member`;
-    let obje1 = JSON.stringify(this.memberForm.value);
-    formParams.append('file', obje1)
-    //this.httpClient.post(`http://127.0.0.1:12201/gelf`,{name:'mark',age:'32'}).subscribe(
-      this.httpClient.post(url,formParams).subscribe(
-      (data) => {
+    const url = 'member';
+    const body = JSON.stringify(this.memberForm.value);
+    formParams.append('file', body);
+    if (this.updateMember) {
+      this.http.update(url, formParams).subscribe(
+        (data) => {
+          this.updateMember = false;
           console.log(data);
-      }
-    )
+        }, (error) => {
+          this.updateMember = false;
+          console.log(error);
+        }
+      )
+    } else {
+      this.http.create(url, body).subscribe(
+        (data) => {
+          console.log(data);
+        }
+      )
+    }
   }
 
   getMemberData() {
@@ -83,15 +96,13 @@ export class MemberComponent implements OnInit {
     this.http.get(apiEndPoint).subscribe(
       (data) => {
         console.log(data);
-        
-          this.memberData = data;
+        this.memberData = data;
       });
   }
 
   uploadDoc(event: any) {
     const file = event?.target?.files[0];
-    // const file = (event?.target as HTMLInputElement)?.files[0] || {}; // Here we use only the first file (single file)
-    this.memberForm.patchValue({ documentPath: file});
+    this.memberForm.patchValue({ documentPath: file });
   }
 
   downloadFile(filePath: any) {
@@ -112,10 +123,11 @@ export class MemberComponent implements OnInit {
   editMemberData(memberDetails: any) {
     this.createMemberTitle = 'Edit Member';
     this.showMember = false;
+    this.updateMember = true;
     this.memberForm.patchValue(memberDetails);
   }
 
   deleteMemberData(memberDetails: any) {
-    console.log(memberDetails);    
+    console.log(memberDetails);
   }
 }

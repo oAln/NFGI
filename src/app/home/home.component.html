@@ -5,72 +5,87 @@
 </div>
 <div class="row row-gap">
     <div class="col-4">
-        <select>
+        <select (change)="filterCardData($event.target)">
             <option>Daily</option>
-          </select>
+            <option>Weekly</option>
+            <option>Monthly</option>
+            <option>Yearly</option>
+        </select>
     </div>
 </div>
 <div class="row row-gap">
-    <div class="col-3">
-        <div class="card" style="width: 18rem;">
+    <div class="col-4">
+        <div class="card">
             <div class="card-body custom-card">
-                <div class="col-6">Text</div>
-                <div class="col-6 text-end">Value</div>
+                <div class="col-6 form-label">New Account Disbursement</div>
+                <div class="col-6 text-end">&#8377; Value</div>
             </div>
         </div>
     </div>
-    <div class="col-3">
-        <div class="card" style="width: 18rem;">
+    <div class="col-4">
+        <div class="card">
             <div class="card-body custom-card">
-                <div class="col-6">Text</div>
-                <div class="col-6 text-end">Value</div>
+                <div class="col-6 form-label">Renewal Account Disbursement</div>
+                <div class="col-6 text-end">&#8377; Value</div>
             </div>
         </div>
     </div>
-    <div class="col-3">
-        <div class="card" style="width: 18rem;">
+    <div class="col-4">
+        <div class="card">
             <div class="card-body custom-card">
-                <div class="col-6">Text</div>
-                <div class="col-6 text-end">Value</div>
-            </div>
-        </div>
-    </div>
-    <div class="col-3">
-        <div class="card" style="width: 18rem;">
-            <div class="card-body custom-card">
-                <div class="col-6">Text</div>
-                <div class="col-6 text-end">Value</div>
+                <div class="col-6 form-label">Total Account Collection</div>
+                <div class="col-6 text-end">&#8377; Value</div>
             </div>
         </div>
     </div>
 </div>
 
 <div class="row row-gap custom-box">
-    <div class="col-4">
+    <div class="col-4 form-label">
         Branch Wise Details
     </div>
     <div class="row row-gap">
         <div class="col-4 p-0">
-            <select name="countryName" [(ngModel)]="selectedCountry" (ngModelChange)="onCountrySelect($event)">
-                <option *ngFor="let c of countries" value="{{ c }}">{{ c }}</option>
+            <select [(ngModel)]="selectedBranch" (ngModelChange)="onBranchSelect($event)">
+                <option *ngFor="let branch of branchData" [value]="branch">
+                    {{branch}}
+                </option>
               </select>
         </div>
         <div class="col-4">
-            <select name="states" id="states" [(ngModel)]="selectedState">
-                <option *ngFor="let s of filteredStates" value="{{ s }}">{{ s }}</option>
-              </select>
+            <select [(ngModel)]="selectedMonth" (ngModelChange)="onMonthSelect($event)">
+                <option *ngFor="let month of monthData" [value]="month">
+                    {{month}}
+                </option>
+            </select>
         </div>
     </div>
     <div class="col-8">
         <div class="row row-gap custom-box">
-            <div class="row">
-                Branch Name
+            <div class="row form-label">
+                {{selectedBranch}}
             </div>
             <div class="row">
                 <div class="col-8 p-0">
-                    <div class="custom-list" *ngFor="let state of states">
-                        <div class="key">{{state.country}}</div>
-                        <div class="value">{{state.country}}</div>
+                    <div class="custom-list">
+                        <div class="key">Loan Amount</div>
+                        <div class="value">&#8377; {{branchWiseDetails.totalLoanAmount}}</div>
+                    </div>
+                    <div class="custom-list">
+                        <div class="key">Matured Loan Amount (120 Days)</div>
+                        <div class="value">&#8377; {{branchWiseDetails.totalMaturedLoanAmount}}</div>
+                    </div>
+                    <div class="custom-list">
+                        <div class="key">Installment</div>
+                        <div class="value">&#8377; {{branchWiseDetails.totalInstallment}}</div>
+                    </div>
+                    <div class="custom-list">
+                        <div class="key">Recovery</div>
+                        <div class="value">&#8377; {{branchWiseDetails.totalRecovey}}</div>
+                    </div>
+                    <div class="custom-list">
+                        <div class="key">Balance (120 Days)</div>
+                        <div class="value">&#8377; {{branchWiseDetails.totalBalance}}</div>
                     </div>
                 </div>
             </div>
@@ -78,8 +93,3 @@
     </div>
 
 </div>
-
-
-<p>the value of selectedCountry :  {{ selectedCountry }}</p>
-<p>the value of selectedState :  {{ selectedState }}</p>
-<p>the value of filteredStates :  {{ filteredStates | json }}</p>

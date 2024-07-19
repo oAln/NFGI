@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 .custom-card {
-    height: 140px;
+    height: 150px;
     display: flex;
     align-items: center;
 }
@@ -13,6 +13,7 @@
 
 select {
     min-width: 180px;
+    cursor: pointer;
 }
 
 .p-0 {
@@ -74,6 +75,11 @@ table {
     padding: 0 16px;
     width: auto;
     background: #328f9a 0% 0% no-repeat padding-box;
+
+    a {
+        text-decoration: none;
+        color: #fff;
+    }
 }
 
 .custom-checkbox {

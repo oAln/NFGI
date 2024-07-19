@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { HTTPService } from '../services/http.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-collection',
@@ -8,8 +9,10 @@ import { HTTPService } from '../services/http.service';
   styleUrls: ['./collection.component.scss']
 })
 export class CollectionComponent implements OnInit {
-  public collectionForm: FormGroup;
-  public disbursementForm: FormGroup;
+  collectionForm: FormGroup;
+  disbursementForm: FormGroup;
+  collectionData: any;
+  disbursementData: any;
   memberData: any;
   showMemberData = true;
   showCollectionForm = false;
@@ -22,7 +25,7 @@ export class CollectionComponent implements OnInit {
     status: ''
   }
 
-  constructor(private http:HTTPService, private formBuilder: FormBuilder) {
+  constructor(private http: HTTPService, private formBuilder: FormBuilder) {
     this.collectionForm = this.formBuilder.group({
       collectionDate: new FormControl(''),
       collectionAmount: new FormControl(''),
@@ -45,8 +48,8 @@ export class CollectionComponent implements OnInit {
     this.http.get(apiEndPoint).subscribe(
       (data) => {
         console.log(data);
-        
-          this.memberData = data;
+
+        this.memberData = data;
       });
   }
 
@@ -74,17 +77,9 @@ export class CollectionComponent implements OnInit {
 
   }
 
-  collectionTemplate () {
-    console.log('download collection excel');
-  }
-
-  disbursementTemplate() {
-    console.log('download disburse excel');
-  }
-
   submitTemplateData() {
     console.log('submit template data');
-    
+
   }
 
   submitCollectionForm() {
@@ -101,5 +96,36 @@ export class CollectionComponent implements OnInit {
     this.showCollectionForm = false;
     console.log(JSON.stringify(this.collectionForm.value));
 
+  }
+
+  getExcelData(ev: any, dataType: string): void {
+    let workBook: any = null;
+    let jsonData = null;
+    const reader = new FileReader();
+    console.log('Imorted file', ev.target.files);
+    const file = ev.target.files[0];
+    reader.onload = () => {
+      const data = reader.result;
+      workBook = XLSX.read(data, { type: 'binary' });
+      jsonData = workBook.SheetNames.reduce((initial: any, name: any) => {
+        const sheet = workBook.Sheets[name];
+        initial[name] = XLSX.utils.sheet_to_json(sheet, {
+          raw: false,
+          dateNF: "dd/mm/yyyy"
+        });
+        return initial;
+      }, {});
+      if (jsonData?.Sheet1?.length > 1) {
+        if (dataType === 'collection') {
+          this.collectionData = jsonData?.Sheet1?.splice(0, jsonData?.Sheet1?.length - 1);
+          console.log('this.collectionData', this.collectionData);
+        } else {
+          this.disbursementData = jsonData?.Sheet1?.splice(0, jsonData?.Sheet1?.length - 1);
+          console.log('this.disbursementData', this.disbursementData);
+        }
+      }
+
+    };
+    reader.readAsBinaryString(file);
   }
 }

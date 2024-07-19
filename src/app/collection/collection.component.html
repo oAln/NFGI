@@ -74,30 +74,32 @@
             </div>
             <div class="row row-gap p-0">
                 <div class="col-md-6">
-                    <div class="row">
+                    <div class="row align-center">
                         <label class="col-5 form-label">Upload Collection</label>
                         <div class="col-7">
-                            <input type="file" class="form-control" id="inputGroupFile02">
+                            <input type="file" class="form-control" (change)="getExcelData($event, 'collection')">
                         </div>
                     </div>
                 </div>
                 <div class="col-6 text-center">
-                    <button type="submit" class="custom-button" (click)="collectionTemplate()">Template
-                        Download</button>
+                    <button class="custom-button">
+                        <a href="assets/template/collection-template.xlsx" download>Template Download</a>
+                    </button>
                 </div>
             </div>
             <div class="row row-gap p-0">
                 <div class="col-md-6">
-                    <div class="row">
+                    <div class="row align-center">
                         <label class="col-5 form-label">Upload Disbursement</label>
                         <div class="col-7">
-                            <input type="file" class="form-control" id="inputGroupFile02">
+                            <input type="file" class="form-control" (change)="getExcelData($event, 'disbursement')">
                         </div>
                     </div>
                 </div>
                 <div class="col-6 text-center">
-                    <button type="submit" class="custom-button" (click)="disbursementTemplate()">Template
-                        Download</button>
+                    <button class="custom-button">
+                        <a href="assets/template/disbursement-template.xlsx" download>Template Download</a>
+                    </button>
                 </div>
             </div>
             <div class="col-12 text-center row-gap">
