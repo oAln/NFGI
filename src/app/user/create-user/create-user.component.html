@@ -57,16 +57,16 @@
             </form>
         </div>
     </div>
-    
+
     <div class="custom-divider"></div>
-    
+
     <div class="user-list">
         <div class="row">
             <h3 class="col-4">
                 User List
             </h3>
         </div>
-    
+
         <div class="row row-gap justify-content-between">
             <div class="col-5">
                 <div class="row">
@@ -169,3 +169,23 @@
         </div>
     </div>
 </ng-template>
+
+<!-- Modal -->
+<div class="modal fade show" tabindex="-1" role="dialog" *ngIf="showDeleteDialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Delete User</h5>
+                <button type="button" class="close" (click)="cancelDeleteUserData()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure want to delete the user?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="custom-button" (click)="deleteUserData()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

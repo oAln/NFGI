@@ -16,6 +16,8 @@ export class CreateUserComponent implements OnInit {
   passwordMatch = false;
   userData: any;
   showUsertemplate = true;
+  showDeleteDialog = false;
+  selectedUserId: any;
 
   constructor(private formBuilder: FormBuilder, private http: HTTPService) {
     this.createUserForm = this.formBuilder.group({
@@ -64,12 +66,26 @@ export class CreateUserComponent implements OnInit {
   }
 
   deleteUser(id: any) {
+    this.showDeleteDialog = true;
+    this.selectedUserId = id;
+  }
+
+  deleteUserData() {
     const apiEndPoint = 'user';
-    this.http.delete(apiEndPoint, id).subscribe(
+    this.http.delete(apiEndPoint, this.selectedUserId).subscribe(
       (data) => {
+        this.cancelDeleteUserData();
         console.log(data);
+      }, error =>{
+        console.log(error);
+        this.cancelDeleteUserData();
       }
     )
+  }
+
+  cancelDeleteUserData() {
+    this.showDeleteDialog = false;
+    this.selectedUserId = null;
   }
 
   submitForm() {
