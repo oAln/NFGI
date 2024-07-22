@@ -4,13 +4,13 @@
             Collection & Disbursement
         </h3>
     </div>
-
+    <form [formGroup]="searchForm">
     <div class="row row-gap justify-content-between">
         <div class="col-5">
             <div class="row">
                 <label class="col-4 form-label">Customer Name</label>
                 <div class="col-7">
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" formControlName="customerName">
                 </div>
             </div>
         </div>
@@ -18,14 +18,15 @@
             <div class="row">
                 <label class="col-5 form-label">Membership Number</label>
                 <div class="col-7">
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" formControlName="memberId">
                 </div>
             </div>
         </div>
         <div class="col-2 verticle-align">
-            <input type="button" class="custom-button" value="Search" />
+            <input type="button" class="custom-button" value="Search" (click)="getFilteredData()" />
         </div>
     </div>
+    </form>
     <div class="row row-gap mt-30">
         <table class="table table-bordered">
             <thead>

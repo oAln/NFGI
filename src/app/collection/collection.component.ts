@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { HTTPService } from '../services/http.service';
 import * as XLSX from 'xlsx';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-collection',
@@ -24,6 +25,11 @@ export class CollectionComponent implements OnInit {
     branch: '',
     status: ''
   }
+
+  public searchForm=this.formBuilder.group({
+    customerName: new FormControl(''),
+    memberId: new FormControl('')
+  })
 
   constructor(private http: HTTPService, private formBuilder: FormBuilder) {
     this.collectionForm = this.formBuilder.group({
@@ -61,6 +67,13 @@ export class CollectionComponent implements OnInit {
     this.showMemberData = false;
     this.showDisbursementForm = false;
   }
+
+  getFilteredData(){
+    let params = new HttpParams()
+    if(this.searchForm.value.customerName) params=params.set('firstName',this.searchForm.value.customerName)
+    if(this.searchForm.value.memberId) params=params.set('memberId',this.searchForm.value.memberId)    
+    this.http.get('member/search',params).subscribe((data)=>this.memberData=data)
+   }
 
 
   showDisbursement(member: any) {

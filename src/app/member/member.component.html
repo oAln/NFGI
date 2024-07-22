@@ -1,385 +1,524 @@
 <div class="member-list" *ngIf="showMember">
-    <div class="row justify-content-between m-0">
-        <h3 class="col-4">
-            Member List
-        </h3>
-        <div class="col-2 text-end">
-            <button class="custom-button member-btn" (click)="createMember()">Create New Member</button>
-        </div>
+  <div class="row justify-content-between m-0">
+    <h3 class="col-4">Member List</h3>
+    <div class="col-2 text-end">
+      <button class="custom-button member-btn" (click)="createMember()">
+        Create New Member
+      </button>
     </div>
+  </div>
 
-    <div class="row row-gap justify-content-between">
-        <div class="col-5">
-            <div class="row">
-                <label class="col-4 form-label">Customer Name</label>
-                <div class="col-7">
-                    <input type="text" class="form-control" id="username">
-                </div>
-            </div>
+  
+    <form [formGroup]="searchForm">
+        <div class="row row-gap justify-content-between">
+      <div class="col-5">
+        <div class="row">
+          <label class="col-4 form-label">Customer Name</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="customerName"
+            />
+          </div>
         </div>
-        <div class="col-5">
-            <div class="row">
-                <label class="col-5 form-label">Membership Number</label>
-                <div class="col-7">
-                    <input type="text" class="form-control" id="username">
-                </div>
-            </div>
+      </div>
+      <div class="col-5">
+        <div class="row">
+          <label class="col-5 form-label">Membership Number</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="memberId"
+            />
+          </div>
         </div>
-        <div class="col-2 text-end p-0">
-            <button class="custom-button" (click)="getMemberData()">Search</button>
-        </div>
+      </div>
+      <div class="col-2 text-end p-0">
+        <button class="custom-button" (click)="getFilteredData()">
+          Search
+        </button>
+      </div>
     </div>
-    <div class="row mt-30">
-        <table class="table table-bordered member-table">
-            <thead>
-                <tr>
-                    <th>S.No</th>
-                    <th>Customer Name</th>
-                    <th>Membership Id</th>
-                    <th>Account No</th>
-                    <th>Loan Id(auto generate when loan amount entered)</th>
-                    <th>Branch</th>
-                    <th>Loan Amount</th>
-                    <th>Loan Start Date(loan amount saved)</th>
-                    <th>Status</th>
-                    <th>Document(Name)</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <ng-container *ngFor="let member of memberData; let sNo = index">
-                    <tr>
-                        <td>{{sNo +1}}</td>
-                        <td>{{member?.firstName}}</td>
-                        <td>{{member?.memberId}}</td>
-                        <td>{{member?.accountNo}}</td>
-                        <td>Loan Id</td>
-                        <td>{{member?.townCity}}</td>
-                        <td>{{member?.loanAmount}}</td>
-                        <td>StartDate</td>
-                        <td>{{member?.accountStatus}}</td>
-                        <td>
-                            <span class="action-icon" (click)="downloadFile(member?.documentPath)">
-                                <i class="bi bi-file-earmark-arrow-down"></i>
-                            </span>
-                        </td>
-                        <td>
-                            <span class="mr-10 action-icon" (click)="editMemberData(member)">
-                                <i class="bi bi-pencil-square"></i>
-                            </span>
-                            <span class="action-icon" (click)="deleteMemberData(member)">
-                                <i class="bi bi-trash3"></i>
-                            </span>
-                        </td>
-                    </tr>
-                </ng-container>
-            </tbody>
-        </table>
-    </div>
+    </form>
+  
+  <div class="row mt-30">
+    <table class="table table-bordered member-table">
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Customer Name</th>
+          <th>Membership Id</th>
+          <th>Account No</th>
+          <th>Loan Id(auto generate when loan amount entered)</th>
+          <th>Branch</th>
+          <th>Loan Amount</th>
+          <th>Loan Start Date(loan amount saved)</th>
+          <th>Status</th>
+          <th>Document(Name)</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let member of memberData; let sNo = index">
+          <tr>
+            <td>{{ sNo + 1 }}</td>
+            <td>{{ member?.firstName }}</td>
+            <td>{{ member?.memberId }}</td>
+            <td>{{ member?.accountNo }}</td>
+            <td>{{ member?.loanId || "-" }}</td>
+            <td>{{ member?.townCity }}</td>
+            <td>{{ member?.loanAmount }}</td>
+            <td>{{ member?.loanStartDate | date : "medium" || "-" }}</td>
+            <td>{{ member?.accountStatus }}</td>
+            <td>
+              <span
+                class="action-icon"
+                (click)="downloadFile(member)"
+              >
+                <i class="bi bi-file-earmark-arrow-down"></i>
+              </span>
+            </td>
+            <td>
+              <span class="mr-10 action-icon" (click)="editMemberData(member)">
+                <i class="bi bi-pencil-square"></i>
+              </span>
+              <span class="action-icon" (click)="deleteMemberData(member)">
+                <i class="bi bi-trash3"></i>
+              </span>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <div class="create-member" *ngIf="!showMember">
-    <div class="row justify-content-between m-0">
-        <h3 class="col-4">
-            {{createMemberTitle}}
-        </h3>
-    </div>
-    <div class="row m-0">
-        <form [formGroup]="memberForm" class="row g-3">
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">First Name</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="firstName">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Last Name</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="lastName">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Member ID</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="memberId">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Account Id</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="accountId">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Gender</label>
-                    <div class="col-7">
-                        <select class="form-select" style="width: 100%;" formControlName="gender">
-                            <option>Male</option>
-                            <option>Female</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Account Status</label>
-                    <div class="col-7">
-                        <select class="form-select" style="width: 100%;" formControlName="accountStatus">
-                            <option>Active</option>
-                            <option>Closed</option>
-                            <option>Dorment</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Occupation</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="occupation">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Date of Birth</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="dateOfBirth">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Town/City</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="townCity">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Branch</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="branch">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Area/Landmark</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="areaLandmark">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">State</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="state">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Pin Code</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="pinCode">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Contact</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="contact">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Loan Amount</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="loanAmount">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Installment</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="installment">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Purpose of Loan</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="loanPurpose">
-                    </div>
-                </div>
-            </div>
-            <div class="row row-gap p-0">
-                <h5>Bank Details</h5>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Holder Name</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="holderName">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Bank Account No.</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="bankAccount">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Bank Name</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="bankName">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Bank Address</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="bankAddress">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">IFSC Code</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="ifscCode">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Annual Income (&#8377;)</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="annualIncome">
-                    </div>
-                </div>
-            </div>
-            <div class="row row-gap p-0">
-                <h5>Nominee Details</h5>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Nominee Name</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="nomineeName">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Relation</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="nomineeRelation">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Date of Birth</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="nomineeDOB">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Phone No.</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="nomineeContact">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">Address</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="nomineeAddress">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">City/Town</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="nomineeCity">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-3 form-label">District</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="nomineeDistrict">
-                    </div>
-                </div>
-            </div>
-            <div class="row row-gap p-0">
-                <h5>Guarantor Details</h5>
-            </div>
-            <div class="col-md-4">
-                <div class="row">
-                    <label class="col-3 form-label">Name</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="guarantorName">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="row">
-                    <label class="col-3 form-label">Business Name</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="guarantorBusinessName">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="row">
-                    <label class="col-3 form-label">Contact</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="guarantorContact">
-                    </div>
-                </div>
-            </div>
-            <div class="row row-gap p-0">
-                <h5>Upload Documents</h5>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <label class="col-4 form-label">Document</label>
-                    <div class="col-7">
-                        <input type="file" class="form-control" (change)="uploadDoc($event)">
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 text-center row-gap">
-                <button type="submit" class="custom-button" (click)="submitForm()">Submit</button>
-            </div>
-        </form>
-    </div>
+  <div class="row justify-content-between m-0">
+    <h3 class="col-4">
+      {{ createMemberTitle }}
+    </h3>
+  </div>
+  <div class="row m-0">
+    <form [formGroup]="memberForm" class="row g-3">
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">First Name</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="firstName"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Last Name</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="lastName"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Member ID</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="memberId"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Account Id</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="accountId"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Gender</label>
+          <div class="col-7">
+            <select
+              class="form-select"
+              style="width: 100%"
+              formControlName="gender"
+            >
+              <option>Male</option>
+              <option>Female</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Account Status</label>
+          <div class="col-7">
+            <select
+              class="form-select"
+              style="width: 100%"
+              formControlName="accountStatus"
+            >
+              <option>Active</option>
+              <option>Closed</option>
+              <option>Dorment</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Occupation</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="occupation"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Date of Birth</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="dateOfBirth"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Town/City</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="townCity"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Branch</label>
+          <div class="col-7">
+            <input type="text" class="form-control" formControlName="branch" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Area/Landmark</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="areaLandmark"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">State</label>
+          <div class="col-7">
+            <input type="text" class="form-control" formControlName="state" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Pin Code</label>
+          <div class="col-7">
+            <input type="text" class="form-control" formControlName="pinCode" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Contact</label>
+          <div class="col-7">
+            <input type="text" class="form-control" formControlName="contact" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Loan Amount</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="loanAmount"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Installment</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="installment"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Purpose of Loan</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="loanPurpose"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row row-gap p-0">
+        <h5>Bank Details</h5>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Holder Name</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="holderName"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Bank Account No.</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="accountNo"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Bank Name</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="bankName"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Bank Address</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="bankAddress"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">IFSC Code</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="ifscCode"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Annual Income (&#8377;)</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="annualIncome"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row row-gap p-0">
+        <h5>Nominee Details</h5>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Nominee Name</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="nomineeName"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Relation</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="nomineeRelation"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Date of Birth</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="nomineeDOB"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Phone No.</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="nomineeContact"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">Address</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="nomineeAddress"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">City/Town</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="nomineeCity"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-3 form-label">District</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="nomineeDistrict"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row row-gap p-0">
+        <h5>Guarantor Details</h5>
+      </div>
+      <div class="col-md-4">
+        <div class="row">
+          <label class="col-3 form-label">Name</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="guarantorName"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="row">
+          <label class="col-3 form-label">Business Name</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="guarantorBusinessName"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="row">
+          <label class="col-3 form-label">Contact</label>
+          <div class="col-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="guarantorContact"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row row-gap p-0">
+        <h5>Upload Documents</h5>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <label class="col-4 form-label">Document</label>
+          <div class="col-7">
+            <input
+              type="file"
+              class="form-control"
+              (change)="uploadDoc($event)"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-12 text-center row-gap">
+        <button type="submit" class="custom-button" (click)="submitForm()">
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

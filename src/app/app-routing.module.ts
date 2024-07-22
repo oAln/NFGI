@@ -19,26 +19,31 @@ export const routes: Routes = [
   {
     path: 'members',
     component: MemberComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'collections',
     component: CollectionComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'change-password',
     component: PasswordComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'create-user',
     component: CreateUserComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'reports',
     component: ReportsComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
 ];
 

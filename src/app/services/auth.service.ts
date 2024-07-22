@@ -9,10 +9,10 @@ import { User } from "../model/user";
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
-
+  private baseUrl = 'http://localhost:3000';
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<User>(
-      JSON.parse(localStorage.getItem("currentUser") || '{}')
+      JSON.parse(localStorage.getItem("token") || "{}")
     );
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -25,13 +25,13 @@ export class AuthenticationService {
     // post to fake back end, this url will be handled there...
 
     return this.http
-      .post<any>(`/users/authenticate`, { username, password })
+      .post<any>(`${this.baseUrl}/auth/login`, { loginId:username, password })
       .pipe(
         map(user => {
           // store user details and basic auth credentials in local storage to keep user logged in between page refreshes
-          user.token = window.btoa(username + ":" + password);
-          localStorage.setItem("currentUser", JSON.stringify(user));
-          this.currentUserSubject.next(user);
+          // user.token = window.btoa(username + ":" + password);
+          localStorage.setItem("token", JSON.stringify(user));
+          this.currentUserSubject.next({token:user.token});
           return user;
         })
       );
@@ -39,14 +39,14 @@ export class AuthenticationService {
 
   logout() {
     // remove user from local storage to log user out
-    localStorage.removeItem("currentUser");
+    localStorage.removeItem("token");
     const user = {
       id: 2,
       username: undefined,
       password: undefined,
       firstName: undefined,
       lastName: undefined,
-      token: ''
+      token: undefined
      }
     this.currentUserSubject.next(user);
   }

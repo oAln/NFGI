@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { HTTPService } from 'src/app/services/http.service';
@@ -15,9 +16,14 @@ export class CreateUserComponent implements OnInit {
   pswrdFormSubmitted = false
   passwordMatch = false;
   userData: any;
+  changePasswordUser:any
   showUsertemplate = true;
   showDeleteDialog = false;
   selectedUserId: any;
+  public searchForm=this.formBuilder.group({
+    userName: new FormControl(''),
+    loginId: new FormControl('')
+  })
 
   constructor(private formBuilder: FormBuilder, private http: HTTPService) {
     this.createUserForm = this.formBuilder.group({
@@ -35,7 +41,7 @@ export class CreateUserComponent implements OnInit {
     this.passwordForm = this.formBuilder.group({
       oldPassword: new FormControl('', Validators.required),
       newPassword: new FormControl('', Validators.required),
-      confirmNewPassword: new FormControl('', [Validators.required])
+      confirmPassword: new FormControl('', [Validators.required])
     },
       {
         validators: this.confirmNewPassword.bind(this)
@@ -53,7 +59,8 @@ export class CreateUserComponent implements OnInit {
 
   confirmNewPassword(formGroup: FormGroup) {
     const pswrd = formGroup.get('newPassword');
-    const confrmPswrd = formGroup.get('confirmNewPassword');
+    const confrmPswrd = formGroup.get('confirmPassword');
+
     this.passwordMatch = confrmPswrd?.value && (pswrd?.value === confrmPswrd?.value);
   }
 
@@ -61,7 +68,8 @@ export class CreateUserComponent implements OnInit {
 
   }
 
-  changePassword() {
+  changePassword(user:any) {
+    this.changePasswordUser=user
     this.showUsertemplate = false;
   }
 
@@ -92,7 +100,7 @@ export class CreateUserComponent implements OnInit {
     this.submitted = true;
     console.log(JSON.stringify(this.createUserForm.value));
     const apiEndPoint = 'user'
-    const body = JSON.stringify(this.createUserForm.value);
+    const body = this.createUserForm.value;
     this.http.create(apiEndPoint, body).subscribe(
       (data) => {
         console.log(data);
@@ -103,9 +111,8 @@ export class CreateUserComponent implements OnInit {
   submitPswrdForm() {
     this.pswrdFormSubmitted = true;
     console.log(JSON.stringify(this.passwordForm.value));
-    const apiEndPoint = 'auth/reset/password'
-    const body = JSON.stringify(this.passwordForm.value);
-    this.http.create(apiEndPoint, body).subscribe(
+    const apiEndPoint = 'auth/reset-password'
+    this.http.create(apiEndPoint, {loginId:this.changePasswordUser.loginId,...this.passwordForm.value}).subscribe(
       (data) => {
         console.log(data);
         this.showUsertemplate = true;
@@ -122,4 +129,11 @@ export class CreateUserComponent implements OnInit {
         this.userData = data;
       });
   }
+
+  getFilteredData(){
+    let params = new HttpParams()
+    if(this.searchForm.value.userName) params=params.set('name',this.searchForm.value.userName)
+    if(this.searchForm.value.loginId) params=params.set('loginId',this.searchForm.value.loginId)    
+    this.http.get('user/search',params).subscribe((data)=>this.userData=data)
+   }
 }

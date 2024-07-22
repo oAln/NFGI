@@ -17,8 +17,10 @@ export class AppComponent {
       private router: Router,
       private authenticationService: AuthenticationService
   ) {
-      this.authenticationService.currentUser.subscribe(data => {
-        this.currentUser = !(typeof data.username === 'undefined')
+      this.authenticationService.currentUser.subscribe(user => {
+        console.log("user...",user);
+        
+        this.currentUser = !(typeof user.token === 'undefined')
       });
   }
 

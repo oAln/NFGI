@@ -66,13 +66,13 @@
                 User List
             </h3>
         </div>
-
+        <form [formGroup]="searchForm">
         <div class="row row-gap justify-content-between">
             <div class="col-5">
                 <div class="row">
                     <label class="col-4 form-label">Name</label>
                     <div class="col-7">
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" formControlName="userName">
                     </div>
                 </div>
             </div>
@@ -80,14 +80,15 @@
                 <div class="row">
                     <label class="col-5 form-label">Login Id</label>
                     <div class="col-7">
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" formControlName="loginId">
                     </div>
                 </div>
             </div>
             <div class="col-2 verticle-align">
-                <input type="button" class="custom-button" value="Search" />
+                <input type="button" class="custom-button" value="Search" (click)="getFilteredData()"/>
             </div>
         </div>
+        </form>
         <div class="row row-gap mt-30">
             <table class="table table-bordered">
                 <thead>
@@ -106,10 +107,10 @@
                             <td>{{user?.loginId}}</td>
                             <td class="wp-30">
                                 <div class="custom-btn-group justify-content-center">
-                                    <button type="button" class="custom-button" (click)="changePassword()">Change
+                                    <button type="button" class="custom-button" (click)="changePassword(user)">Change
                                         Password</button>
                                     <button type="button" class="custom-button ml-10"
-                                        (click)="deleteUser(user?.loginId)">Delete</button>
+                                        (click)="deleteUser(user?.id)">Delete</button>
                                 </div>
                             </td>
                         </tr>
@@ -154,9 +155,9 @@
                 <div class="row row-gap justify-content-center">
                     <label class="col-2 form-label">Confirm Password</label>
                     <div class="col-4">
-                        <input type="text" class="form-control" formControlName="confirmNewPassword">
+                        <input type="text" class="form-control" formControlName="confirmPassword">
                         <div *ngIf="pswrdFormSubmitted" class="form-error">
-                            <span *ngIf="!passwordMatch || passwordForm['controls']['confirmNewPassword']['errors']">
+                            <span *ngIf="!passwordMatch || passwordForm['controls']['confirmPassword']['errors']">
                                 Passsword and Confirm Password didn't match
                             </span>
                         </div>
