@@ -23,16 +23,5 @@ export class AppConstants {
         term: 180,
         rate: 1.3
     }];
-    
-    public static interestData = [{
-        loanTerm: 30,
-        maturedAmount: 30,
-        lateFees: 16.67,
-        interestRate: 1.05,
-        loanDays: 0,
-        startDate: 21/12/2023
-    }];
 
 }
-
-// late fees applicable if loan term is 60 days

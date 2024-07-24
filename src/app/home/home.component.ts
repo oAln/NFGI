@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HTTPService } from '../services/http.service';
 import { getIntererstAmount } from '../util/helper';
+import { AppConstants } from '../util/app.constant';
 
 @Component({
   selector: 'app-home',
@@ -8,7 +9,6 @@ import { getIntererstAmount } from '../util/helper';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-  title = 'NFGI';
   filteredStates: any = [];
   memberData: any;
   branchData: any;
@@ -23,6 +23,8 @@ export class HomeComponent {
     totalRecovey: 0,
     totalBalance: 0,
   };
+  newAccountDisburse = 0;
+  oldAccountDisburse = 0;
 
 
   constructor(private http: HTTPService) {
@@ -52,6 +54,8 @@ export class HomeComponent {
         this.selectedBranch = this.branchData?.length ? this.branchData[0] : "";
         this.getBranchwiseDetails(this.selectedBranch);
         console.log(this.branchData);
+        this.newAccountDisburse = 0;
+        this.oldAccountDisburse = 0;
       });
   }
 
@@ -68,11 +72,19 @@ export class HomeComponent {
   }
 
   getBranchwiseDetails(selectedBranch: string) {
-    this.branchWiseDetails.totalLoanAmount = this.getTotalAmount(selectedBranch, 'loanAmount') || 0;
-    this.branchWiseDetails.totalInstallment = this.getTotalAmount(selectedBranch, 'installment') || 0;
-    this.branchWiseDetails.totalMaturedLoanAmount = this.getTotalAmount(selectedBranch, 'loanAmount') || 0;
-    this.branchWiseDetails.totalRecovey = this.getTotalAmount(selectedBranch, 'loanAmount') || 0;
-    this.branchWiseDetails.totalBalance = this.getTotalAmount(selectedBranch, 'loanAmount') || 0;
+    this.branchWiseDetails.totalLoanAmount = this.getTotalAmount(selectedBranch, 'loanAmount');
+    this.branchWiseDetails.totalInstallment = this.getTotalAmount(selectedBranch, 'installment');
+    this.branchWiseDetails.totalMaturedLoanAmount = this.memberData.reduce(function (accumulator: any, currentValue: any) {
+      const filteredAmount = (currentValue?.branch === selectedBranch && currentValue?.LoanData?.loanTerm == AppConstants.loanTerms[3].term) ? currentValue?.LoanData?.maturedAmount : 0;
+      return accumulator + filteredAmount;
+    }, 0);
+    this.branchWiseDetails.totalRecovey = this.getTotalAmount(selectedBranch, 'collectionAmount');
+    // 120 days recovery amount 
+    const recovryAmount = this.memberData.reduce(function (accumulator: any, currentValue: any) {
+      const filteredAmount = (currentValue?.branch === selectedBranch && currentValue?.LoanData?.loanTerm == AppConstants.loanTerms[3].term) ? currentValue?.collectionAmount : 0;
+      return accumulator + filteredAmount;
+    }, 0);
+    this.branchWiseDetails.totalBalance = this.branchWiseDetails.totalMaturedLoanAmount - recovryAmount;
   }
 
   onMonthSelect(selectedMonth: any) {
