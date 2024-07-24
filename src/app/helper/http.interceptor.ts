@@ -1,22 +1,33 @@
 import { Injectable } from '@angular/core';
 import {
-  HttpEvent, HttpInterceptor, HttpHandler, HttpRequest
+  HttpEvent, HttpInterceptor, HttpHandler, HttpRequest,
+  HttpErrorResponse
 } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
+import { catchError, Observable, of, throwError } from 'rxjs';
+import { Router, RouterStateSnapshot } from '@angular/router';
+import { AuthenticationService } from '../services/auth.service';
 
 /** Inject With Credentials into the request */
 @Injectable()
 export class HttpRequestInterceptor implements HttpInterceptor {
-
+  constructor(private router: Router, private authenticationService: AuthenticationService) {
+  }
   intercept(req: HttpRequest<any>, next: HttpHandler):
     Observable<HttpEvent<any>> {
-    
-      console.log("interceptor: " + req.url);
-      req = req.clone({
-        withCredentials: true
-      });
-      
-      return next.handle(req);
+    return next.handle(req).pipe(
+      catchError((httpError: HttpErrorResponse) => {
+
+        if (httpError.status === 401) {
+          console.log(httpError);
+          this.authenticationService.logout();
+          this.router.navigate(['/login']);
+          return throwError(() => httpError);
+        }
+        console.log(httpError);
+
+        return of();
+
+      }))
   }
 }

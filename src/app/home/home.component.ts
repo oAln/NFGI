@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HTTPService } from '../services/http.service';
+import { getIntererstAmount } from '../util/helper';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ export class HomeComponent {
   filteredStates: any = [];
   memberData: any;
   branchData: any;
-  monthData:string[] = [];
+  monthData: string[] = [];
   totalMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];;
   selectedBranch = '';
   selectedMonth = 'January';
@@ -27,7 +28,7 @@ export class HomeComponent {
   constructor(private http: HTTPService) {
     this.getMemberData();
     const currentDate = new Date();
-    this.monthData = this.totalMonths.slice(0, currentDate.getMonth()+1);
+    this.monthData = this.totalMonths.slice(0, currentDate.getMonth() + 1);
   }
 
   getMemberData() {
@@ -35,6 +36,13 @@ export class HomeComponent {
     this.http.get(apiEndPoint).subscribe(
       (memberDetails: any) => {
         this.memberData = memberDetails;
+        this.memberData.map((member: any) => {
+          if (member?.memberId == "21") {
+            member['loanStartDate'] = '04/21/2024'
+          }
+          member['LoanData'] = getIntererstAmount(member);
+        });
+        console.log(this.memberData);
         this.branchData = this.memberData.reduce((acc: any, data: any) => {
           if (!acc.includes(data.branch)) {
             acc.push(data.branch);

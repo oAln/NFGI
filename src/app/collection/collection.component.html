@@ -44,16 +44,16 @@
                 </tr>
             </thead>
             <tbody>
-                <ng-container *ngFor="let member of memberData; let sNo = index">
+                <ng-container *ngFor="let member of memberData | reverse; let sNo = index">
                     <tr>
                         <td>{{sNo +1}}</td>
                         <td>{{member?.memberId}}</td>
                         <td>{{member?.accountNo}}</td>
-                        <td>Loan Id</td>
+                        <td>{{member?.loanId}}</td>
                         <td>{{member?.firstName}}</td>
                         <td>{{member?.loanAmount}}</td>
                         <td>Payment Days</td>
-                        <td>Amount Recieved</td>
+                        <td>{{member?.collectionAmount}}</td>
                         <td>{{member?.accountStatus}}</td>
                         <td>
                             <div class="custom-btn-group">
@@ -143,7 +143,7 @@
                 <div class="row align-center">
                     <label class="col-5 form-label">Date</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="collectionDate">
+                        <input type="date" class="form-control" formControlName="collectionDate">
                     </div>
                 </div>
             </div>
@@ -167,7 +167,7 @@
         <div class="row row-gap justify-content-between">
             <div class="col-4">
                 <div class="form-check custom-checkbox">
-                    <input class="form-check-input" type="checkbox" formControlName="status">
+                    <input class="form-check-input" type="checkbox" formControlName="accountStatus">
                     <label class="form-check-label" for="flexCheckDefault">
                         Tick to mark the load id as closed
                     </label>
@@ -175,7 +175,7 @@
             </div>
         </div>
         <div class="col-12 text-center row-gap">
-            <button type="submit" class="custom-button" (click)="submitCollectionForm()">Submit</button>
+            <button type="button" class="custom-button" (click)="submitCollectionForm()">Submit</button>
         </div>
     </form>
 </div>
@@ -217,7 +217,7 @@
             <div class="col-4">
                 <div class="row">
                     <label class="col-5 form-label">Status</label>
-                    <div class="col-7"> {{this.memberDetails.status}} </div>
+                    <div class="col-7"> {{this.memberDetails.accountStatus}} </div>
                 </div>
             </div>
         </div>
@@ -226,7 +226,7 @@
                 <div class="row align-center">
                     <label class="col-5 form-label">Disbursement Date</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="disbursementDate">
+                        <input type="date" class="form-control" formControlName="loanStartDate">
                     </div>
                 </div>
             </div>
@@ -234,7 +234,7 @@
                 <div class="row align-center">
                     <label class="col-5 form-label">Amount</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="disbursementAmount">
+                        <input type="text" class="form-control" formControlName="loanAmount">
                     </div>
                 </div>
             </div>
@@ -242,13 +242,13 @@
                 <div class="row align-center">
                     <label class="col-5 form-label">Installment</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="disbursementInstallment">
+                        <input type="text" class="form-control" formControlName="installment">
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-12 text-center mt-30">
-            <button type="submit" class="custom-button" (click)="submitDisbursementForm()">Submit</button>
+            <button type="button" class="custom-button" (click)="submitDisbursementForm()">Submit</button>
         </div>
     </form>
 </div>

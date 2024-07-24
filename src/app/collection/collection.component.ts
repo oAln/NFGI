@@ -23,7 +23,7 @@ export class CollectionComponent implements OnInit {
     memberId: 0,
     loanAmount: 0,
     branch: '',
-    status: ''
+    accountStatus: ''
   }
 
   public searchForm=this.formBuilder.group({
@@ -36,14 +36,14 @@ export class CollectionComponent implements OnInit {
       collectionDate: new FormControl(''),
       collectionAmount: new FormControl(''),
       lateFees: new FormControl(''),
-      status: new FormControl('')
+      accountStatus: new FormControl('')
     });
 
 
     this.disbursementForm = this.formBuilder.group({
-      disbursementDate: new FormControl(''),
-      disbursementAmount: new FormControl(''),
-      disbursementInstallment: new FormControl('')
+      loanStartDate: new FormControl(''),
+      loanAmount: new FormControl(''),
+      installment: new FormControl('')
     });
 
     this.getMemberData();
@@ -60,9 +60,11 @@ export class CollectionComponent implements OnInit {
   }
 
   showCollection(member: any) {
-    this.memberDetails.firstName = member?.firstName || '';
+    this.memberDetails.firstName = member?.firstName;
+    this.memberDetails.memberId = member?.memberId || undefined;
     this.memberDetails.loanAmount = member?.loanAmount || 0;
-    this.memberDetails.branch = member?.branch || '';
+    this.memberDetails.branch = member?.branch;
+    this.memberDetails.accountStatus = member?.accountStatus;
     this.showCollectionForm = true;
     this.showMemberData = false;
     this.showDisbursementForm = false;
@@ -77,10 +79,10 @@ export class CollectionComponent implements OnInit {
 
 
   showDisbursement(member: any) {
-    this.memberDetails.firstName = member?.firstName || '';
-    this.memberDetails.memberId = member?.memberId || 0;
-    this.memberDetails.branch = member?.branch || '';
-    this.memberDetails.status = member?.accountStatus || '';
+    this.memberDetails.firstName = member?.firstName;
+    this.memberDetails.memberId = member?.memberId || undefined;
+    this.memberDetails.branch = member?.branch;
+    this.memberDetails.accountStatus = member?.accountStatus;
     this.showDisbursementForm = true;
     this.showMemberData = false;
     this.showCollectionForm = false;
@@ -99,15 +101,35 @@ export class CollectionComponent implements OnInit {
     this.showMemberData = true;
     this.showDisbursementForm = false;
     this.showCollectionForm = false;
-    console.log(JSON.stringify(this.collectionForm.value));
-
+    let body = this.collectionForm?.value;
+    if (this.collectionForm?.value?.accountStatus) {
+      body.accountStatus = 'Closed';
+    } else {
+      body.accountStatus = 'Active';
+    }
+    const url = 'member';
+    this.http.update(`${url}/${this.memberDetails.memberId}`, body).subscribe(
+      (data) => {console.log(data);
+      
+      }, (error) => {
+        console.log(error);
+      }
+    )
   }
 
   submitDisbursementForm() {
     this.showMemberData = true;
     this.showDisbursementForm = false;
     this.showCollectionForm = false;
-    console.log(JSON.stringify(this.collectionForm.value));
+    const url = 'member';
+    this.http.update(`${url}/${this.memberDetails.memberId}`, this.disbursementForm?.value).subscribe(
+      (data) => {
+        console.log(data);
+        
+      }, (error) => {
+        console.log(error);
+      }
+    )
 
   }
 

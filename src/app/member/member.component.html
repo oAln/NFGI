@@ -51,17 +51,17 @@
           <th>Customer Name</th>
           <th>Membership Id</th>
           <th>Account No</th>
-          <th>Loan Id(auto generate when loan amount entered)</th>
+          <th>Loan Id</th>
           <th>Branch</th>
           <th>Loan Amount</th>
-          <th>Loan Start Date(loan amount saved)</th>
+          <th>Loan Start Date</th>
           <th>Status</th>
-          <th>Document(Name)</th>
+          <th>Document</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
-        <ng-container *ngFor="let member of memberData; let sNo = index">
+        <ng-container *ngFor="let member of memberData | reverse; let sNo = index">
           <tr>
             <td>{{ sNo + 1 }}</td>
             <td>{{ member?.firstName }}</td>
@@ -70,7 +70,7 @@
             <td>{{ member?.loanId || "-" }}</td>
             <td>{{ member?.townCity }}</td>
             <td>{{ member?.loanAmount }}</td>
-            <td>{{ member?.loanStartDate | date : "medium" || "-" }}</td>
+            <td>{{ member?.loanStartDate | date : 'dd/mm/yyyy'}}</td>
             <td>{{ member?.accountStatus }}</td>
             <td>
               <span
@@ -84,7 +84,7 @@
               <span class="mr-10 action-icon" (click)="editMemberData(member)">
                 <i class="bi bi-pencil-square"></i>
               </span>
-              <span class="action-icon" (click)="deleteMemberData(member)">
+              <span class="action-icon" (click)="deleteMember(member)">
                 <i class="bi bi-trash3"></i>
               </span>
             </td>
@@ -105,7 +105,7 @@
     <form [formGroup]="memberForm" class="row g-3">
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">First Name</label>
+          <label class="col-4 form-label">First Name</label>
           <div class="col-7">
             <input
               type="text"
@@ -117,7 +117,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Last Name</label>
+          <label class="col-4 form-label">Last Name</label>
           <div class="col-7">
             <input
               type="text"
@@ -129,7 +129,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Member ID</label>
+          <label class="col-4 form-label">Member ID*</label>
           <div class="col-7">
             <input
               type="text"
@@ -141,7 +141,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Account Id</label>
+          <label class="col-4 form-label">Account Id</label>
           <div class="col-7">
             <input
               type="text"
@@ -153,7 +153,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Gender</label>
+          <label class="col-4 form-label">Gender</label>
           <div class="col-7">
             <select
               class="form-select"
@@ -168,7 +168,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Account Status</label>
+          <label class="col-4 form-label">Account Status</label>
           <div class="col-7">
             <select
               class="form-select"
@@ -184,7 +184,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Occupation</label>
+          <label class="col-4 form-label">Occupation</label>
           <div class="col-7">
             <input
               type="text"
@@ -196,10 +196,10 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Date of Birth</label>
+          <label class="col-4 form-label">Date of Birth</label>
           <div class="col-7">
             <input
-              type="text"
+              type="date"
               class="form-control"
               formControlName="dateOfBirth"
             />
@@ -208,7 +208,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Town/City</label>
+          <label class="col-4 form-label">Town/City</label>
           <div class="col-7">
             <input
               type="text"
@@ -220,7 +220,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Branch</label>
+          <label class="col-4 form-label">Branch</label>
           <div class="col-7">
             <input type="text" class="form-control" formControlName="branch" />
           </div>
@@ -228,7 +228,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Area/Landmark</label>
+          <label class="col-4 form-label">Area/Landmark</label>
           <div class="col-7">
             <input
               type="text"
@@ -240,7 +240,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">State</label>
+          <label class="col-4 form-label">State</label>
           <div class="col-7">
             <input type="text" class="form-control" formControlName="state" />
           </div>
@@ -248,7 +248,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Pin Code</label>
+          <label class="col-4 form-label">Pin Code</label>
           <div class="col-7">
             <input type="text" class="form-control" formControlName="pinCode" />
           </div>
@@ -256,7 +256,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Contact</label>
+          <label class="col-4 form-label">Contact</label>
           <div class="col-7">
             <input type="text" class="form-control" formControlName="contact" />
           </div>
@@ -264,7 +264,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Loan Amount</label>
+          <label class="col-4 form-label">Loan Amount</label>
           <div class="col-7">
             <input
               type="text"
@@ -276,7 +276,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Installment</label>
+          <label class="col-4 form-label">Installment</label>
           <div class="col-7">
             <input
               type="text"
@@ -288,7 +288,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Purpose of Loan</label>
+          <label class="col-4 form-label">Purpose of Loan</label>
           <div class="col-7">
             <input
               type="text"
@@ -303,7 +303,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Holder Name</label>
+          <label class="col-4 form-label">Holder Name</label>
           <div class="col-7">
             <input
               type="text"
@@ -315,7 +315,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Bank Account No.</label>
+          <label class="col-4 form-label">Bank Account No.</label>
           <div class="col-7">
             <input
               type="text"
@@ -327,7 +327,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Bank Name</label>
+          <label class="col-4 form-label">Bank Name</label>
           <div class="col-7">
             <input
               type="text"
@@ -339,7 +339,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Bank Address</label>
+          <label class="col-4 form-label">Bank Address</label>
           <div class="col-7">
             <input
               type="text"
@@ -351,7 +351,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">IFSC Code</label>
+          <label class="col-4 form-label">IFSC Code</label>
           <div class="col-7">
             <input
               type="text"
@@ -363,7 +363,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Annual Income (&#8377;)</label>
+          <label class="col-4 form-label">Annual Income (&#8377;)</label>
           <div class="col-7">
             <input
               type="text"
@@ -378,7 +378,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Nominee Name</label>
+          <label class="col-4 form-label">Nominee Name</label>
           <div class="col-7">
             <input
               type="text"
@@ -390,7 +390,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Relation</label>
+          <label class="col-4 form-label">Relation</label>
           <div class="col-7">
             <input
               type="text"
@@ -402,10 +402,10 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Date of Birth</label>
+          <label class="col-4 form-label">Date of Birth</label>
           <div class="col-7">
             <input
-              type="text"
+              type="date"
               class="form-control"
               formControlName="nomineeDOB"
             />
@@ -414,7 +414,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Phone No.</label>
+          <label class="col-4 form-label">Phone No.</label>
           <div class="col-7">
             <input
               type="text"
@@ -426,7 +426,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">Address</label>
+          <label class="col-4 form-label">Address</label>
           <div class="col-7">
             <input
               type="text"
@@ -438,7 +438,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">City/Town</label>
+          <label class="col-4 form-label">City/Town</label>
           <div class="col-7">
             <input
               type="text"
@@ -450,7 +450,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-3 form-label">District</label>
+          <label class="col-4 form-label">District</label>
           <div class="col-7">
             <input
               type="text"
@@ -465,7 +465,7 @@
       </div>
       <div class="col-md-4">
         <div class="row">
-          <label class="col-3 form-label">Name</label>
+          <label class="col-4 form-label">Name</label>
           <div class="col-7">
             <input
               type="text"
@@ -477,7 +477,7 @@
       </div>
       <div class="col-md-5">
         <div class="row">
-          <label class="col-3 form-label">Business Name</label>
+          <label class="col-4 form-label">Business Name</label>
           <div class="col-7">
             <input
               type="text"
@@ -489,7 +489,7 @@
       </div>
       <div class="col-md-3">
         <div class="row">
-          <label class="col-3 form-label">Contact</label>
+          <label class="col-4 form-label">Contact</label>
           <div class="col-7">
             <input
               type="text"
@@ -509,6 +509,7 @@
             <input
               type="file"
               class="form-control"
+              multiple
               (change)="uploadDoc($event)"
             />
           </div>
@@ -520,5 +521,26 @@
         </button>
       </div>
     </form>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade show" tabindex="-1" role="dialog" *ngIf="showDeleteDialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalCenterTitle">Delete Member</h5>
+              <button type="button" class="close" (click)="cancelDeleteMemberData()">
+                  <span aria-hidden="true">×</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <p>Are you sure want to delete the member?</p>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="custom-button" (click)="deleteMemberData()">Save</button>
+          </div>
+      </div>
   </div>
 </div>

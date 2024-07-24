@@ -10,23 +10,27 @@ import { AuthenticationService } from './services/auth.service';
 })
 export class AppComponent {
   title = 'NFGI';
-  currentUser= false;
+  currentUser = false;
   userMenu = false;
 
   constructor(
-      private router: Router,
-      private authenticationService: AuthenticationService
+    private router: Router,
+    private authenticationService: AuthenticationService
   ) {
-      this.authenticationService.currentUser.subscribe(user => {
-        console.log("user...",user);
-        
-        this.currentUser = !(typeof user.token === 'undefined')
-      });
+    this.authenticationService.currentUser.subscribe(user => {
+      console.log("user...", user);
+
+      this.currentUser = !(typeof user.token === 'undefined')
+    });
+
+    document.addEventListener('click', (event) => {
+      this.userMenu = false;
+    }, true);
   }
 
   logout() {
     this.authenticationService.logout();
-        this.router.navigate(['/login']);
+    this.router.navigate(['/login']);
   }
 
   showUserMenu() {

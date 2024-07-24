@@ -14,48 +14,50 @@ export class MemberComponent implements OnInit {
   memberData: any;
   createMemberTitle = 'Create New Member';
   updateMember = false;
-  currentId=null;
+  currentId = null;
+  showDeleteDialog = false;
+  selectedMemberId: any;
 
-  public searchForm=this.formBuilder.group({
+  public searchForm = this.formBuilder.group({
     customerName: new FormControl(''),
     memberId: new FormControl('')
   })
 
   public memberForm = this.formBuilder.group({
-    firstName: new FormControl('abc'),
-    lastName: new FormControl('efg'),
-    memberId: new FormControl('16'),
-    accountId: new FormControl('1234456789 '),
-    gender: new FormControl('Male'),
-    accountStatus: new FormControl('Active'),
-    occupation: new FormControl('farmer'),
-    dateOfBirth: new FormControl('21/12/2021'),
-    townCity: new FormControl('Allahapur'),
-    branch: new FormControl('allahpur'),
-    areaLandmark: new FormControl('Gita Niketan'),
-    state: new FormControl('Uttar Pradesh'),
-    pinCode: new FormControl('211006'),
-    contact: new FormControl('123456789'),
-    loanAmount: new FormControl('12123'),
-    installment: new FormControl('1'),
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    memberId: new FormControl(''),
+    accountId: new FormControl(''),
+    gender: new FormControl(''),
+    accountStatus: new FormControl(''),
+    occupation: new FormControl(''),
+    dateOfBirth: new FormControl(''),
+    townCity: new FormControl(''),
+    branch: new FormControl(''),
+    areaLandmark: new FormControl(''),
+    state: new FormControl(''),
+    pinCode: new FormControl(''),
+    contact: new FormControl(''),
+    loanAmount: new FormControl(''),
+    installment: new FormControl(''),
     loanPurpose: new FormControl('1'),
-    holderName: new FormControl('Abc'),
-    bankName: new FormControl('UCO'),
-    accountNo: new FormControl('432543523'),
-    bankAddress: new FormControl('Civil Lines'),
-    ifscCode: new FormControl('uco0000211'),
-    annualIncome: new FormControl('2311244'),
-    nomineeName: new FormControl('Abc'),
-    nomineeRelation: new FormControl('Abc'),
-    nomineeDOB: new FormControl('Abc'),
-    nomineeContact: new FormControl('Abc'),
-    nomineeAddress: new FormControl('Abc'),
-    nomineeCity: new FormControl('Abc'),
-    nomineeDistrict: new FormControl('Abc'),
-    guarantorName: new FormControl('xyz'),
-    guarantorBusinessName: new FormControl('Loan'),
-    guarantorContact: new FormControl('542535432'),
-    document: new FormControl(''),
+    holderName: new FormControl(''),
+    bankName: new FormControl(''),
+    accountNo: new FormControl(''),
+    bankAddress: new FormControl(''),
+    ifscCode: new FormControl(''),
+    annualIncome: new FormControl(''),
+    nomineeName: new FormControl(''),
+    nomineeRelation: new FormControl(''),
+    nomineeDOB: new FormControl(''),
+    nomineeContact: new FormControl(''),
+    nomineeAddress: new FormControl(''),
+    nomineeCity: new FormControl(''),
+    nomineeDistrict: new FormControl(''),
+    guarantorName: new FormControl(''),
+    guarantorBusinessName: new FormControl(''),
+    guarantorContact: new FormControl(''),
+    document: new FormControl('')
   });
 
   constructor(private http: HTTPService, private httpClient: HttpClient, private formBuilder: FormBuilder) {
@@ -75,18 +77,16 @@ export class MemberComponent implements OnInit {
     this.showMember = true;
     console.log(this.memberForm.value);
     let formParams = new FormData();
-    Object.entries(this.memberForm.value).forEach(([key,value])=>{
-        if(value)
-        formParams.append(key,value)
+    Object.entries(this.memberForm.value).forEach(([key, value]) => {
+      if (value)
+        formParams.append(key, value)
     })
     const url = 'member';
-    // const body = JSON.stringify(this.memberForm.value);
-    // formParams.append('file', body);
     if (this.updateMember) {
       this.http.update(`${url}/${this.currentId}`, formParams).subscribe(
         (data) => {
+          this.getMemberData();
           this.updateMember = false;
-          console.log(data);
         }, (error) => {
           this.updateMember = false;
           console.log(error);
@@ -95,7 +95,7 @@ export class MemberComponent implements OnInit {
     } else {
       this.http.create(url, formParams).subscribe(
         (data) => {
-          console.log(data);
+          this.getMemberData();
         }
       )
     }
@@ -105,7 +105,7 @@ export class MemberComponent implements OnInit {
     const apiEndPoint = 'member'
     this.http.get(apiEndPoint).subscribe(
       (data) => {
-        console.log('member...',data);
+        console.log('member...', data);
         this.memberData = data;
       });
   }
@@ -115,16 +115,16 @@ export class MemberComponent implements OnInit {
     this.memberForm.patchValue({ document: file });
   }
 
-  downloadFile(memberInfo:any) {
-    const fileId=memberInfo?.files?.[0]?.id;
-    if(!fileId) {
+  downloadFile(memberInfo: any) {
+    const fileId = memberInfo?.files?.[0]?.id;
+    if (!fileId) {
       throw new Error("File id not present")
-    }    
-    const id=memberInfo?.id
+    }
+    const id = memberInfo?.id
     this.httpClient
-      .get(`${environment.apiUrl}/files/download/${id}/${fileId}`, { responseType: 'blob' as 'json' ,observe: 'response'})
+      .get(`${environment.apiUrl}/files/download/${id}/${fileId}`, { responseType: 'blob' as 'json', observe: 'response' })
       .subscribe((response: any) => {
-        const fileName=this.getFileNameFromContentDisposition(response)        
+        const fileName = this.getFileNameFromContentDisposition(response)
         const url = window.URL.createObjectURL(response.body);
         const a = document.createElement('a');
         a.href = url;
@@ -151,20 +151,30 @@ export class MemberComponent implements OnInit {
     this.createMemberTitle = 'Edit Member';
     this.showMember = false;
     this.updateMember = true;
-    this.currentId=memberDetails.id
+    this.currentId = memberDetails.id;
     this.memberForm.patchValue(memberDetails);
   }
 
-  deleteMemberData(memberDetails: any) {
-    console.log(memberDetails);
-    const id=memberDetails.id
-    this.http.delete(`member`,id).subscribe((res)=>console.log(res))
+  getFilteredData() {
+    let params = new HttpParams()
+    if (this.searchForm.value.customerName) params = params.set('firstName', this.searchForm.value.customerName)
+    if (this.searchForm.value.memberId) params = params.set('memberId', this.searchForm.value.memberId)
+    this.http.get('member/search', params).subscribe((data) => this.memberData = data)
   }
 
-  getFilteredData(){
-   let params = new HttpParams()
-   if(this.searchForm.value.customerName) params=params.set('firstName',this.searchForm.value.customerName)
-   if(this.searchForm.value.memberId) params=params.set('memberId',this.searchForm.value.memberId)    
-   this.http.get('member/search',params).subscribe((data)=>this.memberData=data)
+  cancelDeleteMemberData() {
+    this.showDeleteDialog = false;
+    this.selectedMemberId = null;
+  }
+
+  deleteMember(memberDetails: any) {
+    this.showDeleteDialog = true;
+    this.selectedMemberId = memberDetails?.id;
+  }
+
+  deleteMemberData() {
+    this.http.delete(`member`, this.selectedMemberId).subscribe((data) => {
+      this.memberData = data;
+    })
   }
 }

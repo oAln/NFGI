@@ -25,15 +25,15 @@
             <div>
                 NFGI Logo
             </div>
-            <div class="profile">
-                <div class="user" (click)="showUserMenu()">
+            <div class="profile" (click)="showUserMenu()">
+                <div class="user">
                     <h5>NFGI User</h5>
                 </div>
             </div>
             <div class="menu" [ngClass]="{ 'active': userMenu }">
                 <ul>
                     <li (click)="createUser()"><a> <i class="bi bi-person-add mr-10"></i>Create User</a></li>
-                    <li  (click)="logout()"><a><i class="bi bi-box-arrow-right mr-10"></i>LogOut</a></li>
+                    <li (click)="logout()"><a><i class="bi bi-box-arrow-right mr-10"></i>LogOut</a></li>
                 </ul>
             </div>
         </nav>

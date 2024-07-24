@@ -18,6 +18,7 @@ import { JwtInterceptor } from './helper/jwt.interceptor';
 import { HttpRequestInterceptor } from './helper/http.interceptor';
 import { CommonModule } from '@angular/common';
 import { ReportsComponent } from './reports/reports.component';
+import { ReversePipe } from './shared/pipe/reverse.pipe';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ReportsComponent } from './reports/reports.component';
     PasswordComponent,
     CreateUserComponent,
     LoginComponent,
-    ReportsComponent
+    ReportsComponent,
+    ReversePipe
   ],
   imports: [
     BrowserModule,
