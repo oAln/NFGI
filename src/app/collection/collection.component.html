@@ -44,16 +44,16 @@
                 </tr>
             </thead>
             <tbody>
-                <ng-container *ngFor="let member of memberData | reverse; let sNo = index">
+                <ng-container *ngFor="let member of memberData; let sNo = index">
                     <tr>
                         <td>{{sNo +1}}</td>
                         <td>{{member?.memberId}}</td>
                         <td>{{member?.accountNo}}</td>
-                        <td>{{member?.loanId}}</td>
+                        <td>{{member?.loanId || '-'}}</td>
                         <td>{{member?.firstName}}</td>
-                        <td>{{member?.loanAmount}}</td>
-                        <td>Payment Days</td>
-                        <td>{{member?.collectionAmount}}</td>
+                        <td>{{member?.loanAmount || 0}}</td>
+                        <td>{{member?.paymentDays}}</td>
+                        <td>{{member?.collectionAmount || 0}}</td>
                         <td>{{member?.accountStatus}}</td>
                         <td>
                             <div class="custom-btn-group">
@@ -151,7 +151,7 @@
                 <div class="row align-center">
                     <label class="col-5 form-label">Amount Recieved</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="collectionAmount">
+                        <input type="text" class="form-control" formControlName="amountPaid">
                     </div>
                 </div>
             </div>
@@ -234,7 +234,7 @@
                 <div class="row align-center">
                     <label class="col-5 form-label">Amount</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="loanAmount">
+                        <input type="text" class="form-control" formControlName="amount">
                     </div>
                 </div>
             </div>

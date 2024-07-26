@@ -11,7 +11,7 @@ import { environment } from '../../enviornment/enviornment';
 })
 export class MemberComponent implements OnInit {
   showMember = true;
-  memberData: any;
+  memberData: any = [];
   createMemberTitle = 'Create New Member';
   updateMember = false;
   currentId = null;
@@ -75,6 +75,9 @@ export class MemberComponent implements OnInit {
   submitForm() {
     this.createMemberTitle = 'Create New Member';
     this.showMember = true;
+    this.memberForm.patchValue({
+      accountStatus: 'Open'
+    })
     console.log(this.memberForm.value);
     let formParams = new FormData();
     Object.entries(this.memberForm.value).forEach(([key, value]) => {
@@ -101,12 +104,40 @@ export class MemberComponent implements OnInit {
     }
   }
 
+  updateMemberData(member: any) {
+    member?.loans.map((loanData: any) => {
+      const memberDetails = {...member}
+      memberDetails['loanAmount'] = loanData?.amount;
+      memberDetails['installment'] = loanData?.installment;
+      memberDetails['loanId'] = loanData?.id;
+      memberDetails['loanStartDate'] = loanData?.issuedAt;
+      this.memberData.push(memberDetails);
+    });
+  }
+
   getMemberData() {
     const apiEndPoint = 'member'
     this.http.get(apiEndPoint).subscribe(
-      (data) => {
-        console.log('member...', data);
-        this.memberData = data;
+      (memberDetails: any) => {
+        memberDetails?.forEach((member: any) => {
+          if (member?.loans?.length) {
+            this.updateMemberData(member);
+          }
+          else {
+            this.memberData.push(member);
+          }
+        });
+        this.memberData.map((member: any)=>{
+          if (member?.repayments?.length) {
+            member['collectionAmount'] = member?.repayments?.reduce(function (accumulator: any, currentValue: any) {
+              const filteredAmount = currentValue?.amountPaid;
+              return accumulator + filteredAmount;
+            }, 0);
+          };
+          member['paymentDays'] = member?.repayments?.length;
+        });
+        console.log(this.memberData);
+        
       });
   }
 

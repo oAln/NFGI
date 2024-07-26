@@ -36,23 +36,40 @@ export class ReportsComponent implements OnInit {
         console.log('selectedMonth', selectedMonth);
     }
 
+    updateMemberData(member: any) {
+        member?.loans.map((loanData: any) => {
+            const memberDetails = { ...member }
+            memberDetails['loanAmount'] = loanData?.amount;
+            memberDetails['installment'] = loanData?.installment;
+            memberDetails['loanId'] = loanData?.id;
+            memberDetails['loanStartDate'] = loanData?.issuedAt;
+            this.memberData.push(memberDetails);
+        });
+    }
+
     getMemberData() {
         const apiEndPoint = 'member'
         this.http.get(apiEndPoint).subscribe(
             (memberDetails: any) => {
-                this.memberData = memberDetails;
-                this.memberData.map((member: any) => {
-                    member['loanData'] = getIntererstAmount(member);
-                });
-                // console.log(this.memberData);
-                // this.getSimpleExcelData(this.memberData);
-                this.branchData = this.memberData.reduce((acc: any, data: any) => {
-                    if (!acc.includes(data.branch)) {
-                        acc.push(data.branch);
+                memberDetails?.forEach((member: any) => {
+                    if (member?.loans?.length) {
+                        this.updateMemberData(member);
                     }
-                    return acc;
-                }, []);
-                this.selectedBranch = this.branchData?.length ? this.branchData[0] : "";
+                    else {
+                        this.memberData.push(member);
+                    }
+                });
+                this.memberData.map((member: any) => {
+                    if (member?.repayments?.length) {
+                        member['collectionAmount'] = member?.repayments?.reduce(function (accumulator: any, currentValue: any) {
+                            const filteredAmount = currentValue?.amountPaid;
+                            return accumulator + filteredAmount;
+                        }, 0);
+                    };
+                    member['paymentDays'] = member?.repayments?.length;
+                });
+                console.log(this.memberData);
+
             });
     }
 

@@ -10,7 +10,7 @@ import { AppConstants } from '../util/app.constant';
 })
 export class HomeComponent {
   filteredStates: any = [];
-  memberData: any;
+  memberData: any = [];
   branchData: any;
   monthData: string[] = [];
   totalMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];;
@@ -33,35 +33,67 @@ export class HomeComponent {
     this.monthData = this.totalMonths.slice(0, currentDate.getMonth() + 1);
   }
 
+  updateMemberData(member: any) {
+    member?.loans.map((loanData: any) => {
+      const memberDetails = {...member}
+      memberDetails['loanAmount'] = loanData?.amount;
+      memberDetails['installment'] = loanData?.installment;
+      memberDetails['loanId'] = loanData?.id;
+      memberDetails['loanStartDate'] = loanData?.issuedAt;
+      this.memberData.push(memberDetails);
+    });
+  }
+  
   getMemberData() {
     const apiEndPoint = 'member'
     this.http.get(apiEndPoint).subscribe(
       (memberDetails: any) => {
-        this.memberData = memberDetails;
-        this.memberData.map((member: any) => {
-          if (member?.memberId == "21") {
-            member['loanStartDate'] = '04/21/2024'
+        memberDetails?.forEach((member: any) => {
+          if (member?.loans?.length) {
+            this.updateMemberData(member);
           }
-          member['loanData'] = getIntererstAmount(member);
+          else {
+            this.memberData.push(member);
+          }
+        });
+        this.memberData.map((member: any)=>{
+          if (member?.repayments?.length) {
+            member['collectionAmount'] = member?.repayments?.reduce(function (accumulator: any, currentValue: any) {
+              const filteredAmount = currentValue?.amountPaid || 0;
+              return accumulator + filteredAmount;
+            }, 0);
+          };
+          member['paymentDays'] = member?.repayments?.length;
         });
         console.log(this.memberData);
+
         this.branchData = this.memberData.reduce((acc: any, data: any) => {
           if (!acc.includes(data.branch)) {
             acc.push(data.branch);
           }
           return acc;
         }, []);
+
+        this.memberData.map((member: any) => {
+          if (member?.memberId == "12345") {
+            member['loanStartDate'] = '04/21/2024'
+          }
+          member['loanData'] = getIntererstAmount(member);
+        });
+        console.log(this.memberData);
+
         this.selectedBranch = this.branchData?.length ? this.branchData[0] : "";
         this.getBranchwiseDetails(this.selectedBranch);
         console.log(this.branchData);
         this.newAccountDisburse = 0;
         this.oldAccountDisburse = 0;
+        
       });
   }
 
   getTotalAmount(filterData: string, property: string, filterProperty: string = 'branch',) {
     const totalAmount = this.memberData.reduce(function (accumulator: any, currentValue: any) {
-      const filteredAmount = (currentValue?.[filterProperty] === filterData) ? currentValue?.[property] : 0;
+      const filteredAmount = (currentValue?.[filterProperty] === filterData) ? currentValue?.[property] ? parseInt(currentValue?.[property]) : 0 : 0;
       return accumulator + filteredAmount;
     }, 0);
     return totalAmount;

@@ -14,7 +14,7 @@ export class CollectionComponent implements OnInit {
   disbursementForm: FormGroup;
   collectionData: any;
   disbursementData: any;
-  memberData: any;
+  memberData: any = [];
   showMemberData = true;
   showCollectionForm = false;
   showDisbursementForm = false;
@@ -26,7 +26,9 @@ export class CollectionComponent implements OnInit {
     accountStatus: ''
   }
 
-  public searchForm=this.formBuilder.group({
+  templateType = 'collection';
+
+  public searchForm = this.formBuilder.group({
     customerName: new FormControl(''),
     memberId: new FormControl('')
   })
@@ -34,28 +36,58 @@ export class CollectionComponent implements OnInit {
   constructor(private http: HTTPService, private formBuilder: FormBuilder) {
     this.collectionForm = this.formBuilder.group({
       collectionDate: new FormControl(''),
-      collectionAmount: new FormControl(''),
+      amountPaid: new FormControl(''),
       lateFees: new FormControl(''),
-      accountStatus: new FormControl('')
+      accountStatus: new FormControl(''),
+      loanId: new FormControl(''),
+      memberId: new FormControl('')
     });
 
 
     this.disbursementForm = this.formBuilder.group({
       loanStartDate: new FormControl(''),
-      loanAmount: new FormControl(''),
-      installment: new FormControl('')
+      amount: new FormControl(''),
+      installment: new FormControl(''),
+      memberId: new FormControl('')
     });
 
     this.getMemberData();
   }
 
+  updateMemberData(member: any) {
+    member?.loans.map((loanData: any) => {
+      const memberDetails = { ...member }
+      memberDetails['loanAmount'] = loanData?.amount;
+      memberDetails['installment'] = loanData?.installment;
+      memberDetails['loanId'] = loanData?.id;
+      memberDetails['loanStartDate'] = loanData?.issuedAt;
+      this.memberData.push(memberDetails);
+    });
+  }
+
   getMemberData() {
     const apiEndPoint = 'member'
     this.http.get(apiEndPoint).subscribe(
-      (data) => {
-        console.log(data);
+      (memberDetails: any) => {
+        memberDetails?.forEach((member: any) => {
+          if (member?.loans?.length) {
+            this.updateMemberData(member);
+          }
+          else {
+            this.memberData.push(member);
+          }
+        });
+        this.memberData.map((member: any) => {
+          if (member?.repayments?.length) {
+            member['collectionAmount'] = member?.repayments?.reduce(function (accumulator: any, currentValue: any) {
+              const filteredAmount = currentValue?.amountPaid;
+              return accumulator + filteredAmount;
+            }, 0);
+          };
+          member['paymentDays'] = member?.repayments?.length;
+        });
+        console.log(this.memberData);
 
-        this.memberData = data;
       });
   }
 
@@ -68,15 +100,18 @@ export class CollectionComponent implements OnInit {
     this.showCollectionForm = true;
     this.showMemberData = false;
     this.showDisbursementForm = false;
+    this.collectionForm.patchValue({
+      memberId: member?.memberId,
+      loanId: member.loans[6].id
+    });
   }
 
-  getFilteredData(){
+  getFilteredData() {
     let params = new HttpParams()
-    if(this.searchForm.value.customerName) params=params.set('firstName',this.searchForm.value.customerName)
-    if(this.searchForm.value.memberId) params=params.set('memberId',this.searchForm.value.memberId)    
-    this.http.get('member/search',params).subscribe((data)=>this.memberData=data)
-   }
-
+    if (this.searchForm.value.customerName) params = params.set('firstName', this.searchForm.value.customerName)
+    if (this.searchForm.value.memberId) params = params.set('memberId', this.searchForm.value.memberId)
+    this.http.get('member/search', params).subscribe((data) => this.memberData = data)
+  }
 
   showDisbursement(member: any) {
     this.memberDetails.firstName = member?.firstName;
@@ -86,6 +121,9 @@ export class CollectionComponent implements OnInit {
     this.showDisbursementForm = true;
     this.showMemberData = false;
     this.showCollectionForm = false;
+    this.disbursementForm.patchValue({
+      memberId: member?.memberId
+    });
   }
 
   ngOnInit() {
@@ -93,8 +131,28 @@ export class CollectionComponent implements OnInit {
   }
 
   submitTemplateData() {
-    console.log('submit template data');
-
+    if (this.templateType == 'collection') {
+      let body: any = {};
+      Object.keys(this.collectionData[0]).forEach((data: any) => {
+        const currentDate = new Date();
+        body['date'] = new Date(currentDate.setDate(data));
+        body['amountPaid'] = this.collectionData[0][data];
+        body['accountStatus'] = 'Open';
+        body['memberId'] = this.collectionData[0].Membership_Id;
+        body['loanId'] = this.collectionData[0].Loan_Id;
+        body['lateFees'] = this.collectionData[0].Late_Fees;
+        this.saveCollectionData(body);
+      });
+    } else {
+      let body: any = {};
+      this.disbursementData.forEach((data: any) => {
+        body['date'] = new Date(data?.Loan_Start_Date);
+        body['amount'] = data?.Loan_Amount;
+        body['memberId'] = data?.Membership_ID;
+        body['installment'] = data?.Installment;
+        this.saveDisburseData(body);
+      });
+    }
   }
 
   submitCollectionForm() {
@@ -105,32 +163,42 @@ export class CollectionComponent implements OnInit {
     if (this.collectionForm?.value?.accountStatus) {
       body.accountStatus = 'Closed';
     } else {
-      body.accountStatus = 'Active';
+      body.accountStatus = 'Open';
     }
-    const url = 'member';
-    this.http.update(`${url}/${this.memberDetails.memberId}`, body).subscribe(
-      (data) => {console.log(data);
-      
-      }, (error) => {
-        console.log(error);
-      }
-    )
+
+    this.saveCollectionData(body);
   }
 
   submitDisbursementForm() {
     this.showMemberData = true;
     this.showDisbursementForm = false;
     this.showCollectionForm = false;
-    const url = 'member';
-    this.http.update(`${url}/${this.memberDetails.memberId}`, this.disbursementForm?.value).subscribe(
+    const body = this.disbursementForm.value;
+    this.saveDisburseData(body);
+  }
+
+  saveCollectionData(body: any) {
+    const apiEndPoint = 'repayments'
+    this.http.create(apiEndPoint, body).subscribe(
       (data) => {
         console.log(data);
-        
+
       }, (error) => {
         console.log(error);
       }
     )
+  }
 
+  saveDisburseData(body: any) {
+    const apiEndPoint = 'loans';
+    this.http.create(apiEndPoint, body).subscribe(
+      (data) => {
+        console.log(data);
+
+      }, (error) => {
+        console.log(error);
+      }
+    )
   }
 
   getExcelData(ev: any, dataType: string): void {
@@ -153,9 +221,11 @@ export class CollectionComponent implements OnInit {
       if (jsonData?.Sheet1?.length > 1) {
         if (dataType === 'collection') {
           this.collectionData = jsonData?.Sheet1?.splice(0, jsonData?.Sheet1?.length - 1);
+          this.templateType = 'collection';
           console.log('this.collectionData', this.collectionData);
         } else {
           this.disbursementData = jsonData?.Sheet1?.splice(0, jsonData?.Sheet1?.length - 1);
+          this.templateType = 'disburse';
           console.log('this.disbursementData', this.disbursementData);
         }
       }

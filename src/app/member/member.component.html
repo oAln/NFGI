@@ -61,7 +61,7 @@
         </tr>
       </thead>
       <tbody>
-        <ng-container *ngFor="let member of memberData | reverse; let sNo = index">
+        <ng-container *ngFor="let member of memberData; let sNo = index">
           <tr>
             <td>{{ sNo + 1 }}</td>
             <td>{{ member?.firstName }}</td>
@@ -69,7 +69,7 @@
             <td>{{ member?.accountNo }}</td>
             <td>{{ member?.loanId || "-" }}</td>
             <td>{{ member?.townCity }}</td>
-            <td>{{ member?.loanAmount }}</td>
+            <td>{{ member?.loanAmount || 0}}</td>
             <td>{{ member?.loanStartDate | date : 'dd/mm/yyyy'}}</td>
             <td>{{ member?.accountStatus }}</td>
             <td>
@@ -129,7 +129,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <label class="col-4 form-label">Member ID*</label>
+          <label class="col-4 form-label">Member ID</label>
           <div class="col-7">
             <input
               type="text"
