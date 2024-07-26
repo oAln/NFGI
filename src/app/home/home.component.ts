@@ -42,7 +42,7 @@ export class HomeComponent {
           if (member?.memberId == "21") {
             member['loanStartDate'] = '04/21/2024'
           }
-          member['LoanData'] = getIntererstAmount(member);
+          member['loanData'] = getIntererstAmount(member);
         });
         console.log(this.memberData);
         this.branchData = this.memberData.reduce((acc: any, data: any) => {
