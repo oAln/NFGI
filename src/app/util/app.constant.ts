@@ -27,142 +27,120 @@ export class AppConstants {
     public static accountStatementHeaders = [
         {
             key: 'index',
-            header: 'Sr No.',
-            value: ''
+            header: 'Sr No.'
         },
         {
             key: 'loanStartDate',
-            header: 'Loan Passed Date',
-            value: ''
+            header: 'Loan Passed Date'
         },
         {
             key: 'memberId',
-            header: 'Memebership Id',
-            value: ''
+            header: 'Memebership Id'
         },
         {
             key: 'firstName',
-            header: 'Member Name',
-            value: ''
+            header: 'Member Name'
         },
         {
             key: 'loanAmount',
-            header: 'Loan Amount',
-            value: ''
-        }, {
+            header: 'Loan Amount'
+        },
+        {
             key: 'maturedAmount30',
-            header: 'Matured Loan Aamount With 30 Days Profit',
-            value: ''
+            header: 'Matured Loan Aamount With 30 Days Profit'
         },
         {
             key: 'maturedAmount60',
-            header: 'Matured Loan Aamount With 60 Days Profit',
-            value: ''
+            header: 'Matured Loan Aamount With 60 Days Profit'
         },
         {
             key: 'maturedAmount90',
-            header: 'Matured Loan Aamount With 90 Days Profit',
-            value: ''
+            header: 'Matured Loan Aamount With 90 Days Profit'
         },
         {
             key: 'maturedAmount120',
-            header: 'Matured Loan Aamount With 120 Days Profit',
-            value: ''
+            header: 'Matured Loan Aamount With 120 Days Profit'
         },
         {
             key: 'maturedAmount150',
-            header: 'Matured Loan Aamount With 150 Days Profit',
-            value: ''
+            header: 'Matured Loan Aamount With 150 Days Profit'
         },
         {
             key: 'maturedAmount180',
-            header: 'Matured Loan Aamount With 180 Days Profit',
-            value: ''
+            header: 'Matured Loan Aamount With 180 Days Profit'
         },
         {
             key: 'installment',
-            header: 'Installment',
-            value: ''
+            header: 'Installment'
         },
         {
-            key: 'recoveryAmount',
-            header: 'Recovery Amount Previous Month',
-            value: ''
+            key: 'collectionAmount',
+            header: 'Recovery Amount Previous Month'
         },
         {
             key: 'totalCollectedamount',
-            header: 'Total Collected Bal of this  Month (Recovery + Closing Bal)',
-            value: ''
+            header: 'Total Collected Bal of this  Month (Recovery + Closing Bal)'
         }, {
             key: 'remainingAmount30',
-            header: '30 Days Remaining',
-            value: ''
+            header: '30 Days Remaining'
         },
         {
             key: 'remainingAmount60',
-            header: '60 Days Remaining',
-            value: ''
+            header: '60 Days Remaining'
         },
         {
             key: 'remainingAmount90',
-            header: '90 Days Remaining',
-            value: ''
+            header: '90 Days Remaining'
         },
         {
             key: 'remainingAmount120',
-            header: '120 Days Remaining',
-            value: ''
+            header: '120 Days Remaining'
         },
         {
             key: 'remainingAmount150',
-            header: '150 Days Remaining',
-            value: ''
+            header: '150 Days Remaining'
         },
         {
             key: 'remainingAmount180',
-            header: '180 Days Remaining',
-            value: ''
+            header: '180 Days Remaining'
         },
         {
             key: 'loanDuration',
-            header: 'Loan Duration (Days)',
-            value: ''
+            header: 'Loan Duration (Days)'
         },
         {
-            key: 'paymentDays',
-            header: 'Payment Days',
-            value: ''
+            key: 'paymentDays',    // default props
+            header: 'Payment Days'
         },
         {
             key: 'term',
-            header: 'Applicable Term',
-            value: ''
+            header: 'Applicable Term'
         },
         {
-            key: 'loanOverdue',
-            header: 'Loan Overdue (Days)',
-            value: ''
+            key: 'loanOverdue',  // check with Kaustubh
+            header: 'Loan Overdue (Days)'
         },
         {
             key: 'lateFees',
-            header: 'Late Fees',
-            value: ''
+            header: 'Late Fees'
         },
         {
             key: 'totalAmount',
-            header: 'Total Amount (Including Late Fees)',
-            value: ''
+            header: 'Total Amount (Including Late Fees)'
         },
         {
-            key: 'finalCollection',
-            header: 'Final Collection  ',
-            value: ''
+            key: 'finalCollection',   // check with Kaustubh
+            header: 'Final Collection  '
         },
         {
             key: 'accountStatus',
-            header: 'Member Status',
-            value: ''
+            header: 'Member Status'
         }
     ]
+
+    public static accountStatementProperties = {
+        index: '',
+        loanStartDate: ''
+    }
 
 }

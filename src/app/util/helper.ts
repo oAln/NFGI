@@ -23,7 +23,7 @@ export function getIntererstAmount(member: any) {
 
 }
 
-function getDayDiff(fromDate: any) {
+export function getDayDiff(fromDate: any) {
   const currentDate = new Date();
   const givenDate = new Date(fromDate);
   const diffDate = currentDate.getTime() - givenDate.getTime();
