@@ -26,6 +26,8 @@ export class CollectionComponent implements OnInit {
     accountStatus: ''
   }
 
+  currentDate = new Date();
+
   templateType = 'collection';
 
   public searchForm = this.formBuilder.group({
@@ -91,6 +93,10 @@ export class CollectionComponent implements OnInit {
       });
   }
 
+  getToday(): string {
+    return new Date().toISOString().split('T')[0]
+  }
+
   showCollection(member: any) {
     this.memberDetails.firstName = member?.firstName;
     this.memberDetails.memberId = member?.memberId || undefined;
@@ -102,7 +108,7 @@ export class CollectionComponent implements OnInit {
     this.showDisbursementForm = false;
     this.collectionForm.patchValue({
       memberId: member?.memberId,
-      loanId: member.loans[6].id
+      loanId: member.loanId
     });
   }
 
@@ -135,9 +141,9 @@ export class CollectionComponent implements OnInit {
       let body: any = {};
       Object.keys(this.collectionData[0]).forEach((data: any) => {
         const currentDate = new Date();
-        body['date'] = new Date(currentDate.setDate(data));
+        body['paymentDate'] = new Date(currentDate.setDate(data));
         body['amountPaid'] = this.collectionData[0][data];
-        body['accountStatus'] = 'Open';
+        body['status'] = 'Open';
         body['memberId'] = this.collectionData[0].Membership_Id;
         body['loanId'] = this.collectionData[0].Loan_Id;
         body['lateFees'] = this.collectionData[0].Late_Fees;
@@ -146,9 +152,10 @@ export class CollectionComponent implements OnInit {
     } else {
       let body: any = {};
       this.disbursementData.forEach((data: any) => {
-        body['date'] = new Date(data?.Loan_Start_Date);
+        body['issuedAt'] = new Date(data?.Loan_Start_Date);
         body['amount'] = data?.Loan_Amount;
         body['memberId'] = data?.Membership_ID;
+        body['status'] = 'Open';
         body['installment'] = data?.Installment;
         this.saveDisburseData(body);
       });
@@ -161,10 +168,11 @@ export class CollectionComponent implements OnInit {
     this.showCollectionForm = false;
     let body = this.collectionForm?.value;
     if (this.collectionForm?.value?.accountStatus) {
-      body.accountStatus = 'Closed';
+      body.status = 'Closed';
     } else {
-      body.accountStatus = 'Open';
+      body.status = 'Open';
     }
+    body['paymentDate'] = new Date(this.collectionForm?.value?.collectionDate);
 
     this.saveCollectionData(body);
   }
@@ -174,6 +182,8 @@ export class CollectionComponent implements OnInit {
     this.showDisbursementForm = false;
     this.showCollectionForm = false;
     const body = this.disbursementForm.value;
+    body['issuedAt'] = new Date(this.disbursementForm?.value?.loanStartDate);
+    body['status'] = 'Open';
     this.saveDisburseData(body);
   }
 
@@ -182,7 +192,7 @@ export class CollectionComponent implements OnInit {
     this.http.create(apiEndPoint, body).subscribe(
       (data) => {
         console.log(data);
-
+        this.getMemberData();
       }, (error) => {
         console.log(error);
       }
@@ -194,7 +204,7 @@ export class CollectionComponent implements OnInit {
     this.http.create(apiEndPoint, body).subscribe(
       (data) => {
         console.log(data);
-
+        this.getMemberData();
       }, (error) => {
         console.log(error);
       }

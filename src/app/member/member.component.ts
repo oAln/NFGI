@@ -106,7 +106,7 @@ export class MemberComponent implements OnInit {
 
   updateMemberData(member: any) {
     member?.loans.map((loanData: any) => {
-      const memberDetails = {...member}
+      const memberDetails = { ...member }
       memberDetails['loanAmount'] = loanData?.amount;
       memberDetails['installment'] = loanData?.installment;
       memberDetails['loanId'] = loanData?.id;
@@ -127,7 +127,7 @@ export class MemberComponent implements OnInit {
             this.memberData.push(member);
           }
         });
-        this.memberData.map((member: any)=>{
+        this.memberData.map((member: any) => {
           if (member?.repayments?.length) {
             member['collectionAmount'] = member?.repayments?.reduce(function (accumulator: any, currentValue: any) {
               const filteredAmount = currentValue?.amountPaid;
@@ -144,6 +144,10 @@ export class MemberComponent implements OnInit {
   uploadDoc(event: any) {
     const file = event?.target?.files?.[0];
     this.memberForm.patchValue({ document: file });
+  }
+
+  getToday(): string {
+    return new Date().toISOString().split('T')[0]
   }
 
   downloadFile(memberInfo: any) {

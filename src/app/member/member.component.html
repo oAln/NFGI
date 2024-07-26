@@ -8,18 +8,14 @@
     </div>
   </div>
 
-  
-    <form [formGroup]="searchForm">
-        <div class="row row-gap justify-content-between">
+
+  <form [formGroup]="searchForm">
+    <div class="row row-gap justify-content-between">
       <div class="col-5">
         <div class="row">
           <label class="col-4 form-label">Customer Name</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="customerName"
-            />
+            <input type="text" class="form-control" formControlName="customerName" />
           </div>
         </div>
       </div>
@@ -27,11 +23,7 @@
         <div class="row">
           <label class="col-5 form-label">Membership Number</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="memberId"
-            />
+            <input type="text" class="form-control" formControlName="memberId" />
           </div>
         </div>
       </div>
@@ -41,8 +33,8 @@
         </button>
       </div>
     </div>
-    </form>
-  
+  </form>
+
   <div class="row mt-30">
     <table class="table table-bordered member-table">
       <thead>
@@ -73,10 +65,7 @@
             <td>{{ member?.loanStartDate | date : 'dd/mm/yyyy'}}</td>
             <td>{{ member?.accountStatus }}</td>
             <td>
-              <span
-                class="action-icon"
-                (click)="downloadFile(member)"
-              >
+              <span class="action-icon" (click)="downloadFile(member)">
                 <i class="bi bi-file-earmark-arrow-down"></i>
               </span>
             </td>
@@ -107,11 +96,7 @@
         <div class="row">
           <label class="col-4 form-label">First Name</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="firstName"
-            />
+            <input type="text" class="form-control" formControlName="firstName" />
           </div>
         </div>
       </div>
@@ -119,11 +104,7 @@
         <div class="row">
           <label class="col-4 form-label">Last Name</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="lastName"
-            />
+            <input type="text" class="form-control" formControlName="lastName" />
           </div>
         </div>
       </div>
@@ -131,11 +112,7 @@
         <div class="row">
           <label class="col-4 form-label">Member ID</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="memberId"
-            />
+            <input type="text" class="form-control" formControlName="memberId" />
           </div>
         </div>
       </div>
@@ -143,11 +120,7 @@
         <div class="row">
           <label class="col-4 form-label">Account Id</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="accountId"
-            />
+            <input type="text" class="form-control" formControlName="accountId" />
           </div>
         </div>
       </div>
@@ -155,11 +128,7 @@
         <div class="row">
           <label class="col-4 form-label">Gender</label>
           <div class="col-7">
-            <select
-              class="form-select"
-              style="width: 100%"
-              formControlName="gender"
-            >
+            <select class="form-select" style="width: 100%" formControlName="gender">
               <option>Male</option>
               <option>Female</option>
             </select>
@@ -170,11 +139,7 @@
         <div class="row">
           <label class="col-4 form-label">Account Status</label>
           <div class="col-7">
-            <select
-              class="form-select"
-              style="width: 100%"
-              formControlName="accountStatus"
-            >
+            <select class="form-select" style="width: 100%" formControlName="accountStatus">
               <option>Active</option>
               <option>Closed</option>
               <option>Dorment</option>
@@ -186,11 +151,7 @@
         <div class="row">
           <label class="col-4 form-label">Occupation</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="occupation"
-            />
+            <input type="text" class="form-control" formControlName="occupation" />
           </div>
         </div>
       </div>
@@ -198,11 +159,7 @@
         <div class="row">
           <label class="col-4 form-label">Date of Birth</label>
           <div class="col-7">
-            <input
-              type="date"
-              class="form-control"
-              formControlName="dateOfBirth"
-            />
+            <input type="date" [max]="getToday()" class="form-control" formControlName="dateOfBirth" />
           </div>
         </div>
       </div>
@@ -210,11 +167,7 @@
         <div class="row">
           <label class="col-4 form-label">Town/City</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="townCity"
-            />
+            <input type="text" class="form-control" formControlName="townCity" />
           </div>
         </div>
       </div>
@@ -230,11 +183,7 @@
         <div class="row">
           <label class="col-4 form-label">Area/Landmark</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="areaLandmark"
-            />
+            <input type="text" class="form-control" formControlName="areaLandmark" />
           </div>
         </div>
       </div>
@@ -266,11 +215,7 @@
         <div class="row">
           <label class="col-4 form-label">Loan Amount</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="loanAmount"
-            />
+            <input type="text" class="form-control" formControlName="loanAmount" />
           </div>
         </div>
       </div>
@@ -278,11 +223,7 @@
         <div class="row">
           <label class="col-4 form-label">Installment</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="installment"
-            />
+            <input type="text" class="form-control" formControlName="installment" />
           </div>
         </div>
       </div>
@@ -290,11 +231,7 @@
         <div class="row">
           <label class="col-4 form-label">Purpose of Loan</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="loanPurpose"
-            />
+            <input type="text" class="form-control" formControlName="loanPurpose" />
           </div>
         </div>
       </div>
@@ -305,11 +242,7 @@
         <div class="row">
           <label class="col-4 form-label">Holder Name</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="holderName"
-            />
+            <input type="text" class="form-control" formControlName="holderName" />
           </div>
         </div>
       </div>
@@ -317,11 +250,7 @@
         <div class="row">
           <label class="col-4 form-label">Bank Account No.</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="accountNo"
-            />
+            <input type="text" class="form-control" formControlName="accountNo" />
           </div>
         </div>
       </div>
@@ -329,11 +258,7 @@
         <div class="row">
           <label class="col-4 form-label">Bank Name</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="bankName"
-            />
+            <input type="text" class="form-control" formControlName="bankName" />
           </div>
         </div>
       </div>
@@ -341,11 +266,7 @@
         <div class="row">
           <label class="col-4 form-label">Bank Address</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="bankAddress"
-            />
+            <input type="text" class="form-control" formControlName="bankAddress" />
           </div>
         </div>
       </div>
@@ -353,11 +274,7 @@
         <div class="row">
           <label class="col-4 form-label">IFSC Code</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="ifscCode"
-            />
+            <input type="text" class="form-control" formControlName="ifscCode" />
           </div>
         </div>
       </div>
@@ -365,11 +282,7 @@
         <div class="row">
           <label class="col-4 form-label">Annual Income (&#8377;)</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="annualIncome"
-            />
+            <input type="text" class="form-control" formControlName="annualIncome" />
           </div>
         </div>
       </div>
@@ -380,11 +293,7 @@
         <div class="row">
           <label class="col-4 form-label">Nominee Name</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="nomineeName"
-            />
+            <input type="text" class="form-control" formControlName="nomineeName" />
           </div>
         </div>
       </div>
@@ -392,11 +301,7 @@
         <div class="row">
           <label class="col-4 form-label">Relation</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="nomineeRelation"
-            />
+            <input type="text" class="form-control" formControlName="nomineeRelation" />
           </div>
         </div>
       </div>
@@ -404,11 +309,7 @@
         <div class="row">
           <label class="col-4 form-label">Date of Birth</label>
           <div class="col-7">
-            <input
-              type="date"
-              class="form-control"
-              formControlName="nomineeDOB"
-            />
+            <input type="date" [max]="getToday()" class="form-control" formControlName="nomineeDOB" />
           </div>
         </div>
       </div>
@@ -416,11 +317,7 @@
         <div class="row">
           <label class="col-4 form-label">Phone No.</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="nomineeContact"
-            />
+            <input type="text" class="form-control" formControlName="nomineeContact" />
           </div>
         </div>
       </div>
@@ -428,11 +325,7 @@
         <div class="row">
           <label class="col-4 form-label">Address</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="nomineeAddress"
-            />
+            <input type="text" class="form-control" formControlName="nomineeAddress" />
           </div>
         </div>
       </div>
@@ -440,11 +333,7 @@
         <div class="row">
           <label class="col-4 form-label">City/Town</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="nomineeCity"
-            />
+            <input type="text" class="form-control" formControlName="nomineeCity" />
           </div>
         </div>
       </div>
@@ -452,11 +341,7 @@
         <div class="row">
           <label class="col-4 form-label">District</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="nomineeDistrict"
-            />
+            <input type="text" class="form-control" formControlName="nomineeDistrict" />
           </div>
         </div>
       </div>
@@ -467,11 +352,7 @@
         <div class="row">
           <label class="col-4 form-label">Name</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="guarantorName"
-            />
+            <input type="text" class="form-control" formControlName="guarantorName" />
           </div>
         </div>
       </div>
@@ -479,11 +360,7 @@
         <div class="row">
           <label class="col-4 form-label">Business Name</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="guarantorBusinessName"
-            />
+            <input type="text" class="form-control" formControlName="guarantorBusinessName" />
           </div>
         </div>
       </div>
@@ -491,11 +368,7 @@
         <div class="row">
           <label class="col-4 form-label">Contact</label>
           <div class="col-7">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="guarantorContact"
-            />
+            <input type="text" class="form-control" formControlName="guarantorContact" />
           </div>
         </div>
       </div>
@@ -506,12 +379,7 @@
         <div class="row">
           <label class="col-4 form-label">Document</label>
           <div class="col-7">
-            <input
-              type="file"
-              class="form-control"
-              multiple
-              (change)="uploadDoc($event)"
-            />
+            <input type="file" class="form-control" multiple (change)="uploadDoc($event)" />
           </div>
         </div>
       </div>
@@ -528,19 +396,19 @@
 <!-- Modal -->
 <div class="modal fade show" tabindex="-1" role="dialog" *ngIf="showDeleteDialog">
   <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalCenterTitle">Delete Member</h5>
-              <button type="button" class="close" (click)="cancelDeleteMemberData()">
-                  <span aria-hidden="true">×</span>
-              </button>
-          </div>
-          <div class="modal-body">
-              <p>Are you sure want to delete the member?</p>
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="custom-button" (click)="deleteMemberData()">Save</button>
-          </div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Delete Member</h5>
+        <button type="button" class="close" (click)="cancelDeleteMemberData()">
+          <span aria-hidden="true">×</span>
+        </button>
       </div>
+      <div class="modal-body">
+        <p>Are you sure want to delete the member?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="custom-button" (click)="deleteMemberData()">Save</button>
+      </div>
+    </div>
   </div>
 </div>
