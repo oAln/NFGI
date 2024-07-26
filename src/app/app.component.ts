@@ -12,6 +12,7 @@ export class AppComponent {
   title = 'NFGI';
   currentUser = false;
   userMenu = false;
+  userName: any;
 
   constructor(
     private router: Router,
@@ -19,7 +20,9 @@ export class AppComponent {
   ) {
     this.authenticationService.currentUser.subscribe(user => {
       console.log("user...", user);
-
+      if (localStorage['token'] && !this.userName) {
+        this.userName = JSON.parse(localStorage['token']).name;
+      }
       this.currentUser = !(typeof user.token === 'undefined')
     });
 

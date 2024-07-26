@@ -18,7 +18,7 @@ export class ReportsComponent implements OnInit {
     branchData: any;
     selectedLoanDuration = 30;
     loanDurationData = [30, 60, 90, 120, 150, 180]
-    memberData: any;
+    memberData: any = [];
     simpleExcelData: any = [];
     excelData: any = [];
 
@@ -70,19 +70,20 @@ export class ReportsComponent implements OnInit {
                 });
                 console.log(this.memberData);
 
+                this.memberData.map((member: any) => {
+                    member['loanData'] = getIntererstAmount(member);
+                });
+                // console.log(this.memberData);
+                // this.getSimpleExcelData(this.memberData);
+                this.branchData = this.memberData.reduce((acc: any, data: any) => {
+                    if (!acc.includes(data.branch)) {
+                        acc.push(data.branch);
+                    }
+                    return acc;
+                }, []);
+                this.selectedBranch = this.branchData?.length ? this.branchData[0] : "";
+                this.memberData.sort((a: any, b: any) => b?.id - a?.id);
             });
-    }
-
-    getSimpleExcelData(memberData: any) {
-        const members = memberData;
-        const simpleExcel = AppConstants.accountStatementHeaders;
-
-        simpleExcel.map((excelKey: any, index) => {
-            excelKey['index'] = index + 1;
-            excelKey['loanStartDate'] = this.getMemberProp('loanStartDate');
-        })
-
-
     }
 
     getMemberProp(key: any) {

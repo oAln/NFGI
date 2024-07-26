@@ -23,11 +23,11 @@
     <header *ngIf="currentUser">
         <nav>
             <div>
-                NFGI Logo
+                <img src="assets/images/logo.png" alt="logo" />
             </div>
             <div class="profile" (click)="showUserMenu()">
                 <div class="user">
-                    <h5>NFGI User</h5>
+                    <h5>{{userName}}</h5>
                 </div>
             </div>
             <div class="menu" [ngClass]="{ 'active': userMenu }">

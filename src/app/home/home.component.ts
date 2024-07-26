@@ -81,7 +81,7 @@ export class HomeComponent {
           member['loanData'] = getIntererstAmount(member);
         });
         console.log(this.memberData);
-
+        this.memberData.sort((a: any, b: any) => b?.id - a?.id);
         this.selectedBranch = this.branchData?.length ? this.branchData[0] : "";
         this.getBranchwiseDetails(this.selectedBranch);
         console.log(this.branchData);

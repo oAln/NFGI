@@ -87,7 +87,7 @@ export class CollectionComponent implements OnInit {
           member['paymentDays'] = member?.repayments?.length;
         });
         console.log(this.memberData);
-
+        this.memberData.sort((a: any, b: any) => b?.id - a?.id);
       });
   }
 
