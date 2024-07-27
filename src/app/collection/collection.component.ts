@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { HTTPService } from '../services/http.service';
 import * as XLSX from 'xlsx';
@@ -9,7 +9,7 @@ import { HttpParams } from '@angular/common/http';
   templateUrl: './collection.component.html',
   styleUrls: ['./collection.component.scss']
 })
-export class CollectionComponent implements OnInit {
+export class CollectionComponent {
   collectionForm: FormGroup;
   disbursementForm: FormGroup;
   collectionData: any;
@@ -130,10 +130,6 @@ export class CollectionComponent implements OnInit {
     this.disbursementForm.patchValue({
       memberId: member?.memberId
     });
-  }
-
-  ngOnInit() {
-
   }
 
   submitTemplateData() {

@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { HTTPService } from '../services/http.service';
 import { environment } from '../../enviornment/enviornment';
 
@@ -9,7 +9,7 @@ import { environment } from '../../enviornment/enviornment';
   templateUrl: './member.component.html',
   styleUrls: ['./member.component.scss']
 })
-export class MemberComponent implements OnInit {
+export class MemberComponent {
   showMember = true;
   memberData: any = [];
   createMemberTitle = 'Create New Member';
@@ -66,10 +66,6 @@ export class MemberComponent implements OnInit {
 
   createMember() {
     this.showMember = false;
-  }
-
-  ngOnInit() {
-
   }
 
   submitForm() {

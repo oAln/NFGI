@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { HTTPService } from '../services/http.service';
 import * as XLSX from 'xlsx';
 import { getDayDiff, getIntererstAmount } from '../util/helper';
@@ -10,7 +10,7 @@ import { ExcelService } from '../services/excel.service';
     templateUrl: 'reports.component.html',
     styleUrls: ['./reports.component.scss']
 })
-export class ReportsComponent implements OnInit {
+export class ReportsComponent {
     monthData: string[] = [];
     totalMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];;
     selectedMonth = '';
@@ -337,7 +337,5 @@ export class ReportsComponent implements OnInit {
         }, 0);
         return totalAmount;
     }
-
-    ngOnInit() { }
 
 }

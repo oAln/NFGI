@@ -1,5 +1,5 @@
 import { HttpParams } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { HTTPService } from 'src/app/services/http.service';
 
@@ -8,7 +8,7 @@ import { HTTPService } from 'src/app/services/http.service';
   templateUrl: './create-user.component.html',
   styleUrls: ['./create-user.component.scss']
 })
-export class CreateUserComponent implements OnInit {
+export class CreateUserComponent {
 
   public createUserForm: FormGroup;
   public passwordForm: FormGroup;
@@ -64,10 +64,6 @@ export class CreateUserComponent implements OnInit {
     this.passwordMatch = confrmPswrd?.value && (pswrd?.value === confrmPswrd?.value);
   }
 
-  ngOnInit() {
-
-  }
-
   changePassword(user:any) {
     this.changePasswordUser=user
     this.showUsertemplate = false;
@@ -99,11 +95,13 @@ export class CreateUserComponent implements OnInit {
   submitForm() {
     this.submitted = true;
     console.log(JSON.stringify(this.createUserForm.value));
-    const apiEndPoint = 'user'
+    const apiEndPoint = 'user';
     const body = this.createUserForm.value;
+    body['userType'] = 'admin';
     this.http.create(apiEndPoint, body).subscribe(
       (data) => {
         console.log(data);
+        this.getUserData();
       }
     )
   }
