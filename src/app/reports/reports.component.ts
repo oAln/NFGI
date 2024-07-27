@@ -266,10 +266,12 @@ export class ReportsComponent {
                     Installments: 0,
                     Recovey: 0,
                     Balance: 0,
+                    Branch: ''
                 };
                 const branch = this.selectedBranch;
                 const defaultLoanTerms = AppConstants.loanTerms;
                 const loanterm = defaultLoanTerms.find((termData: any) => termData.term === this.selectedLoanDuration || {})?.term;
+                branchWiseDetails.Branch = this.selectedBranch;
                 branchWiseDetails.LoanAmount = this.getTotalAmount(filteredBranchMemberDetails, branch, 'loanAmount');
                 branchWiseDetails.Installments = this.getTotalAmount(filteredBranchMemberDetails, branch, 'installment');
                 branchWiseDetails.MaturedLoanAmount = filteredBranchMemberDetails.reduce(function (accumulator: any, currentValue: any) {
