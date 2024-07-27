@@ -130,7 +130,7 @@ export class AppConstants {
         },
         {
             key: 'finalCollection',   // check with Kaustubh
-            header: 'Final Collection  '
+            header: 'Final Collection'
         },
         {
             key: 'accountStatus',
@@ -138,9 +138,142 @@ export class AppConstants {
         }
     ]
 
-    public static accountStatementProperties = {
-        index: '',
-        loanStartDate: ''
-    }
+    public static accountCollectionStatement = [
+        {
+            key: 'index',
+            header: 'Sr No.'
+        },
+        {
+            key: 'memberId',
+            header: 'Memebership Id'
+        },
+        {
+            key: '1',
+            header: '1'
+        },
+        {
+            key: '2',
+            header: '2'
+        },
+        {
+            key: '3',
+            header: '3'
+        },
+        {
+            key: '4',
+            header: '4'
+        },
+        {
+            key: '5',
+            header: '5'
+        },
+        {
+            key: '6',
+            header: '6'
+        },
+        {
+            key: '7',
+            header: '7'
+        },
+        {
+            key: '8',
+            header: '8'
+        },
+        {
+            key: '9',
+            header: '9'
+        },
+        {
+            key: '10',
+            header: '10'
+        },
+        {
+            key: '11',
+            header: '11'
+        }, {
+            key: '12',
+            header: '12'
+        },
+        {
+            key: '13',
+            header: '13'
+        },
+        {
+            key: '14',
+            header: '14'
+        },
+        {
+            key: '15',
+            header: '15'
+        },
+        {
+            key: '16',
+            header: '16'
+        },
+        {
+            key: '17',
+            header: '17'
+        },
+        {
+            key: '18',
+            header: '18'
+        },
+        {
+            key: '19',    // default props
+            header: '19'
+        },
+        {
+            key: '20',
+            header: '20'
+        },
+        {
+            key: '21',  // check with Kaustubh
+            header: '21'
+        },
+        {
+            key: '22',
+            header: '22'
+        },
+        {
+            key: '23',
+            header: '23'
+        },
+        {
+            key: '24',   // check with Kaustubh
+            header: '24'
+        },
+        {
+            key: '25',
+            header: '25'
+        },
+        {
+            key: '26',
+            header: '26'
+        },
+        {
+            key: '27',
+            header: '27'
+        },
+        {
+            key: '28',
+            header: '28'
+        },
+        {
+            key: '29',    // default props
+            header: '29'
+        },
+        {
+            key: '30',
+            header: '30'
+        },
+        {
+            key: '31',  // check with Kaustubh
+            header: '31'
+        },
+        {
+            key: 'lateFees',
+            header: 'Late Fees(If Applicable'
+        }
+    ]
 
 }

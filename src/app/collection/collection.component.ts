@@ -147,7 +147,9 @@ export class CollectionComponent implements OnInit {
         body['memberId'] = this.collectionData[0].Membership_Id;
         body['loanId'] = this.collectionData[0].Loan_Id;
         body['lateFees'] = this.collectionData[0].Late_Fees;
-        this.saveCollectionData(body);
+        if (data && !isNaN(data)) {
+          this.saveCollectionData(body);
+        }
       });
     } else {
       let body: any = {};
@@ -192,7 +194,6 @@ export class CollectionComponent implements OnInit {
     this.http.create(apiEndPoint, body).subscribe(
       (data) => {
         console.log(data);
-        this.getMemberData();
       }, (error) => {
         console.log(error);
       }
@@ -204,7 +205,6 @@ export class CollectionComponent implements OnInit {
     this.http.create(apiEndPoint, body).subscribe(
       (data) => {
         console.log(data);
-        this.getMemberData();
       }, (error) => {
         console.log(error);
       }
