@@ -25,6 +25,7 @@ export class HomeComponent {
   };
   newAccountDisburse = 0;
   oldAccountDisburse = 0;
+  totalCollection = 0;
 
 
   constructor(private http: HTTPService) {
@@ -87,7 +88,7 @@ export class HomeComponent {
         this.getMemberMonthWiseData(this.selectedMonth, filteredMemberDetails);
         this.newAccountDisburse = 0;
         this.oldAccountDisburse = 0;
-
+        this.filterCardData('Daily');
       });
   }
 
@@ -111,7 +112,6 @@ export class HomeComponent {
       const filteredAmount = (currentValue?.loanData?.loanTerm == AppConstants.loanTerms[3].term) ? currentValue?.loanData?.maturedAmount : 0;
       return accumulator + filteredAmount;
     }, 0);
-    this.branchWiseDetails.totalRecovey = this.getTotalAmount(memberDetails, selectedBranch, 'collectionAmount', 'branch');
     // 120 days recovery amount 
     const recovryAmount = memberDetails.reduce(function (accumulator: any, currentValue: any) {
       const filteredAmount = (currentValue?.loanData?.loanTerm == AppConstants.loanTerms[3].term) ? currentValue?.collectionAmount : 0;
@@ -141,6 +141,46 @@ export class HomeComponent {
 
   filterCardData(filterKey: any) {
     console.log('filterKey', filterKey?.value);
+    const currentDate = new Date();
+    let dateFilter: any;
+    switch (filterKey?.value || filterKey) {
+      case 'Daily':
+        dateFilter = new Date();
+        break;
+      case 'Weekly':
+        dateFilter = new Date(currentDate.setDate(currentDate.getDate() - 7));
+        break;
+      case 'Monthly':
+        dateFilter = new Date(currentDate.setMonth(currentDate.getMonth() - 1));
+        break;
+      case 'Yearly':
+        dateFilter = new Date(currentDate.setFullYear(currentDate.getFullYear() - 1));
+        break;
+
+      default:
+        break;
+    }
+    const oldDisburse: any = [];
+    const newDisburse: any = [];
+    this.memberData.forEach((member: any) => {
+      if (member?.loans?.length > 1) {
+        oldDisburse.push(member)
+      } else {
+        newDisburse.push(member)
+      }
+    })
+    this.oldAccountDisburse = oldDisburse?.reduce(function (accumulator: any, currentValue: any) {
+      const filteredAmount = ((new Date(currentValue?.loanStartDate) > dateFilter) ? currentValue?.loanAmount : 0) || 0;
+      return accumulator + filteredAmount;
+    }, 0);
+    this.newAccountDisburse = newDisburse?.reduce(function (accumulator: any, currentValue: any) {
+      const filteredAmount = ((new Date(currentValue?.loanStartDate) > dateFilter) ? currentValue?.loanAmount : 0) || 0;
+      return accumulator + filteredAmount;
+    }, 0);
+    this.totalCollection = this.memberData?.reduce(function (accumulator: any, currentValue: any) {
+      const filteredAmount = ((new Date(currentValue?.loanStartDate) > dateFilter) ? currentValue?.collectionAmount : 0) || 0;
+      return accumulator + filteredAmount;
+    }, 0);
   }
 
   getMemberMonthWiseData(month: string, memberDetails: any) {
