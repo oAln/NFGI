@@ -62,7 +62,7 @@
             <td>{{ member?.loanId || "-" }}</td>
             <td>{{ member?.townCity }}</td>
             <td>{{ member?.loanAmount || 0}}</td>
-            <td>{{ member?.loanStartDate | date : 'dd/mm/yyyy'}}</td>
+            <td>{{ member?.loanStartDate | date : 'mediumDate'}}</td>
             <td>{{ member?.accountStatus }}</td>
             <td>
               <span class="action-icon" (click)="downloadFile(member)">

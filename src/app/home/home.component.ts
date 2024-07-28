@@ -35,6 +35,7 @@ export class HomeComponent {
   }
 
   updateMemberData(member: any) {
+    member?.loans.sort((a: any, b: any) => b?.id - a?.id);
     member?.loans.map((loanData: any) => {
       const memberDetails = { ...member }
       memberDetails['loanAmount'] = loanData?.amount;

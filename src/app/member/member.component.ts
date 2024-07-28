@@ -86,7 +86,9 @@ export class MemberComponent {
         (data) => {
           this.getMemberData();
           this.updateMember = false;
+          this.memberForm.reset();
         }, (error) => {
+          this.memberForm.reset();
           this.updateMember = false;
           console.log(error);
         }
@@ -94,6 +96,7 @@ export class MemberComponent {
     } else {
       this.http.create(url, formParams).subscribe(
         (data) => {
+          this.memberForm.reset();
           this.getMemberData();
         }
       )
@@ -101,12 +104,13 @@ export class MemberComponent {
   }
 
   updateMemberData(member: any) {
+    member?.loans.sort((a: any, b: any) => b?.id - a?.id);
     member?.loans.map((loanData: any) => {
       const memberDetails = { ...member }
       memberDetails['loanAmount'] = loanData?.amount;
       memberDetails['installment'] = loanData?.installment;
       memberDetails['loanId'] = loanData?.id;
-      memberDetails['loanStartDate'] = loanData?.issuedAt;
+      memberDetails['loanStartDate'] = new Date(loanData?.issuedAt);
       this.memberData.push(memberDetails);
     });
   }
