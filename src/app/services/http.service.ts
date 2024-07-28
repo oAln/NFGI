@@ -28,5 +28,10 @@ export class HTTPService {
     return this.http.patch(`${this.baseUrl}/${url}`, body, options);
   }
 
+  putUpdate(url: string, body: any, headers?: HttpHeaders) {
+    const options = { headers };
+    return this.http.put(`${this.baseUrl}/${url}`, body, options);
+  }
+
   // Add methods for other HTTP verbs like put, patch, delete, etc.
 }

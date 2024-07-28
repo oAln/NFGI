@@ -43,6 +43,14 @@ export class HomeComponent {
       memberDetails['installment'] = loanData?.installment;
       memberDetails['loanId'] = loanData?.id;
       memberDetails['loanStartDate'] = loanData?.issuedAt;
+      if (loanData?.repayments?.length) {
+        console.log(loanData?.repayments);
+        memberDetails['collectionAmount'] = loanData?.repayments?.reduce(function (accumulator: any, currentValue: any) {
+          const filteredAmount = ((currentValue?.amountPaid || 0) + (currentValue?.lateFees || 0));
+          return accumulator + filteredAmount;
+        }, 0);
+        memberDetails['paymentDays'] = loanData?.repayments?.length;
+      };
       this.memberData.push(memberDetails);
     });
   }
@@ -58,15 +66,6 @@ export class HomeComponent {
           else {
             this.memberData.push(member);
           }
-        });
-        this.memberData.map((member: any) => {
-          if (member?.repayments?.length) {
-            member['collectionAmount'] = member?.repayments?.reduce(function (accumulator: any, currentValue: any) {
-              const filteredAmount = currentValue?.amountPaid || 0;
-              return accumulator + filteredAmount;
-            }, 0);
-          };
-          member['paymentDays'] = member?.repayments?.length;
         });
         this.branchData = this.memberData.reduce((acc: any, data: any) => {
           if (!acc.includes(data.branch)) {
