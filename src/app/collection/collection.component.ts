@@ -89,11 +89,29 @@ export class CollectionComponent {
               return accumulator + filteredAmount;
             }, 0);
           };
+          // if (member?.collectionAmount >= member?.loanAmount) {
+          //   this.closeLoanAccount(member);
+          // }
           member['paymentDays'] = member?.repayments?.length;
         });
         this.memberData.sort((a: any, b: any) => b?.id - a?.id);
       });
   }
+
+  // closeLoanAccount(member: any) {
+  //   const url = 'member';
+  //   const body ={
+  //     accountStatus: 'Closed'
+  //   }
+  //   this.http.update(`${url}/${member?.id}`, body).subscribe(
+  //     (data) => {
+  //       // this.getMemberData();
+  //       console.log(data);
+  //     }, (error) => {
+  //       console.log(error);
+  //     }
+  //   )
+  // }
 
   getToday(): string {
     return new Date().toISOString().split('T')[0]
@@ -195,6 +213,7 @@ export class CollectionComponent {
     const apiEndPoint = 'repayments'
     this.http.create(apiEndPoint, body).subscribe(
       (data) => {
+        this.getMemberData();
         console.log(data);
       }, (error) => {
         console.log(error);
@@ -206,6 +225,7 @@ export class CollectionComponent {
     const apiEndPoint = 'loans';
     this.http.create(apiEndPoint, body).subscribe(
       (data) => {
+        this.getMemberData();
         console.log(data);
       }, (error) => {
         console.log(error);

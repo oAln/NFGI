@@ -71,9 +71,6 @@ export class MemberComponent {
   submitForm() {
     this.createMemberTitle = 'Create New Member';
     this.showMember = true;
-    this.memberForm.patchValue({
-      accountStatus: 'Active'
-    });
     let formParams = new FormData();
     Object.entries(this.memberForm.value).forEach(([key, value]) => {
       if (value)
