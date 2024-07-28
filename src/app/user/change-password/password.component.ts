@@ -47,6 +47,5 @@ export class PasswordComponent {
 
   submitForm() {
     this.showpassword = true;
-    console.log(JSON.stringify(this.passwordForm.value));
   }
 }

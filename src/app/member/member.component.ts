@@ -73,8 +73,7 @@ export class MemberComponent {
     this.showMember = true;
     this.memberForm.patchValue({
       accountStatus: 'Active'
-    })
-    console.log(this.memberForm.value);
+    });
     let formParams = new FormData();
     Object.entries(this.memberForm.value).forEach(([key, value]) => {
       if (value)
@@ -87,6 +86,7 @@ export class MemberComponent {
           this.getMemberData();
           this.updateMember = false;
           this.memberForm.reset();
+          console.log(data);
         }, (error) => {
           this.memberForm.reset();
           this.updateMember = false;
@@ -136,7 +136,6 @@ export class MemberComponent {
           };
           member['paymentDays'] = member?.repayments?.length;
         });
-        console.log(this.memberData);
         this.memberData.sort((a: any, b: any) => b?.id - a?.id);
       });
   }

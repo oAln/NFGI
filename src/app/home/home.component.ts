@@ -67,8 +67,6 @@ export class HomeComponent {
           };
           member['paymentDays'] = member?.repayments?.length;
         });
-        console.log(this.memberData);
-
         this.branchData = this.memberData.reduce((acc: any, data: any) => {
           if (!acc.includes(data.branch)) {
             acc.push(data.branch);
@@ -82,13 +80,11 @@ export class HomeComponent {
           }
           member['loanData'] = getIntererstAmount(member);
         });
-        console.log(this.memberData);
         this.memberData.sort((a: any, b: any) => b?.id - a?.id);
         this.selectedBranch = this.branchData?.length ? this.branchData[0] : "";
         const filteredMemberDetails = this.getMemberBranchWiseData(this.selectedBranch, this.memberData);
         this.getBranchwiseDetails(this.selectedBranch, filteredMemberDetails);
         this.getMemberMonthWiseData(this.selectedMonth, filteredMemberDetails);
-        console.log(this.branchData);
         this.newAccountDisburse = 0;
         this.oldAccountDisburse = 0;
 
@@ -125,7 +121,6 @@ export class HomeComponent {
   }
 
   onMonthSelect(selectedMonth: any) {
-    console.log('selectedMonth', selectedMonth);
     const selectedBranch = this.selectedBranch;
     const memberBranchDetails = this.getMemberBranchWiseData(selectedBranch, this.memberData);
     const memberDetails = this.getMemberMonthWiseData(selectedMonth, memberBranchDetails);

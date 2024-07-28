@@ -104,7 +104,6 @@ export class CreateUserComponent {
 
   submitForm() {
     this.submitted = true;
-    console.log(JSON.stringify(this.createUserForm.value));
     const apiEndPoint = 'user';
     const body = this.createUserForm.value;
     body['userType'] = 'admin';
@@ -124,7 +123,6 @@ export class CreateUserComponent {
 
   submitPswrdForm() {
     this.pswrdFormSubmitted = true;
-    console.log(JSON.stringify(this.passwordForm.value));
     const apiEndPoint = 'auth/reset-password'
     this.http.create(apiEndPoint, { loginId: this.changePasswordUser.loginId, ...this.passwordForm.value }).subscribe(
       (data) => {

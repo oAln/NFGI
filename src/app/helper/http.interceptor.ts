@@ -19,15 +19,11 @@ export class HttpRequestInterceptor implements HttpInterceptor {
       catchError((httpError: HttpErrorResponse) => {
 
         if (httpError.status === 401) {
-          console.log(httpError);
           this.authenticationService.logout();
           this.router.navigate(['/login']);
           return throwError(() => httpError);
         }
-        console.log(httpError);
-
         return of();
-
       }))
   }
 }

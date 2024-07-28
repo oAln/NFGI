@@ -1,3 +1,9 @@
+<div class="center-align" *ngIf="showAlert">
+    <p class="custom-alert">
+        {{alertText}}
+    </p>
+</div>
+
 <div class="collection-list" *ngIf="showMemberData">
     <div class="row justify-content-between m-0">
         <h3 class="col-4">
@@ -109,7 +115,6 @@
         </form>
     </div>
 </div>
-
 
 <div class="collection-list" *ngIf="showCollectionForm">
     <div class="row justify-content-between m-0">

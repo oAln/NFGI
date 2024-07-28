@@ -10,6 +10,8 @@ import { HttpParams } from '@angular/common/http';
   styleUrls: ['./collection.component.scss']
 })
 export class CollectionComponent {
+  showAlert = false;
+  alertText = '';
   collectionForm: FormGroup;
   disbursementForm: FormGroup;
   collectionData: any;
@@ -89,7 +91,6 @@ export class CollectionComponent {
           };
           member['paymentDays'] = member?.repayments?.length;
         });
-        console.log(this.memberData);
         this.memberData.sort((a: any, b: any) => b?.id - a?.id);
       });
   }
@@ -159,6 +160,10 @@ export class CollectionComponent {
         this.saveDisburseData(body);
       });
     }
+    this.showAlert = true;
+    this.alertText = "Template Submitted Successfully."
+    this.hideAlert();
+    window.scrollTo(0, 0);
   }
 
   submitCollectionForm() {
@@ -212,7 +217,6 @@ export class CollectionComponent {
     let workBook: any = null;
     let jsonData = null;
     const reader = new FileReader();
-    console.log('Imorted file', ev.target.files);
     const file = ev.target.files[0];
     reader.onload = () => {
       const data = reader.result;
@@ -239,5 +243,11 @@ export class CollectionComponent {
 
     };
     reader.readAsBinaryString(file);
+  }
+
+  hideAlert() {
+    setTimeout(() => {
+      this.showAlert = false;
+    }, 5 * 1000);
   }
 }

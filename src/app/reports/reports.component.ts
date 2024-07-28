@@ -29,7 +29,7 @@ export class ReportsComponent {
         this.monthData = this.totalMonths.slice(0, currentDate.getMonth() + 1);
         this.selectedMonth = this.totalMonths[currentDate.getMonth()];
     }
-
+    
     onBranchSelect(selectedBranch: any) {
         console.log('selectedBranch', selectedBranch);
     }
@@ -71,8 +71,6 @@ export class ReportsComponent {
                     };
                     member['paymentDays'] = member?.repayments?.length;
                 });
-                console.log(this.memberData);
-
                 this.memberData.map((member: any) => {
                     member['loanData'] = getIntererstAmount(member);
                 });
@@ -285,8 +283,6 @@ export class ReportsComponent {
                     return accumulator + filteredAmount;
                 }, 0);
                 branchWiseDetails.Balance = branchWiseDetails.MaturedLoanAmount - recovryAmount;
-                console.log(branchWiseDetails);
-
                 this.excelData.push(Object.keys(branchWiseDetails));
                 this.excelData.push(Object.values(branchWiseDetails));
                 break;
@@ -320,7 +316,6 @@ export class ReportsComponent {
     }
 
     getCollectionData(filteredBranchMemberDetails: any) {
-        console.log(filteredBranchMemberDetails);
         const uniqueMemberData = filteredBranchMemberDetails.filter((member: any, i: any, arr: any) =>
             arr.findIndex((arrMember: any) => (arrMember?.id === member?.id)) === i
         );

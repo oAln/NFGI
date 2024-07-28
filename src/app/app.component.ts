@@ -19,7 +19,6 @@ export class AppComponent {
     private authenticationService: AuthenticationService
   ) {
     this.authenticationService.currentUser.subscribe(user => {
-      console.log("user...", user);
       if (localStorage['token']) {
         this.userName = JSON.parse(localStorage['token']).name;
       } else {
