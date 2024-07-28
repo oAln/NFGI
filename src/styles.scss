@@ -130,3 +130,18 @@ input[type='checkbox'] {
 .form-label {
     font-weight: 500;
 }
+
+.custom-alert {
+    width: max-content;
+    height: max-content;
+    font-size: large;
+    font-weight: bold;
+    color: #008000;
+    background: #75b79859;
+    padding: 10px 20px;
+}
+
+.center-align {
+    display: flex;
+    justify-content: center;
+}

@@ -261,12 +261,12 @@ export class ReportsComponent {
 
             case 'branchwise':
                 const branchWiseDetails: any = {
+                    Branch: '',
                     LoanAmount: 0,
                     MaturedLoanAmount: 0,
                     Installments: 0,
                     Recovey: 0,
-                    Balance: 0,
-                    Branch: ''
+                    Balance: 0
                 };
                 const branch = this.selectedBranch;
                 const defaultLoanTerms = AppConstants.loanTerms;

@@ -1,3 +1,9 @@
+<div class="center-align" *ngIf="showAlert">
+    <p class="custom-alert">
+        {{alertText}}
+    </p>
+</div>
+
 <div *ngIf="showUsertemplate else changepswrdTemplate">
     <div class="create-user">
         <div class="row">
@@ -67,27 +73,27 @@
             </h3>
         </div>
         <form [formGroup]="searchForm">
-        <div class="row row-gap justify-content-between">
-            <div class="col-5">
-                <div class="row">
-                    <label class="col-4 form-label">Name</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="userName">
+            <div class="row row-gap justify-content-between">
+                <div class="col-5">
+                    <div class="row">
+                        <label class="col-4 form-label">Name</label>
+                        <div class="col-7">
+                            <input type="text" class="form-control" formControlName="userName">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-5">
-                <div class="row">
-                    <label class="col-5 form-label">Login Id</label>
-                    <div class="col-7">
-                        <input type="text" class="form-control" formControlName="loginId">
+                <div class="col-5">
+                    <div class="row">
+                        <label class="col-5 form-label">Login Id</label>
+                        <div class="col-7">
+                            <input type="text" class="form-control" formControlName="loginId">
+                        </div>
                     </div>
                 </div>
+                <div class="col-2 verticle-align">
+                    <input type="button" class="custom-button" value="Search" (click)="getFilteredData()" />
+                </div>
             </div>
-            <div class="col-2 verticle-align">
-                <input type="button" class="custom-button" value="Search" (click)="getFilteredData()"/>
-            </div>
-        </div>
         </form>
         <div class="row row-gap mt-30">
             <table class="table table-bordered">
@@ -130,17 +136,6 @@
         </div>
         <div class="row row-gap">
             <form [formGroup]="passwordForm" class="row g-3">
-                <div class="row m-0 justify-content-center">
-                    <label class="col-2 form-label">Old Password</label>
-                    <div class="col-4">
-                        <input type="text" class="form-control" formControlName="oldPassword">
-                        <div *ngIf="pswrdFormSubmitted" class="form-error">
-                            <span *ngIf="passwordForm['controls']['oldPassword']['errors']">
-                                Please enter the name
-                            </span>
-                        </div>
-                    </div>
-                </div>
                 <div class="row row-gap justify-content-center">
                     <label class="col-2 form-label">New Password</label>
                     <div class="col-4">
@@ -177,7 +172,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalCenterTitle">Delete User</h5>
-                <button type="button" class="close" (click)="cancelDeleteUserData()">
+                <button type="button" class="close" (click)="clearDeleteUserData()">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
@@ -185,7 +180,7 @@
                 <p>Are you sure want to delete the user?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="custom-button" (click)="deleteUserData()">Save</button>
+                <button type="button" class="custom-button" (click)="deleteUserData()">Delete</button>
             </div>
         </div>
     </div>

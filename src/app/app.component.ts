@@ -20,8 +20,10 @@ export class AppComponent {
   ) {
     this.authenticationService.currentUser.subscribe(user => {
       console.log("user...", user);
-      if (localStorage['token'] && !this.userName) {
+      if (localStorage['token']) {
         this.userName = JSON.parse(localStorage['token']).name;
+      } else {
+        this.userName = '';
       }
       this.currentUser = !(typeof user.token === 'undefined')
     });

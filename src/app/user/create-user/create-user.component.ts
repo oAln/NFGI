@@ -9,18 +9,19 @@ import { HTTPService } from 'src/app/services/http.service';
   styleUrls: ['./create-user.component.scss']
 })
 export class CreateUserComponent {
-
+  showAlert = false;
+  alertText = '';
   public createUserForm: FormGroup;
   public passwordForm: FormGroup;
   submitted = false;
   pswrdFormSubmitted = false
   passwordMatch = false;
   userData: any;
-  changePasswordUser:any
+  changePasswordUser: any
   showUsertemplate = true;
   showDeleteDialog = false;
   selectedUserId: any;
-  public searchForm=this.formBuilder.group({
+  public searchForm = this.formBuilder.group({
     userName: new FormControl(''),
     loginId: new FormControl('')
   })
@@ -39,7 +40,6 @@ export class CreateUserComponent {
     );
 
     this.passwordForm = this.formBuilder.group({
-      oldPassword: new FormControl('', Validators.required),
       newPassword: new FormControl('', Validators.required),
       confirmPassword: new FormControl('', [Validators.required])
     },
@@ -64,8 +64,8 @@ export class CreateUserComponent {
     this.passwordMatch = confrmPswrd?.value && (pswrd?.value === confrmPswrd?.value);
   }
 
-  changePassword(user:any) {
-    this.changePasswordUser=user
+  changePassword(user: any) {
+    this.changePasswordUser = user
     this.showUsertemplate = false;
   }
 
@@ -78,16 +78,26 @@ export class CreateUserComponent {
     const apiEndPoint = 'user';
     this.http.delete(apiEndPoint, this.selectedUserId).subscribe(
       (data) => {
-        this.cancelDeleteUserData();
+        this.clearDeleteUserData();
+        this.getUserData();
         console.log(data);
-      }, error =>{
+        window.scrollTo(0,0);
+        this.showAlert = true;
+        this.alertText = "User Deleted Successfully."
+        this.hideAlert();
+      }, error => {
         console.log(error);
-        this.cancelDeleteUserData();
+        this.showAlert = true;
+        this.alertText = "Something went wrong, please try again."
+        this.clearDeleteUserData();
+        this.getUserData();
+        window.scrollTo(0,0);
+        this.hideAlert();
       }
     )
   }
 
-  cancelDeleteUserData() {
+  clearDeleteUserData() {
     this.showDeleteDialog = false;
     this.selectedUserId = null;
   }
@@ -100,8 +110,14 @@ export class CreateUserComponent {
     body['userType'] = 'admin';
     this.http.create(apiEndPoint, body).subscribe(
       (data) => {
+        this.submitted = false;
+        this.showAlert = true;
+        this.alertText = "User Created Successfully."
         console.log(data);
+        this.createUserForm.reset();
         this.getUserData();
+        window.scrollTo(0, document.body.scrollHeight);
+        this.hideAlert();
       }
     )
   }
@@ -110,7 +126,7 @@ export class CreateUserComponent {
     this.pswrdFormSubmitted = true;
     console.log(JSON.stringify(this.passwordForm.value));
     const apiEndPoint = 'auth/reset-password'
-    this.http.create(apiEndPoint, {loginId:this.changePasswordUser.loginId,...this.passwordForm.value}).subscribe(
+    this.http.create(apiEndPoint, { loginId: this.changePasswordUser.loginId, ...this.passwordForm.value }).subscribe(
       (data) => {
         console.log(data);
         this.showUsertemplate = true;
@@ -123,15 +139,20 @@ export class CreateUserComponent {
     this.http.get(apiEndPoint).subscribe(
       (data) => {
         console.log(data);
-
         this.userData = data;
       });
   }
 
-  getFilteredData(){
+  getFilteredData() {
     let params = new HttpParams()
-    if(this.searchForm.value.userName) params=params.set('name',this.searchForm.value.userName)
-    if(this.searchForm.value.loginId) params=params.set('loginId',this.searchForm.value.loginId)    
-    this.http.get('user/search',params).subscribe((data)=>this.userData=data)
-   }
+    if (this.searchForm.value.userName) params = params.set('name', this.searchForm.value.userName)
+    if (this.searchForm.value.loginId) params = params.set('loginId', this.searchForm.value.loginId)
+    this.http.get('user/search', params).subscribe((data) => this.userData = data)
+  }
+
+  hideAlert() {
+    setTimeout(() => {
+      this.showAlert = false;
+    }, 5 * 1000);
+  }
 }

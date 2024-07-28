@@ -139,7 +139,7 @@ export class CollectionComponent {
         const currentDate = new Date();
         body['paymentDate'] = new Date(currentDate.setDate(data));
         body['amountPaid'] = this.collectionData[0][data];
-        body['status'] = 'Open';
+        body['accountStatus'] = 'Active';
         body['memberId'] = this.collectionData[0].Membership_Id;
         body['loanId'] = this.collectionData[0].Loan_Id;
         body['lateFees'] = this.collectionData[0].Late_Fees;
@@ -153,7 +153,7 @@ export class CollectionComponent {
         body['issuedAt'] = new Date(data?.Loan_Start_Date);
         body['amount'] = data?.Loan_Amount;
         body['memberId'] = data?.Membership_ID;
-        body['status'] = 'Open';
+        body['accountStatus'] = 'Active';
         body['installment'] = data?.Installment;
         this.saveDisburseData(body);
       });
@@ -166,9 +166,9 @@ export class CollectionComponent {
     this.showCollectionForm = false;
     let body = this.collectionForm?.value;
     if (this.collectionForm?.value?.accountStatus) {
-      body.status = 'Closed';
+      body.accountStatus = 'Closed';
     } else {
-      body.status = 'Open';
+      body.accountStatus = 'Active';
     }
     body['paymentDate'] = new Date(this.collectionForm?.value?.collectionDate);
 
@@ -181,7 +181,7 @@ export class CollectionComponent {
     this.showCollectionForm = false;
     const body = this.disbursementForm.value;
     body['issuedAt'] = new Date(this.disbursementForm?.value?.loanStartDate);
-    body['status'] = 'Open';
+    body['accountStatus'] = 'Active';
     this.saveDisburseData(body);
   }
 

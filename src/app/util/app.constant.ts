@@ -47,27 +47,27 @@ export class AppConstants {
         },
         {
             key: 'maturedAmount30',
-            header: 'Matured Loan Aamount With 30 Days Profit'
+            header: 'Matured Loan Amount With 30 Days Profit'
         },
         {
             key: 'maturedAmount60',
-            header: 'Matured Loan Aamount With 60 Days Profit'
+            header: 'Matured Loan Amount With 60 Days Profit'
         },
         {
             key: 'maturedAmount90',
-            header: 'Matured Loan Aamount With 90 Days Profit'
+            header: 'Matured Loan Amount With 90 Days Profit'
         },
         {
             key: 'maturedAmount120',
-            header: 'Matured Loan Aamount With 120 Days Profit'
+            header: 'Matured Loan Amount With 120 Days Profit'
         },
         {
             key: 'maturedAmount150',
-            header: 'Matured Loan Aamount With 150 Days Profit'
+            header: 'Matured Loan Amount With 150 Days Profit'
         },
         {
             key: 'maturedAmount180',
-            header: 'Matured Loan Aamount With 180 Days Profit'
+            header: 'Matured Loan Amount With 180 Days Profit'
         },
         {
             key: 'installment',

@@ -40,7 +40,7 @@ export class MemberComponent {
     contact: new FormControl(''),
     loanAmount: new FormControl(''),
     installment: new FormControl(''),
-    loanPurpose: new FormControl('1'),
+    loanPurpose: new FormControl(''),
     holderName: new FormControl(''),
     bankName: new FormControl(''),
     accountNo: new FormControl(''),
@@ -72,7 +72,7 @@ export class MemberComponent {
     this.createMemberTitle = 'Create New Member';
     this.showMember = true;
     this.memberForm.patchValue({
-      accountStatus: 'Open'
+      accountStatus: 'Active'
     })
     console.log(this.memberForm.value);
     let formParams = new FormData();
