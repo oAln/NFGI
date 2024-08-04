@@ -79,6 +79,7 @@ export class HomeComponent {
             member['loanStartDate'] = '04/21/2024'
           }
           member['loanData'] = getIntererstAmount(member);
+          this.saveLateFees(member);
         });
         this.memberData.sort((a: any, b: any) => b?.id - a?.id);
         this.selectedBranch = this.branchData?.length ? this.branchData[0] : "";
@@ -89,6 +90,27 @@ export class HomeComponent {
         this.oldAccountDisburse = 0;
         this.filterCardData('Daily');
       });
+  }
+
+  saveLateFees(member: any) {
+    const loanData = member['loanData'];
+    if (loanData?.lateFees) {
+      let body: any = {};
+      body['paymentDate'] = new Date();
+      body['amountPaid'] = 0;
+      body['status'] = 'Active';
+      body['memberId'] = member?.memberId;
+      body['loanId'] = member?.loanId;
+      body['lateFees'] = parseInt(loanData?.lateFees);
+      const apiEndPoint = 'repayments'
+      this.http.create(apiEndPoint, body).subscribe(
+        (data) => {
+          console.log(data);
+        }, (error) => {
+          console.log(error);
+        }
+      )
+    }
   }
 
   getTotalAmount(members: any, filterData: string, property: string, filterProperty: string) {
@@ -116,7 +138,7 @@ export class HomeComponent {
       const filteredAmount = (currentValue?.loanData?.loanTerm == AppConstants.loanTerms[3].term) ? currentValue?.collectionAmount : 0;
       return accumulator + filteredAmount;
     }, 0);
-    this.branchWiseDetails.totalBalance = this.branchWiseDetails.totalMaturedLoanAmount - recovryAmount;
+    this.branchWiseDetails.totalBalance = (this.branchWiseDetails.totalMaturedLoanAmount - recovryAmount) || 0;
   }
 
   onMonthSelect(selectedMonth: any) {

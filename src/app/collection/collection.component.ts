@@ -66,6 +66,7 @@ export class CollectionComponent {
       memberDetails['installment'] = loanData?.installment;
       memberDetails['loanId'] = loanData?.id;
       memberDetails['loanStartDate'] = loanData?.issuedAt;
+      memberDetails['accountStatus'] = loanData?.status;
       if (loanData?.repayments?.length) {
         memberDetails['collectionAmount'] = loanData?.repayments?.reduce(function (accumulator: any, currentValue: any) {
           const filteredAmount = ((currentValue?.amountPaid || 0) + (currentValue?.lateFees || 0));
@@ -81,6 +82,7 @@ export class CollectionComponent {
     const apiEndPoint = 'member'
     this.http.get(apiEndPoint).subscribe(
       (memberDetails: any) => {
+        this.memberData = [];
         memberDetails?.forEach((member: any) => {
           if (member?.loans?.length) {
             this.updateMemberData(member);
@@ -96,10 +98,9 @@ export class CollectionComponent {
   closeLoanAccount(memberDetails: any) {
     const member = this.memberData.filter((data: any) => data?.loanId == memberDetails?.loanId)[0];
     const collectedAmount = memberDetails?.amountPaid ? parseInt(memberDetails?.amountPaid) : 0;
-    const lateFees = memberDetails?.lateFees ? parseInt(memberDetails?.lateFees) : 0;
-    const totalCollectedAmount = collectedAmount + lateFees + member?.collectionAmount;
+    const totalCollectedAmount = collectedAmount + member?.collectionAmount;
     if (totalCollectedAmount >= member?.loanAmount) {
-      const loanId = member?.id;
+      const loanId = member?.loanId;
       const url = 'loans';
       const body = {
         status: 'Closed'
@@ -161,7 +162,7 @@ export class CollectionComponent {
         const currentDate = new Date();
         body['paymentDate'] = new Date(currentDate.setDate(data));
         body['amountPaid'] = this.collectionData[0][data];
-        body['accountStatus'] = 'Active';
+        body['status'] = 'Active';
         body['memberId'] = this.collectionData[0].Membership_Id;
         body['loanId'] = this.collectionData[0].Loan_Id;
         body['lateFees'] = this.collectionData[0].Late_Fees;
