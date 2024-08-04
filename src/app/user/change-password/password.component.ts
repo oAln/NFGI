@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -6,7 +6,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
   templateUrl: './password.component.html',
   styleUrls: ['./password.component.scss']
 })
-export class PasswordComponent implements OnInit {
+export class PasswordComponent {
   showpassword = true;
   public passwordForm: FormGroup;
 
@@ -45,13 +45,7 @@ export class PasswordComponent implements OnInit {
     this.showpassword = false;
   }
 
-  ngOnInit() {
-
-  }
-
   submitForm() {
     this.showpassword = true;
-    console.log(JSON.stringify(this.passwordForm.value));
-
   }
 }

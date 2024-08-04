@@ -16,21 +16,25 @@
     <router-outlet></router-outlet>
 </div> -->
 
-<ng-container
-  *ngIf="this.currentUser; then notauthenticated; else authenticate">
+<ng-container *ngIf="this.currentUser; then notauthenticated; else authenticate">
 </ng-container>
 
 <ng-template #notauthenticated>
     <header *ngIf="currentUser">
-        <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top" style="height: 65px;">
-            <div class="container-fluid">
-                <div class="navbar-nav me-auto" style="color: white;">
-                    Logo
+        <nav>
+            <div>
+                <img src="assets/images/logo.png" alt="logo" />
+            </div>
+            <div class="profile" (click)="showUserMenu()">
+                <div class="user">
+                    <h5>{{userName}}</h5>
                 </div>
-                <div class="d-flex">
-                    <h5 style="color: white;">User</h5>
-                    <div style="color: white;" (click)="logout()">Logout</div>
-                </div>
+            </div>
+            <div class="menu" [ngClass]="{ 'active': userMenu }">
+                <ul>
+                    <li (click)="createUser()"><a> <i class="bi bi-person-add mr-10"></i>Create User</a></li>
+                    <li (click)="logout()"><a><i class="bi bi-box-arrow-right mr-10"></i>LogOut</a></li>
+                </ul>
             </div>
         </nav>
     </header>
@@ -41,5 +45,5 @@
 </ng-template>
 
 <ng-template #authenticate>
-  <router-outlet></router-outlet>
+    <router-outlet></router-outlet>
 </ng-template>

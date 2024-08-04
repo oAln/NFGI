@@ -4,12 +4,13 @@
     top: 65px;
     height: 100vh;
     transition: 0.3s;
-    width: 220px;
-    background: #1d1e2c;
-    color: #6d6e7e;
+    width: 230px;
+    background: #328f9a;
+    color: #fff;
 
     .content {
       .link {
+        border-bottom: 1px solid #fff;
         .content {
           display: flex;
           align-items: center;
@@ -19,19 +20,14 @@
           transition: 0.3s;
 
           &:hover {
-            background: #0f1017;
-
-            .title {
-              color: white;
-            }
-
+            background: #39a5b1;
             svg {
               fill: white;
             }
           }
 
           &.active {
-            background: #0f1017;
+            background: #39a5b1;
 
             .title {
               color: white;
@@ -48,7 +44,7 @@
 
           .title {
             flex: 1;
-            color: #6d6e7e;
+            color: #fff;
             transition: 0.3s;
             overflow: hidden;
             text-align: center;
@@ -57,6 +53,7 @@
             align-items: center;
             justify-content: center;
             height: 75px;
+            font-weight: 500;
           }
         }
       }

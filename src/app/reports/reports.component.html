@@ -1,0 +1,146 @@
+<div class="report-container">
+    <h3 class="col">
+        NFGI Account Statement for the Month
+    </h3>
+    <div class="row report-options mt-30">
+        <div class="col-8">
+            <div class="row row-gap justify-content-between">
+                <div class="col-5">
+                    <div class="row">
+                        <label class="col-5 form-label">Month</label>
+                        <div class="col-7">
+                            <select [(ngModel)]="selectedMonth" (ngModelChange)="onMonthSelect($event)">
+                                <option *ngFor="let month of monthData" [value]="month">
+                                    {{month}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-gap justify-content-between mt-30">
+                <div class="col-5">
+                    <div class="row">
+                        <label class="col-5 form-label"></label>
+                        <div class="col-7">
+                            <button class="custom-button" (click)="generateReport('simple')">
+                                Generate Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="report-container mt-50">
+    <h3 class="col-4">
+        Collection Details
+    </h3>
+    <div class="row report-options mt-30">
+        <div class="col-8">
+            <div class="row row-gap justify-content-between">
+                <div class="col-5">
+                    <div class="row">
+                        <label class="col-5 form-label">Branch</label>
+                        <div class="col-7">
+                            <select [(ngModel)]="selectedBranch" (ngModelChange)="onBranchSelect($event)">
+                                <option *ngFor="let branch of branchData" [value]="branch">
+                                    {{branch}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5">
+                    <div class="row">
+                        <label class="col-5 form-label">Month</label>
+                        <div class="col-7">
+                            <select [(ngModel)]="selectedMonth" (ngModelChange)="onMonthSelect($event)">
+                                <option *ngFor="let month of monthData" [value]="month">
+                                    {{month}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-gap justify-content-between mt-30">
+                <div class="col-5">
+                    <div class="row">
+                        <label class="col-5 form-label"></label>
+                        <div class="col-7">
+                            <button class="custom-button" (click)="generateReport('collection')">
+                                Generate Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="report-container mt-50">
+    <h3 class="col-4">
+        Branchwise Details
+    </h3>
+
+    <div class="row report-options mt-30">
+        <div class="col-8">
+            <div class="row row-gap justify-content-between">
+                <div class="col-5">
+                    <div class="row">
+                        <label class="col-5 form-label">Branch</label>
+                        <div class="col-7">
+                            <select [(ngModel)]="selectedBranch" (ngModelChange)="onBranchSelect($event)">
+                                <option *ngFor="let branch of branchData" [value]="branch">
+                                    {{branch}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5">
+                    <div class="row">
+                        <label class="col-5 form-label">Month</label>
+                        <div class="col-7">
+                            <select [(ngModel)]="selectedMonth" (ngModelChange)="onMonthSelect($event)">
+                                <option *ngFor="let month of monthData" [value]="month">
+                                    {{month}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-gap justify-content-between mt-30">
+                <div class="col-5">
+                    <div class="row">
+                        <label class="col-5 form-label">Loan Duration</label>
+                        <div class="col-7">
+                            <select [(ngModel)]="selectedLoanDuration" (ngModelChange)="onLoanDurationSelect($event)">
+                                <option *ngFor="let loanDuration of loanDurationData" [value]="loanDuration">
+                                    {{loanDuration}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-gap justify-content-between mt-30">
+                <div class="col-5">
+                    <div class="row">
+                        <label class="col-5 form-label"></label>
+                        <div class="col-7">
+                            <button class="custom-button" (click)="generateReport('branchwise')">
+                                Generate Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

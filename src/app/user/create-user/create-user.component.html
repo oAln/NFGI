@@ -1,133 +1,187 @@
-<div class="create-user">
-    <div class="row">
-        <h3 class="col-4">
-            Create New User
-        </h3>
+<div class="center-align" *ngIf="showAlert">
+    <p class="custom-alert">
+        {{alertText}}
+    </p>
+</div>
+
+<div *ngIf="showUsertemplate else changepswrdTemplate">
+    <div class="create-user">
+        <div class="row">
+            <h3 class="col-4">
+                Create New User
+            </h3>
+        </div>
+        <div class="row row-gap">
+            <form [formGroup]="createUserForm" class="row g-3">
+                <div class="row m-0 justify-content-center">
+                    <label class="col-2 form-label">Name</label>
+                    <div class="col-4">
+                        <input type="text" class="form-control" formControlName="name">
+                        <div *ngIf="submitted" class="form-error">
+                            <span *ngIf="createUserForm['controls']['name']['errors']">
+                                Please enter the name
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-gap justify-content-center">
+                    <label class="col-2 form-label">Login Id</label>
+                    <div class="col-4">
+                        <input type="text" class="form-control" formControlName="loginId">
+                        <div *ngIf="submitted" class="form-error">
+                            <span *ngIf="createUserForm['controls']['loginId']['errors']">
+                                Please enter the login Id
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-gap justify-content-center">
+                    <label class="col-2 form-label">Password</label>
+                    <div class="col-4">
+                        <input type="text" class="form-control" formControlName="password">
+                        <div *ngIf="submitted" class="form-error">
+                            <span *ngIf="createUserForm['controls']['password']['errors']">
+                                Please enter the password
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-gap justify-content-center">
+                    <label class="col-2 form-label">Confirm Password</label>
+                    <div class="col-4">
+                        <input type="text" class="form-control" formControlName="confirmPassword">
+                        <div *ngIf="submitted" class="form-error">
+                            <span *ngIf="!passwordMatch || createUserForm['controls']['confirmPassword']['errors']">
+                                Passsword and Confirm Password didn't match
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 text-center row-gap">
+                    <button type="submit" class="custom-button" (click)="submitForm()">Submit</button>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="row row-gap">
-        <form [formGroup]="createUserForm" class="row g-3">
-            <div class="row m-0 justify-content-center">
-                <label class="col-2 col-form-label">Name</label>
-                <div class="col-4">
-                    <input type="text" class="form-control" formControlName="userId">
+
+    <div class="custom-divider"></div>
+
+    <div class="user-list">
+        <div class="row">
+            <h3 class="col-4">
+                User List
+            </h3>
+        </div>
+        <form [formGroup]="searchForm">
+            <div class="row row-gap justify-content-between">
+                <div class="col-5">
+                    <div class="row">
+                        <label class="col-4 form-label">Name</label>
+                        <div class="col-7">
+                            <input type="text" class="form-control" formControlName="userName">
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="row row-gap justify-content-center">
-                <label class="col-2 col-form-label">Login Id</label>
-                <div class="col-4">
-                    <input type="text" class="form-control" formControlName="lastName">
+                <div class="col-5">
+                    <div class="row">
+                        <label class="col-5 form-label">Login Id</label>
+                        <div class="col-7">
+                            <input type="text" class="form-control" formControlName="loginId">
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="row row-gap justify-content-center">
-                <label class="col-2 col-form-label">Password</label>
-                <div class="col-4">
-                    <input type="text" class="form-control" formControlName="userId">
+                <div class="col-2 verticle-align">
+                    <input type="button" class="custom-button" value="Search" (click)="getFilteredData()" />
                 </div>
-            </div>
-            <div class="row row-gap justify-content-center">
-                <label class="col-2 col-form-label">Confirm Password</label>
-                <div class="col-4">
-                    <input type="text" class="form-control" formControlName="userId">
-                </div>
-            </div>
-            <div class="col-12 text-center row-gap">
-                <button type="submit" class="btn btn-primary" (click)="submitForm()">Submit</button>
             </div>
         </form>
+        <div class="row row-gap mt-30">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>User Name</th>
+                        <th>Login Id</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let user of userData; let sNo = index">
+                        <tr>
+                            <td>{{sNo +1}}</td>
+                            <td>{{user?.name}}</td>
+                            <td>{{user?.loginId}}</td>
+                            <td class="wp-30">
+                                <div class="custom-btn-group justify-content-center">
+                                    <button type="button" class="custom-button" (click)="changePassword(user)">Change
+                                        Password</button>
+                                    <button type="button" class="custom-button ml-10"
+                                        (click)="deleteUser(user?.id)">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
-<hr/>
-
-<div class="user-list">
-    <div class="row">
-        <h3 class="col-4">
-            User List
-        </h3>
-    </div>
-
-    <div class="row row-gap justify-content-between">
-        <div class="col-5">
-            <div class="row">
-                <label class="col-4 col-form-label">Name</label>
-                <div class="col-7">
-                    <input type="text" class="form-control" formControlName="username">
+<ng-template #changepswrdTemplate>
+    <div class="change-password">
+        <div class="row justify-content-center">
+            <h3 class="col-4">
+                Change Password
+            </h3>
+        </div>
+        <div class="row row-gap">
+            <form [formGroup]="passwordForm" class="row g-3">
+                <div class="row row-gap justify-content-center">
+                    <label class="col-2 form-label">New Password</label>
+                    <div class="col-4">
+                        <input type="text" class="form-control" formControlName="newPassword">
+                        <div *ngIf="pswrdFormSubmitted" class="form-error">
+                            <span *ngIf="passwordForm['controls']['newPassword']['errors']">
+                                Please enter the name
+                            </span>
+                        </div>
+                    </div>
                 </div>
+                <div class="row row-gap justify-content-center">
+                    <label class="col-2 form-label">Confirm Password</label>
+                    <div class="col-4">
+                        <input type="text" class="form-control" formControlName="confirmPassword">
+                        <div *ngIf="pswrdFormSubmitted" class="form-error">
+                            <span *ngIf="!passwordMatch || passwordForm['controls']['confirmPassword']['errors']">
+                                Passsword and Confirm Password didn't match
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 text-center row-gap">
+                    <button type="submit" class="custom-button" (click)="submitPswrdForm()">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</ng-template>
+
+<!-- Modal -->
+<div class="modal fade show" tabindex="-1" role="dialog" *ngIf="showDeleteDialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Delete User</h5>
+                <button type="button" class="close" (click)="clearDeleteUserData()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure want to delete the user?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="custom-button" (click)="deleteUserData()">Delete</button>
             </div>
         </div>
-        <div class="col-5">
-            <div class="row">
-                <label class="col-5 col-form-label">Login Id</label>
-                <div class="col-7">
-                    <input type="text" class="form-control" formControlName="username">
-                </div>
-            </div>
-        </div>
-        <div class="col-2 verticle-align">
-            <input type="button" class="btn btn-primary" value="Search" />
-        </div>
-    </div>
-    <div class="row row-gap">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>S.No</th>
-                    <th>User Name</th>
-                    <th>Login Id</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td class="wp-30">
-                        <div class="custom-btn-group justify-content-center">
-                            <button type="button" class="btn btn-primary"
-                                (click)="changePassword()">Change Password</button>
-                            <button type="button" class="btn btn-primary ml-10"
-                                (click)="deleteUser()">Disbursement</button>
-                        </div>
-                    </td>
-                </tr>
-                <!-- <tr>
-                    <td>2</td>
-                    <td>Jacob</td>
-                    <td>tdornton</td>
-                    <td>@fat</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>
-                        <div class="custom-btn-group">
-                            <button type="button" class="btn btn-primary">user</button>
-                            <button type="button" class="btn btn-primary ml-10">Disbursement</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Larry the Bird</td>
-                    <td>Larry the Bird</td>
-                    <td>@twitter</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>
-                        <div class="custom-btn-group">
-                            <button type="button" class="btn btn-primary">user</button>
-                            <button type="button" class="btn btn-primary ml-10">Disbursement</button>
-                        </div>
-                    </td>
-                </tr> -->
-            </tbody>
-        </table>
     </div>
 </div>

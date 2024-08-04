@@ -4,5 +4,5 @@ export class User {
     password?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
-    authdata?: string;
+    token?: string;
 }
