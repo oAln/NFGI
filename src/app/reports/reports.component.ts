@@ -116,23 +116,23 @@ export class ReportsComponent {
             } else {
                 switch (property.key) {
                     case 'maturedAmount30':
-                        lateFees = (loanDays > 30) ? (loanDays - 30) * 16.67 : 0;
+                        // lateFees = (loanDays > 30) ? (loanDays - 30) * 16.67 : 0;
                         obj[property.header] = (member?.loanAmount * 1.05 + lateFees) || 0;
                         break;
                     case 'maturedAmount60':
-                        lateFees = (loanDays > 60) ? (loanDays - 60) * 16.67 : 0;
+                        // lateFees = (loanDays > 60) ? (loanDays - 60) * 16.67 : 0;
                         obj[property.header] = (member?.loanAmount * 1.1 + lateFees) || 0;
                         break;
                     case 'maturedAmount90':
-                        lateFees = (loanDays > 90) ? (loanDays - 90) * 16.67 : 0;
+                        // lateFees = (loanDays > 90) ? (loanDays - 90) * 16.67 : 0;
                         obj[property.header] = (member?.loanAmount * 1.15 + lateFees) || 0;
                         break;
                     case 'maturedAmount120':
-                        lateFees = (loanDays > 120) ? (loanDays - 120) * 16.67 : 0;
+                        // lateFees = (loanDays > 120) ? (loanDays - 120) * 16.67 : 0;
                         obj[property.header] = (member?.loanAmount * 1.2 + lateFees) || 0;
                         break;
                     case 'maturedAmount150':
-                        lateFees = (loanDays > 150) ? (loanDays - 150) * 16.67 : 0;
+                        // lateFees = (loanDays > 150) ? (loanDays - 150) * 16.67 : 0;
                         obj[property.header] = (member?.loanAmount * 1.25 + lateFees) || 0;
                         break;
                     case 'maturedAmount180':
@@ -156,7 +156,7 @@ export class ReportsComponent {
                             loanTerm = 180;
                         }
                         if (property.key == 'lateFees') {
-                            lateFees = (loanDays > loanTerm) ? (loanDays - loanTerm) * 16.67 : 0;
+                            // lateFees = (loanDays > loanTerm) ? (loanDays - loanTerm) * 16.67 : 0;
                             obj[property.header] = lateFees || 0;
                         } else {
                             obj[property.header] = loanTerm;
@@ -319,10 +319,14 @@ export class ReportsComponent {
             arr.findIndex((arrMember: any) => (arrMember?.id === member?.id)) === i
         );
 
-        if (uniqueMemberData?.length && uniqueMemberData[0]?.repayments?.length) {
-            uniqueMemberData.forEach((member: any, index: any) => {
-                this.getMemberCollectionExcelData(member, index);
-            });
+        if (uniqueMemberData?.length && uniqueMemberData[0].loans?.length) {
+            uniqueMemberData[0].loans.forEach((data: any)=>{
+                if (data?.repayments?.length) {
+                    data?.repayments.forEach((member: any, index: any) => {
+                        this.getMemberCollectionExcelData(data, index);
+                    });
+                }
+            })
         }
         
     }

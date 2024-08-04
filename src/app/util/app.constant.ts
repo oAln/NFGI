@@ -75,11 +75,11 @@ export class AppConstants {
         },
         {
             key: 'collectionAmount',
-            header: 'Recovery Amount Previous Month'
+            header: 'Recovery Amount Previous Month' // only last month collection
         },
         {
             key: 'totalCollectedamount',
-            header: 'Total Collected Bal of this  Month (Recovery + Closing Bal)'
+            header: 'Total Collected Bal of this  Month (Recovery + Closing Bal)' // total coll for current month
         }, {
             key: 'remainingAmount30',
             header: '30 Days Remaining'
@@ -117,7 +117,7 @@ export class AppConstants {
             header: 'Applicable Term'
         },
         {
-            key: 'loanOverdue',  // check with Kaustubh
+            key: 'loanOverdue',  // check doc
             header: 'Loan Overdue (Days)'
         },
         {
@@ -126,10 +126,10 @@ export class AppConstants {
         },
         {
             key: 'totalAmount',
-            header: 'Total Amount (Including Late Fees)'
+            header: 'Total Amount (Including Late Fees)' // cuurent month collection + late fees
         },
         {
-            key: 'finalCollection',   // check with Kaustubh
+            key: 'finalCollection',   // total coll
             header: 'Final Collection'
         },
         {

@@ -26,6 +26,7 @@ export class MemberComponent {
   public memberForm = this.formBuilder.group({
     firstName: new FormControl(''),
     lastName: new FormControl(''),
+    memberRelation: new FormControl(''),
     memberId: new FormControl(''),
     accountId: new FormControl(''),
     gender: new FormControl(''),
@@ -34,12 +35,13 @@ export class MemberComponent {
     dateOfBirth: new FormControl(''),
     townCity: new FormControl(''),
     branch: new FormControl(''),
+    memTaluka: new FormControl(''),
     areaLandmark: new FormControl(''),
     state: new FormControl(''),
     pinCode: new FormControl(''),
     contact: new FormControl(''),
-    loanAmount: new FormControl(''),
-    installment: new FormControl(''),
+    memAadharNO: new FormControl(''),
+    memPanNo: new FormControl(''),
     loanPurpose: new FormControl(''),
     holderName: new FormControl(''),
     bankName: new FormControl(''),
@@ -57,6 +59,8 @@ export class MemberComponent {
     guarantorName: new FormControl(''),
     guarantorBusinessName: new FormControl(''),
     guarantorContact: new FormControl(''),
+    guarAadharNO: new FormControl(''),
+    guarPanNo: new FormControl(''),
     document: new FormControl('')
   });
 
@@ -137,7 +141,7 @@ export class MemberComponent {
   }
 
   uploadDoc(event: any) {
-    const file = event?.target?.files?.[0];
+    const file = event?.target?.files;
     this.memberForm.patchValue({ document: file });
   }
 
@@ -199,7 +203,7 @@ export class MemberComponent {
 
   deleteMember(memberDetails: any) {
     this.showDeleteDialog = true;
-    this.selectedMemberId = memberDetails?.id;
+    this.selectedMemberId = memberDetails?.memberId;
   }
 
   deleteMemberData() {
