@@ -30,7 +30,7 @@ export class MemberComponent {
     memberId: new FormControl(''),
     accountId: new FormControl(''),
     gender: new FormControl(''),
-    accountStatus: new FormControl(''),
+    accountStatus: new FormControl('Active'),
     occupation: new FormControl(''),
     dateOfBirth: new FormControl(''),
     townCity: new FormControl(''),
