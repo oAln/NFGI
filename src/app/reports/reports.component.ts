@@ -324,7 +324,7 @@ export class ReportsComponent {
                 this.getMemberCollectionExcelData(member, index);
             });
         }
-
+        
     }
 
     getTotalAmount(data: any, filterData: string, property: string, filterProperty: string = 'branch',) {
