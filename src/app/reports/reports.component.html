@@ -7,9 +7,21 @@
             <div class="row row-gap justify-content-between">
                 <div class="col-5">
                     <div class="row">
+                        <label class="col-5 form-label">Branch</label>
+                        <div class="col-7">
+                            <select [(ngModel)]="monthReportBranch" (ngModelChange)="onMonthReportBranchSelect($event)">
+                                <option *ngFor="let branch of branchData" [value]="branch">
+                                    {{branch}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5">
+                    <div class="row">
                         <label class="col-5 form-label">Month</label>
                         <div class="col-7">
-                            <select [(ngModel)]="selectedMonth" (ngModelChange)="onMonthSelect($event)">
+                            <select [(ngModel)]="monthReportMonth" (ngModelChange)="onMonthReportMonthSelect($event)">
                                 <option *ngFor="let month of monthData" [value]="month">
                                     {{month}}
                                 </option>
@@ -45,7 +57,7 @@
                     <div class="row">
                         <label class="col-5 form-label">Branch</label>
                         <div class="col-7">
-                            <select [(ngModel)]="selectedBranch" (ngModelChange)="onBranchSelect($event)">
+                            <select [(ngModel)]="colReportBranch" (ngModelChange)="onColReportBranchSelect($event)">
                                 <option *ngFor="let branch of branchData" [value]="branch">
                                     {{branch}}
                                 </option>
@@ -57,7 +69,7 @@
                     <div class="row">
                         <label class="col-5 form-label">Month</label>
                         <div class="col-7">
-                            <select [(ngModel)]="selectedMonth" (ngModelChange)="onMonthSelect($event)">
+                            <select [(ngModel)]="colReportMonth" (ngModelChange)="onColReportMonthSelect($event)">
                                 <option *ngFor="let month of monthData" [value]="month">
                                     {{month}}
                                 </option>
@@ -94,7 +106,7 @@
                     <div class="row">
                         <label class="col-5 form-label">Branch</label>
                         <div class="col-7">
-                            <select [(ngModel)]="selectedBranch" (ngModelChange)="onBranchSelect($event)">
+                            <select [(ngModel)]="branchReportBranch" (ngModelChange)="onBranchReportBranch($event)">
                                 <option *ngFor="let branch of branchData" [value]="branch">
                                     {{branch}}
                                 </option>
@@ -106,7 +118,7 @@
                     <div class="row">
                         <label class="col-5 form-label">Month</label>
                         <div class="col-7">
-                            <select [(ngModel)]="selectedMonth" (ngModelChange)="onMonthSelect($event)">
+                            <select [(ngModel)]="branchReportMonth" (ngModelChange)="onBranchReportMonthSelect($event)">
                                 <option *ngFor="let month of monthData" [value]="month">
                                     {{month}}
                                 </option>

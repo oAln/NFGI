@@ -30,7 +30,7 @@ export class MemberComponent {
     memberId: new FormControl(''),
     accountId: new FormControl(''),
     gender: new FormControl(''),
-    accountStatus: new FormControl(''),
+    accountStatus: new FormControl('Active'),
     occupation: new FormControl(''),
     dateOfBirth: new FormControl(''),
     townCity: new FormControl(''),
@@ -75,9 +75,6 @@ export class MemberComponent {
   submitForm() {
     this.createMemberTitle = 'Create New Member';
     this.showMember = true;
-    this.memberForm.patchValue({
-      accountStatus: 'Active'
-    });
     let formParams = new FormData();
     Object.entries(this.memberForm.value).forEach(([key, value]) => {
       if (value)
@@ -115,6 +112,14 @@ export class MemberComponent {
       memberDetails['installment'] = loanData?.installment;
       memberDetails['loanId'] = loanData?.id;
       memberDetails['loanStartDate'] = new Date(loanData?.issuedAt);
+      if (loanData?.repayments?.length) {
+        console.log(loanData?.repayments);
+        memberDetails['collectionAmount'] = loanData?.repayments?.reduce(function (accumulator: any, currentValue: any) {
+          const filteredAmount = ((currentValue?.amountPaid || 0) + (currentValue?.lateFees || 0));
+          return accumulator + filteredAmount;
+        }, 0);
+        memberDetails['paymentDays'] = loanData?.repayments?.length;
+      }
       this.memberData.push(memberDetails);
     });
   }
@@ -130,15 +135,6 @@ export class MemberComponent {
           else {
             this.memberData.push(member);
           }
-        });
-        this.memberData.map((member: any) => {
-          if (member?.repayments?.length) {
-            member['collectionAmount'] = member?.repayments?.reduce(function (accumulator: any, currentValue: any) {
-              const filteredAmount = currentValue?.amountPaid;
-              return accumulator + filteredAmount;
-            }, 0);
-          };
-          member['paymentDays'] = member?.repayments?.length;
         });
         this.memberData.sort((a: any, b: any) => b?.id - a?.id);
       });

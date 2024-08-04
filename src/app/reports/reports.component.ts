@@ -13,8 +13,12 @@ import { ExcelService } from '../services/excel.service';
 export class ReportsComponent {
     monthData: string[] = [];
     totalMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];;
-    selectedMonth = '';
-    selectedBranch = '';
+    branchReportMonth = '';
+    colReportMonth = '';
+    monthReportMonth = '';
+    branchReportBranch = '';
+    monthReportBranch = '';
+    colReportBranch = '';
     branchData: any;
     selectedLoanDuration = 30;
     loanDurationData = [30, 60, 90, 120, 150, 180]
@@ -27,15 +31,33 @@ export class ReportsComponent {
         this.getMemberData();
         const currentDate = new Date();
         this.monthData = this.totalMonths.slice(0, currentDate.getMonth() + 1);
-        this.selectedMonth = this.totalMonths[currentDate.getMonth()];
+        this.branchReportMonth = this.totalMonths[currentDate.getMonth()];
+        this.monthReportMonth = this.totalMonths[currentDate.getMonth()];
+        this.colReportMonth = this.totalMonths[currentDate.getMonth()];
     }
     
-    onBranchSelect(selectedBranch: any) {
-        console.log('selectedBranch', selectedBranch);
+    onBranchReportBranch(selectedBranch: any) {
+        console.log('onBranchReportBranch', selectedBranch);
     }
 
-    onMonthSelect(selectedMonth: any) {
-        console.log('selectedMonth', selectedMonth);
+    onBranchReportMonthSelect(selectedMonth: any) {
+        console.log('onBranchReportMonthSelect', selectedMonth);
+    }
+
+    onColReportBranchSelect(selectedBranch: any) {
+        console.log('onColReportBranchSelect', selectedBranch);
+    }
+
+    onColReportMonthSelect(selectedMonth: any) {
+        console.log('onColReportMonthSelect', selectedMonth);
+    }
+
+    onMonthReportBranchSelect(selectedBranch: any) {
+        console.log('onMonthReportBranchSelect', selectedBranch);
+    }
+
+    onMonthReportMonthSelect(selectedMonth: any) {
+        console.log('onMonthReportMonthSelect', selectedMonth);
     }
 
     updateMemberData(member: any) {
@@ -46,6 +68,14 @@ export class ReportsComponent {
             memberDetails['installment'] = loanData?.installment;
             memberDetails['loanId'] = loanData?.id;
             memberDetails['loanStartDate'] = loanData?.issuedAt;
+            if (loanData?.repayments?.length) {
+                console.log(loanData?.repayments);
+                memberDetails['collectionAmount'] = loanData?.repayments?.reduce(function (accumulator: any, currentValue: any) {
+                  const filteredAmount = ((currentValue?.amountPaid || 0) + (currentValue?.lateFees || 0));
+                  return accumulator + filteredAmount;
+                }, 0);
+                memberDetails['paymentDays'] = loanData?.repayments?.length;
+              }
             this.memberData.push(memberDetails);
         });
     }
@@ -63,15 +93,6 @@ export class ReportsComponent {
                     }
                 });
                 this.memberData.map((member: any) => {
-                    if (member?.repayments?.length) {
-                        member['collectionAmount'] = member?.repayments?.reduce(function (accumulator: any, currentValue: any) {
-                            const filteredAmount = currentValue?.amountPaid;
-                            return accumulator + filteredAmount;
-                        }, 0);
-                    };
-                    member['paymentDays'] = member?.repayments?.length;
-                });
-                this.memberData.map((member: any) => {
                     member['loanData'] = getIntererstAmount(member);
                 });
                 this.branchData = this.memberData.reduce((acc: any, data: any) => {
@@ -80,7 +101,9 @@ export class ReportsComponent {
                     }
                     return acc;
                 }, []);
-                this.selectedBranch = this.branchData?.length ? this.branchData[0] : "";
+                this.branchReportBranch = this.branchData?.length ? this.branchData[0] : "";
+                this.monthReportBranch = this.branchData?.length ? this.branchData[0] : "";
+                this.colReportBranch = this.branchData?.length ? this.branchData[0] : "";
                 this.memberData.sort((a: any, b: any) => b?.id - a?.id);
             });
     }
@@ -91,7 +114,7 @@ export class ReportsComponent {
 
     // Filter data month wise
     getMemberMonthData(month: string) {
-        const selectedMonthNumber = this.totalMonths.indexOf(this.selectedMonth);
+        const selectedMonthNumber = this.totalMonths.indexOf('this.selectedMonth');
         const filterMemberData = this.memberData.filter((member: any) => {
             const loanDate = new Date(member?.loanStartDate).getMonth();
             if ((member?.accountStatus != 'Closed') && member?.loanId && member?.loanStartDate && loanDate == selectedMonthNumber) {
@@ -243,11 +266,13 @@ export class ReportsComponent {
     }
 
     generateReport(reportType?: string): void {
-        const filteredMemberData = this.getMemberMonthData(this.selectedMonth);
-        const filteredBranchMemberDetails = this.getMemberBranchWiseData(this.selectedBranch, filteredMemberData);
+        let filteredMemberData;
+        let filteredBranchMemberDetails;
         switch (reportType) {
             case 'simple':
-                filteredMemberData.forEach((member: any, index: any) => {
+                filteredMemberData = this.getMemberMonthData(this.monthReportBranch);
+                filteredBranchMemberDetails = this.getMemberBranchWiseData(this.monthReportBranch, filteredMemberData);
+                filteredBranchMemberDetails.forEach((member: any, index: any) => {
                     this.getMemberExcelData(member, index);
                 });
                 this.excelData.push(Object.keys(this.simpleExcelData[0]));
@@ -267,10 +292,12 @@ export class ReportsComponent {
                     Recovey: 0,
                     Balance: 0
                 };
-                const branch = this.selectedBranch;
+                filteredMemberData = this.getMemberMonthData(this.branchReportBranch);
+                filteredBranchMemberDetails = this.getMemberBranchWiseData(this.branchReportBranch, filteredMemberData);
+                const branch = 'this.selectedBranch';
                 const defaultLoanTerms = AppConstants.loanTerms;
                 const loanterm = defaultLoanTerms.find((termData: any) => termData.term === this.selectedLoanDuration || {})?.term;
-                branchWiseDetails.Branch = this.selectedBranch;
+                branchWiseDetails.Branch = 'this.selectedBranch';
                 branchWiseDetails.LoanAmount = this.getTotalAmount(filteredBranchMemberDetails, branch, 'loanAmount');
                 branchWiseDetails.Installments = this.getTotalAmount(filteredBranchMemberDetails, branch, 'installment');
                 branchWiseDetails.MaturedLoanAmount = filteredBranchMemberDetails.reduce(function (accumulator: any, currentValue: any) {
@@ -288,6 +315,8 @@ export class ReportsComponent {
                 break;
 
             case 'collection':
+                filteredMemberData = this.getMemberMonthData(this.colReportBranch);
+                filteredBranchMemberDetails = this.getMemberBranchWiseData(this.colReportBranch, filteredMemberData);
                 this.getCollectionData(filteredBranchMemberDetails);
                 this.excelData.push(Object.keys(this.collectionExcelData[0]));
                 this.collectionExcelData.forEach((data: any) => {
@@ -320,12 +349,16 @@ export class ReportsComponent {
             arr.findIndex((arrMember: any) => (arrMember?.id === member?.id)) === i
         );
 
-        if (uniqueMemberData?.length && uniqueMemberData[0]?.repayments?.length) {
-            uniqueMemberData.forEach((member: any, index: any) => {
-                this.getMemberCollectionExcelData(member, index);
-            });
+        if (uniqueMemberData?.length && uniqueMemberData[0].loans?.length) {
+            uniqueMemberData[0].loans.forEach((data: any)=>{
+                if (data?.repayments?.length) {
+                    data?.repayments.forEach((member: any, index: any) => {
+                        this.getMemberCollectionExcelData(data, index);
+                    });
+                }
+            })
         }
-
+        
     }
 
     getTotalAmount(data: any, filterData: string, property: string, filterProperty: string = 'branch',) {

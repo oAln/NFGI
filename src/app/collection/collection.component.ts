@@ -66,6 +66,14 @@ export class CollectionComponent {
       memberDetails['installment'] = loanData?.installment;
       memberDetails['loanId'] = loanData?.id;
       memberDetails['loanStartDate'] = loanData?.issuedAt;
+      memberDetails['accountStatus'] = loanData?.status || 'Active';
+      if (loanData?.repayments?.length) {
+        memberDetails['collectionAmount'] = loanData?.repayments?.reduce(function (accumulator: any, currentValue: any) {
+          const filteredAmount = ((currentValue?.amountPaid || 0) + (currentValue?.lateFees || 0));
+          return accumulator + filteredAmount;
+        }, 0);
+        memberDetails['paymentDays'] = loanData?.repayments?.length;
+      }
       this.memberData.push(memberDetails);
     });
   }
@@ -74,6 +82,7 @@ export class CollectionComponent {
     const apiEndPoint = 'member'
     this.http.get(apiEndPoint).subscribe(
       (memberDetails: any) => {
+        this.memberData = [];
         memberDetails?.forEach((member: any) => {
           if (member?.loans?.length) {
             this.updateMemberData(member);
@@ -82,17 +91,29 @@ export class CollectionComponent {
             this.memberData.push(member);
           }
         });
-        this.memberData.map((member: any) => {
-          if (member?.repayments?.length) {
-            member['collectionAmount'] = member?.repayments?.reduce(function (accumulator: any, currentValue: any) {
-              const filteredAmount = currentValue?.amountPaid;
-              return accumulator + filteredAmount;
-            }, 0);
-          };
-          member['paymentDays'] = member?.repayments?.length;
-        });
         this.memberData.sort((a: any, b: any) => b?.id - a?.id);
       });
+  }
+
+  closeLoanAccount(memberDetails: any) {
+    const member = this.memberData.filter((data: any) => data?.loanId == memberDetails?.loanId)[0];
+    const collectedAmount = memberDetails?.amountPaid ? parseInt(memberDetails?.amountPaid) : 0;
+    const totalCollectedAmount = collectedAmount + member?.collectionAmount;
+    if (totalCollectedAmount >= member?.loanAmount) {
+      const loanId = member?.loanId;
+      const url = 'loans';
+      const body = {
+        status: 'Closed'
+      }
+      this.http.putUpdate(`${url}/${loanId}`, body).subscribe(
+        (data) => {
+          // this.getMemberData();
+          console.log(data);
+        }, (error) => {
+          console.log(error);
+        }
+      )
+    }
   }
 
   getToday(): string {
@@ -141,7 +162,7 @@ export class CollectionComponent {
         const currentDate = new Date();
         body['paymentDate'] = new Date(currentDate.setDate(data));
         body['amountPaid'] = this.collectionData[0][data];
-        body['accountStatus'] = 'Active';
+        body['status'] = 'Active';
         body['memberId'] = this.collectionData[0].Membership_Id;
         body['loanId'] = this.collectionData[0].Loan_Id;
         body['lateFees'] = this.collectionData[0].Late_Fees;
@@ -179,6 +200,7 @@ export class CollectionComponent {
     body['paymentDate'] = new Date(this.collectionForm?.value?.collectionDate);
 
     this.saveCollectionData(body);
+    this.collectionForm.reset();
   }
 
   submitDisbursementForm() {
@@ -189,28 +211,36 @@ export class CollectionComponent {
     body['issuedAt'] = new Date(this.disbursementForm?.value?.loanStartDate);
     body['accountStatus'] = 'Active';
     this.saveDisburseData(body);
+    this.disbursementForm.reset();
   }
 
   saveCollectionData(body: any) {
-    const apiEndPoint = 'repayments'
-    this.http.create(apiEndPoint, body).subscribe(
-      (data) => {
-        console.log(data);
-      }, (error) => {
-        console.log(error);
-      }
-    )
+    if (body?.amountPaid || body?.lateFees) {
+      this.closeLoanAccount(body);
+      const apiEndPoint = 'repayments'
+      this.http.create(apiEndPoint, body).subscribe(
+        (data) => {
+          this.getMemberData();
+          console.log(data);
+        }, (error) => {
+          console.log(error);
+        }
+      )
+    }
   }
 
   saveDisburseData(body: any) {
-    const apiEndPoint = 'loans';
-    this.http.create(apiEndPoint, body).subscribe(
-      (data) => {
-        console.log(data);
-      }, (error) => {
-        console.log(error);
-      }
-    )
+    if (body?.amount) {
+      const apiEndPoint = 'loans';
+      this.http.create(apiEndPoint, body).subscribe(
+        (data) => {
+          this.getMemberData();
+          console.log(data);
+        }, (error) => {
+          console.log(error);
+        }
+      )
+    }
   }
 
   getExcelData(ev: any, dataType: string): void {
