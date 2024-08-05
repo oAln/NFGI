@@ -74,7 +74,7 @@ export class AppConstants {
             header: 'Installment'
         },
         {
-            key: 'collectionAmount',
+            key: 'lastMonthCollection',
             header: 'Recovery Amount Previous Month' // only last month collection
         },
         {

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { formatDate } from '@angular/common';
 import { HTTPService } from '../services/http.service';
 import * as XLSX from 'xlsx';
 import { getDayDiff, getIntererstAmount } from '../util/helper';
@@ -136,6 +137,8 @@ export class ReportsComponent {
                 obj[property.header] = loanDays;
             } else if (property.key == 'index') {
                 obj[property.header] = index + 1;
+            } else if (property.key == 'loanStartDate') {
+                obj[property.header] = formatDate(member[property.key], 'dd-MM-yyyy', 'en');
             } else if (member?.[property.key]) {
                 obj[property.header] = member[property.key];
             } else {
@@ -187,13 +190,23 @@ export class ReportsComponent {
                             obj[property.header] = loanTerm;
                         }
                         break;
-                    // case 'collectionAmount':
-                    //     collectionAmount = this.memberData.reduce(function (accumulator: any, currentValue: any) {
-                    //         const filteredAmount = (currentValue?.loanId === member?.loanId) ? currentValue?.collectionAmount : 0;
-                    //         return accumulator + filteredAmount;
-                    //     }, 0);
-                    //     obj[property.header] = collectionAmount || 0;
-                    //     break;
+                    case 'lastMonthCollection':
+                        const currentDate = new Date();
+                        const dateFilter = new Date(currentDate.setDate(1));
+                        this.memberData.forEach((memberDetails: any)=>{
+                            if (memberDetails?.loanId == member?.loanId && memberDetails?.loans?.length) {
+                                memberDetails?.loans.forEach((data: any) => {
+                                    if (data?.loanId == member?.loanId && data?.repayments?.length) {
+                                        collectionAmount = data?.repayments.reduce(function (accumulator: any, currentValue: any) {
+                                            const filteredAmount = ((new Date(currentValue?.paymentDate) < dateFilter) ? (currentValue?.amountPaid + currentValue?.lateFees) : 0) || 0;
+                                            return accumulator + filteredAmount;
+                                        }, 0);
+                                    }
+                                })
+                            }
+                        })
+                        obj[property.header] = collectionAmount || 0;
+                        break;
                     case 'totalCollectedamount':
                         totalCollectedamount = this.memberData.reduce(function (accumulator: any, currentValue: any) {
                             const filteredAmount = (currentValue?.loanId === member?.loanId) ? currentValue?.collectionAmount : 0;
@@ -276,8 +289,12 @@ export class ReportsComponent {
     generateReport(reportType?: string): void {
         let filteredMemberData;
         let filteredBranchMemberDetails;
+        let branchName = '';
+        let month = '';
         switch (reportType) {
             case 'simple':
+                branchName = this.monthReportBranch;
+                month = this.monthReportMonth;
                 filteredMemberData = this.getMemberMonthData(this.monthReportMonth);
                 filteredBranchMemberDetails = this.getMemberBranchWiseData(this.monthReportBranch, filteredMemberData);
                 filteredBranchMemberDetails?.forEach((member: any, index: any) => {
@@ -292,6 +309,8 @@ export class ReportsComponent {
                 break;
 
             case 'branchwise':
+                branchName = this.branchReportBranch;
+                month = this.branchReportMonth;
                 const branchWiseDetails: any = {
                     Branch: '',
                     LoanAmount: 0,
@@ -323,6 +342,8 @@ export class ReportsComponent {
                 break;
 
             case 'collection':
+                branchName = this.colReportBranch;
+                month = this.colReportMonth;
                 filteredMemberData = this.getMemberMonthData(this.colReportMonth);
                 filteredBranchMemberDetails = this.getMemberBranchWiseData(this.colReportBranch, filteredMemberData);
                 this.getCollectionData(filteredBranchMemberDetails);
@@ -345,8 +366,9 @@ export class ReportsComponent {
         const wb: XLSX.WorkBook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
+        const currentYear = new Date().getFullYear();
         /* save to file */
-        XLSX.writeFile(wb, 'NFGI-Report.xlsx');
+        XLSX.writeFile(wb, `${branchName}_${month}_${currentYear}.xlsx`);
         this.simpleExcelData = [];
         this.collectionExcelData = [];
         this.excelData = [];
