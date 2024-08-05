@@ -12,7 +12,7 @@
 4. Annual Income, bring to Customer info => done
 5. Aadhar and PAN field for customer and guarantor => done
 1. Add S/O W/O => done
-1. Print 
+1. Front and Back Print Page => done 
 1. Delete member not working => Backend changes
 1. NFGI Account Statement Report 1 - Recovery Amount Previous month is wrong => Inprogress
 1. NFGI Account Statement - Add Branch filter as well. => Done
