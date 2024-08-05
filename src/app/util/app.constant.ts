@@ -144,8 +144,8 @@ export class AppConstants {
             header: 'Sr No.'
         },
         {
-            key: 'memberId',
-            header: 'Memebership Id'
+            key: 'firstName',
+            header: 'Memeber Name'
         },
         {
             key: '1',

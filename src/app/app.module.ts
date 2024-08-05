@@ -19,6 +19,7 @@ import { HttpRequestInterceptor } from './helper/http.interceptor';
 import { CommonModule } from '@angular/common';
 import { ReportsComponent } from './reports/reports.component';
 import { ReversePipe } from './shared/pipe/reverse.pipe';
+import { PrintPageComponent } from './print-page/print-page.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ReversePipe } from './shared/pipe/reverse.pipe';
     CreateUserComponent,
     LoginComponent,
     ReportsComponent,
-    ReversePipe
+    ReversePipe,
+    PrintPageComponent
   ],
   imports: [
     BrowserModule,

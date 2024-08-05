@@ -66,7 +66,7 @@ export class CollectionComponent {
       memberDetails['installment'] = loanData?.installment;
       memberDetails['loanId'] = loanData?.id;
       memberDetails['loanStartDate'] = loanData?.issuedAt;
-      memberDetails['accountStatus'] = loanData?.status || 'Active';
+      memberDetails['accountStatus'] = loanData?.status;
       if (loanData?.repayments?.length) {
         memberDetails['collectionAmount'] = loanData?.repayments?.reduce(function (accumulator: any, currentValue: any) {
           const filteredAmount = ((currentValue?.amountPaid || 0) + (currentValue?.lateFees || 0));
@@ -95,11 +95,11 @@ export class CollectionComponent {
       });
   }
 
-  closeLoanAccount(memberDetails: any) {
+  closeLoanAccount(memberDetails: any, closeLoan?: any) {
     const member = this.memberData.filter((data: any) => data?.loanId == memberDetails?.loanId)[0];
     const collectedAmount = memberDetails?.amountPaid ? parseInt(memberDetails?.amountPaid) : 0;
     const totalCollectedAmount = collectedAmount + member?.collectionAmount;
-    if (totalCollectedAmount >= member?.loanAmount) {
+    if (closeLoan || (totalCollectedAmount >= member?.loanAmount)) {
       const loanId = member?.loanId;
       const url = 'loans';
       const body = {
@@ -137,9 +137,22 @@ export class CollectionComponent {
 
   getFilteredData() {
     let params = new HttpParams()
-    if (this.searchForm.value.customerName) params = params.set('firstName', this.searchForm.value.customerName)
-    if (this.searchForm.value.memberId) params = params.set('memberId', this.searchForm.value.memberId)
-    this.http.get('member/search', params).subscribe((data) => this.memberData = data)
+    if (this.searchForm?.value?.customerName) params = params.set('firstName', this.searchForm?.value?.customerName)
+    if (this.searchForm?.value?.memberId) params = params.set('memberId', this.searchForm?.value?.memberId)
+    if (this.searchForm?.value?.customerName || this.searchForm?.value?.memberId) {
+      this.http.get('member/search', params).subscribe((data: any) => {
+        this.memberData = [];
+        data?.forEach((member: any) => {
+          if (member?.loans?.length) {
+            this.updateMemberData(member);
+          }
+          else {
+            this.memberData.push(member);
+          }
+        });
+        this.memberData.sort((a: any, b: any) => b?.id - a?.id);
+      })
+    }
   }
 
   showDisbursement(member: any) {
@@ -194,6 +207,7 @@ export class CollectionComponent {
     let body = this.collectionForm?.value;
     if (this.collectionForm?.value?.accountStatus) {
       body.accountStatus = 'Closed';
+      this.closeLoanAccount(body, true);
     } else {
       body.accountStatus = 'Active';
     }
@@ -226,6 +240,8 @@ export class CollectionComponent {
           console.log(error);
         }
       )
+    } else {
+      this.getMemberData();
     }
   }
 

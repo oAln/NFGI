@@ -59,6 +59,13 @@
                 </option>
             </select>
         </div>
+        <div class="col-4">
+            <select [(ngModel)]="selectedLoanDuration" (ngModelChange)="onLoanDurationSelect($event)">
+                <option *ngFor="let loanDuration of loanDurationData" [value]="loanDuration">
+                    {{loanDuration}}
+                </option>
+            </select>
+        </div>
     </div>
     <div class="col-8">
         <div class="row row-gap custom-box">
@@ -72,7 +79,7 @@
                         <div class="value">&#8377; {{branchWiseDetails.totalLoanAmount}}</div>
                     </div>
                     <div class="custom-list">
-                        <div class="key">Matured Loan Amount (120 Days)</div>
+                        <div class="key">{{"Matured Loan Amount (" + selectedLoanDuration + " Days)"}}</div>
                         <div class="value">&#8377; {{branchWiseDetails.totalMaturedLoanAmount}}</div>
                     </div>
                     <div class="custom-list">
@@ -84,7 +91,7 @@
                         <div class="value">&#8377; {{branchWiseDetails.totalRecovey}}</div>
                     </div>
                     <div class="custom-list">
-                        <div class="key">Balance (120 Days)</div>
+                        <div class="key">{{"Balance (" + selectedLoanDuration + " Days)"}}</div>
                         <div class="value">&#8377; {{branchWiseDetails.totalBalance}}</div>
                     </div>
                 </div>

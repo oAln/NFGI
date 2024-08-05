@@ -26,6 +26,8 @@ export class HomeComponent {
   newAccountDisburse = 0;
   oldAccountDisburse = 0;
   totalCollection = 0;
+  selectedLoanDuration = 120;
+  loanDurationData = [30, 60, 90, 120, 150, 180];
 
 
   constructor(private http: HTTPService) {
@@ -43,6 +45,7 @@ export class HomeComponent {
       memberDetails['installment'] = loanData?.installment;
       memberDetails['loanId'] = loanData?.id;
       memberDetails['loanStartDate'] = loanData?.issuedAt;
+      memberDetails['accountStatus'] = loanData?.status;
       if (loanData?.repayments?.length) {
         console.log(loanData?.repayments);
         memberDetails['collectionAmount'] = loanData?.repayments?.reduce(function (accumulator: any, currentValue: any) {
@@ -75,89 +78,89 @@ export class HomeComponent {
         }, []);
 
         this.memberData.map((member: any) => {
-          if (member?.memberId == "12345") {
-            member['loanStartDate'] = '04/21/2024'
-          }
           member['loanData'] = getIntererstAmount(member);
-          this.saveLateFees(member);
         });
         this.memberData.sort((a: any, b: any) => b?.id - a?.id);
         this.selectedBranch = this.branchData?.length ? this.branchData[0] : "";
-        const filteredMemberDetails = this.getMemberBranchWiseData(this.selectedBranch, this.memberData);
-        this.getBranchwiseDetails(this.selectedBranch, filteredMemberDetails);
-        this.getMemberMonthWiseData(this.selectedMonth, filteredMemberDetails);
+        // const filteredMemberDetails = this.getMemberBranchWiseData(this.selectedBranch, this.memberData);
+        // this.getBranchwiseDetails(this.selectedBranch, filteredMemberDetails);
+        // this.getMemberMonthWiseData(this.selectedMonth, filteredMemberDetails);
+        this.onLoanDurationSelect("120");
         this.newAccountDisburse = 0;
         this.oldAccountDisburse = 0;
         this.filterCardData('Daily');
       });
   }
 
-  saveLateFees(member: any) {
-    const loanData = member['loanData'];
-    if (loanData?.lateFees) {
-      let body: any = {};
-      body['paymentDate'] = new Date();
-      body['amountPaid'] = 0;
-      body['status'] = 'Active';
-      body['memberId'] = member?.memberId;
-      body['loanId'] = member?.loanId;
-      body['lateFees'] = parseInt(loanData?.lateFees);
-      const apiEndPoint = 'repayments'
-      this.http.create(apiEndPoint, body).subscribe(
-        (data) => {
-          console.log(data);
-        }, (error) => {
-          console.log(error);
-        }
-      )
-    }
-  }
+  // Not required
+  // saveLateFees(member: any) {
+  //   const loanData = member['loanData'];
+  //   if (loanData?.lateFees) {
+  //     let body: any = {};
+  //     body['paymentDate'] = new Date();
+  //     body['amountPaid'] = 0;
+  //     body['status'] = 'Active';
+  //     body['memberId'] = member?.memberId;
+  //     body['loanId'] = member?.loanId;
+  //     body['lateFees'] = parseInt(loanData?.lateFees);
+  //     const apiEndPoint = 'repayments'
+  //     this.http.create(apiEndPoint, body).subscribe(
+  //       (data) => {
+  //         console.log(data);
+  //       }, (error) => {
+  //         console.log(error);
+  //       }
+  //     )
+  //   }
+  // }
 
-  getTotalAmount(members: any, filterData: string, property: string, filterProperty: string) {
+  getTotalAmount(members: any, property: string) {
     const totalAmount = members.reduce(function (accumulator: any, currentValue: any) {
-      const filteredAmount = (currentValue?.[filterProperty] === filterData) ? currentValue?.[property] ? parseInt(currentValue?.[property]) : 0 : 0;
+      const filteredAmount = currentValue?.[property] ? parseInt(currentValue?.[property]) : 0;
       return accumulator + filteredAmount;
     }, 0);
     return totalAmount;
   }
 
   onBranchSelect(selectedBranch: any) {
-    const memberDetails = this.getMemberMonthWiseData(this.selectedMonth, this.memberData);
-    this.getBranchwiseDetails(selectedBranch, memberDetails);
+    // const memberBranchDetails = this.getMemberBranchWiseData(selectedBranch, this.memberData);
+    // const memberDetails = this.getMemberMonthWiseData(this.selectedMonth, memberBranchDetails);
+    this.onLoanDurationSelect(this.selectedLoanDuration);
   }
 
-  getBranchwiseDetails(selectedBranch: string, memberDetails: any) {
-    this.branchWiseDetails.totalLoanAmount = this.getTotalAmount(memberDetails, selectedBranch, 'loanAmount', 'branch');
-    this.branchWiseDetails.totalInstallment = this.getTotalAmount(memberDetails, selectedBranch, 'installment', 'branch');
-    this.branchWiseDetails.totalMaturedLoanAmount = memberDetails.reduce(function (accumulator: any, currentValue: any) {
-      const filteredAmount = (currentValue?.loanData?.loanTerm == AppConstants.loanTerms[3].term) ? currentValue?.loanData?.maturedAmount : 0;
-      return accumulator + filteredAmount;
-    }, 0);
-    // 120 days recovery amount 
-    const recovryAmount = memberDetails.reduce(function (accumulator: any, currentValue: any) {
-      const filteredAmount = (currentValue?.loanData?.loanTerm == AppConstants.loanTerms[3].term) ? currentValue?.collectionAmount : 0;
-      return accumulator + filteredAmount;
-    }, 0);
-    this.branchWiseDetails.totalBalance = (this.branchWiseDetails.totalMaturedLoanAmount - recovryAmount) || 0;
-  }
+  // getBranchwiseDetails(selectedBranch: string, memberDetails: any) {
+  //   this.branchWiseDetails.totalLoanAmount = this.getTotalAmount(memberDetails, selectedBranch, 'loanAmount', 'branch');
+  //   this.branchWiseDetails.totalInstallment = this.getTotalAmount(memberDetails, selectedBranch, 'installment', 'branch');
+  //   this.branchWiseDetails.totalMaturedLoanAmount = memberDetails.reduce(function (accumulator: any, currentValue: any) {
+  //     const filteredAmount = (currentValue?.loanData?.loanTerm == AppConstants.loanTerms[3].term) ? currentValue?.loanData?.maturedAmount : 0;
+  //     return accumulator + filteredAmount;
+  //   }, 0);
+  //   // 120 days recovery amount 
+  //   const recovryAmount = memberDetails.reduce(function (accumulator: any, currentValue: any) {
+  //     const filteredAmount = (currentValue?.loanData?.loanTerm == AppConstants.loanTerms[3].term) ? currentValue?.collectionAmount : 0;
+  //     return accumulator + filteredAmount;
+  //   }, 0);
+  //   this.branchWiseDetails.totalBalance = (this.branchWiseDetails.totalMaturedLoanAmount - recovryAmount) || 0;
+  // }
 
   onMonthSelect(selectedMonth: any) {
-    const selectedBranch = this.selectedBranch;
-    const memberBranchDetails = this.getMemberBranchWiseData(selectedBranch, this.memberData);
-    const memberDetails = this.getMemberMonthWiseData(selectedMonth, memberBranchDetails);
-    this.branchWiseDetails.totalLoanAmount = this.getTotalAmount(memberDetails, selectedBranch, 'loanAmount', 'branch');
-    this.branchWiseDetails.totalInstallment = this.getTotalAmount(memberDetails, selectedBranch, 'installment', 'branch');
-    this.branchWiseDetails.totalMaturedLoanAmount = memberDetails.reduce(function (accumulator: any, currentValue: any) {
-      const filteredAmount = (currentValue?.loanData?.loanTerm == AppConstants.loanTerms[3].term) ? currentValue?.loanData?.maturedAmount : 0;
-      return accumulator + filteredAmount;
-    }, 0);
-    this.branchWiseDetails.totalRecovey = this.getTotalAmount(memberDetails, selectedBranch, 'collectionAmount', 'branch');
-    // 120 days recovery amount 
-    const recovryAmount = memberDetails.reduce(function (accumulator: any, currentValue: any) {
-      const filteredAmount = (currentValue?.loanData?.loanTerm == AppConstants.loanTerms[3].term) ? currentValue?.collectionAmount : 0;
-      return accumulator + filteredAmount;
-    }, 0);
-    this.branchWiseDetails.totalBalance = this.branchWiseDetails.totalMaturedLoanAmount - recovryAmount;
+    // const selectedBranch = this.selectedBranch;
+    // const memberBranchDetails = this.getMemberBranchWiseData(selectedBranch, this.memberData);
+    // const memberDetails = this.getMemberMonthWiseData(selectedMonth, memberBranchDetails);
+    this.onLoanDurationSelect(this.selectedLoanDuration);
+    // this.branchWiseDetails.totalLoanAmount = this.getTotalAmount(memberDetails, selectedBranch, 'loanAmount', 'branch');
+    // this.branchWiseDetails.totalInstallment = this.getTotalAmount(memberDetails, selectedBranch, 'installment', 'branch');
+    // this.branchWiseDetails.totalMaturedLoanAmount = memberDetails.reduce(function (accumulator: any, currentValue: any) {
+    //   const filteredAmount = (currentValue?.loanData?.loanTerm == AppConstants.loanTerms[3].term) ? currentValue?.loanData?.maturedAmount : 0;
+    //   return accumulator + filteredAmount;
+    // }, 0);
+    // this.branchWiseDetails.totalRecovey = this.getTotalAmount(memberDetails, selectedBranch, 'collectionAmount', 'branch');
+    // // 120 days recovery amount 
+    // const recovryAmount = memberDetails.reduce(function (accumulator: any, currentValue: any) {
+    //   const filteredAmount = (currentValue?.loanData?.loanTerm == AppConstants.loanTerms[3].term) ? currentValue?.collectionAmount : 0;
+    //   return accumulator + filteredAmount;
+    // }, 0);
+    // this.branchWiseDetails.totalBalance = this.branchWiseDetails.totalMaturedLoanAmount - recovryAmount;
   }
 
   filterCardData(filterKey: any) {
@@ -222,5 +225,29 @@ export class HomeComponent {
       }
     })
     return filterMemberData;
+  }
+
+  onLoanDurationSelect(loanDuration: any) {
+    console.log('loanDuration', loanDuration);
+    const selectedBranch = this.selectedBranch;
+    const selectedMonth = this.selectedMonth;
+    const updatedLoanData = this.memberData;
+    updatedLoanData.map((member: any) => {
+      member['loanData'] = getIntererstAmount(member, loanDuration);
+    });
+    const memberBranchDetails = this.getMemberBranchWiseData(selectedBranch, updatedLoanData);
+    const memberDetails = this.getMemberMonthWiseData(selectedMonth, memberBranchDetails);
+    this.branchWiseDetails.totalLoanAmount = this.getTotalAmount(memberDetails, 'loanAmount');
+    this.branchWiseDetails.totalInstallment = this.getTotalAmount(memberDetails, 'installment');
+    this.branchWiseDetails.totalMaturedLoanAmount = memberDetails.reduce(function (accumulator: any, currentValue: any) {
+      const filteredAmount = (currentValue?.loanData?.loanTerm == loanDuration) ? currentValue?.loanData?.maturedAmount : 0;
+      return accumulator + filteredAmount;
+    }, 0);
+    this.branchWiseDetails.totalRecovey = this.getTotalAmount(memberDetails, 'collectionAmount');
+    const recovryAmount = memberDetails.reduce(function (accumulator: any, currentValue: any) {
+      const filteredAmount = (currentValue?.loanData?.loanTerm == loanDuration) ? currentValue?.collectionAmount || 0 : 0;
+      return accumulator + filteredAmount;
+    }, 0);
+    this.branchWiseDetails.totalBalance = this.branchWiseDetails.totalMaturedLoanAmount - recovryAmount;
   }
 }

@@ -16,7 +16,43 @@ export class MemberComponent {
   updateMember = false;
   currentId = null;
   showDeleteDialog = false;
+  showPrintDialog = false;
+  showFrontPrint = false;
+  showBackPrint = false;
   selectedMemberId: any;
+  printDetails = {
+    memberId: '',
+    accountId: '',
+    name: '',
+    memberRelation: '',
+    annualIncome: '',
+    gender: '',
+    dateOfBirth: '',
+    occupation: '',
+    townCity: '',
+    branch: '',
+    memTaluka: '',
+    areaLandmark: '',
+    state: '',
+    pinCode: '',
+    contact: '',
+    caste: 'NA',
+    martialStatus: 'NA',
+    age: 'NA',
+    emailId: 'NA',
+    memAadharNO: '',
+    memPanNo: '',
+    guarantorName: '',
+    guarantorBusinessName: '',
+    guarAadharNO: '',
+    guarPanNo: '',
+    guarantorContact: '',
+    holderName: '',
+    accountNo: '',
+    bankName: '',
+    bankAddress: '',
+    ifscCode: ''
+  }
 
   public searchForm = this.formBuilder.group({
     customerName: new FormControl(''),
@@ -112,6 +148,7 @@ export class MemberComponent {
       memberDetails['installment'] = loanData?.installment;
       memberDetails['loanId'] = loanData?.id;
       memberDetails['loanStartDate'] = new Date(loanData?.issuedAt);
+      memberDetails['accountStatus'] = loanData?.status;
       if (loanData?.repayments?.length) {
         console.log(loanData?.repayments);
         memberDetails['collectionAmount'] = loanData?.repayments?.reduce(function (accumulator: any, currentValue: any) {
@@ -128,6 +165,7 @@ export class MemberComponent {
     const apiEndPoint = 'member'
     this.http.get(apiEndPoint).subscribe(
       (memberDetails: any) => {
+        this.memberData = [];
         memberDetails?.forEach((member: any) => {
           if (member?.loans?.length) {
             this.updateMemberData(member);
@@ -191,9 +229,22 @@ export class MemberComponent {
 
   getFilteredData() {
     let params = new HttpParams()
-    if (this.searchForm.value.customerName) params = params.set('firstName', this.searchForm.value.customerName)
-    if (this.searchForm.value.memberId) params = params.set('memberId', this.searchForm.value.memberId)
-    this.http.get('member/search', params).subscribe((data) => this.memberData = data)
+    if (this.searchForm?.value?.customerName) params = params.set('firstName', this.searchForm?.value?.customerName);
+    if (this.searchForm?.value?.memberId) params = params.set('memberId', this.searchForm?.value?.memberId);
+    if (this.searchForm?.value?.customerName || this.searchForm?.value?.memberId) {
+      this.http.get('member/search', params).subscribe((data: any) => {
+        this.memberData = [];
+        data?.forEach((member: any) => {
+          if (member?.loans?.length) {
+            this.updateMemberData(member);
+          }
+          else {
+            this.memberData.push(member);
+          }
+        });
+        this.memberData.sort((a: any, b: any) => b?.id - a?.id);
+      });
+    }
   }
 
   cancelDeleteMemberData() {
@@ -210,5 +261,28 @@ export class MemberComponent {
     this.http.delete(`member`, this.selectedMemberId).subscribe((data) => {
       this.memberData = data;
     })
+  }
+
+  printPage(printSide: any, memberDetails: any) {
+    this.printDetails = {...memberDetails}; 
+    this.printDetails['name'] = memberDetails?.firstName + ' ' + memberDetails?.lastName;
+    this.showPrintDialog = true;
+    if (printSide == 'front') {
+      this.showFrontPrint = true;
+      this.showBackPrint = false;
+    } else {
+      this.showFrontPrint = false;
+      this.showBackPrint = true;
+    }
+    console.log(printSide);
+
+  }
+
+  cancelPrint() {
+    this.showPrintDialog = false;
+  }
+
+  printData() {
+    window.print();
   }
 }

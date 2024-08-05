@@ -1,7 +1,7 @@
 import { AppConstants } from "./app.constant";
 import { LoanData } from "./loan-data.model";
 
-export function getIntererstAmount(member: any) {
+export function getIntererstAmount(member: any, duration?: any) {
   const loanData: LoanData = {
     loanTerm: 0,
     maturedAmount: 0,
@@ -10,7 +10,7 @@ export function getIntererstAmount(member: any) {
     loanDays: 0
   }
   if (member?.loanId && member?.loanStartDate) {
-    const loanDays = getDayDiff(member?.loanStartDate);
+    const loanDays = duration || getDayDiff(member?.loanStartDate);
     const { maturedAmount, lateFees, loanTerm, interestRate } = getInterestData(member?.loanAmount, loanDays);
     loanData.loanTerm = loanTerm;
     loanData.lateFees = lateFees;

@@ -21,7 +21,7 @@ export class ReportsComponent {
     colReportBranch = '';
     branchData: any;
     selectedLoanDuration = 30;
-    loanDurationData = [30, 60, 90, 120, 150, 180]
+    loanDurationData = [30, 60, 90, 120, 150, 180];
     memberData: any = [];
     simpleExcelData: any = [];
     collectionExcelData: any = [];
