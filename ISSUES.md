@@ -22,4 +22,4 @@
 1. Member Name in disbursement => Excel Issue
 1. Collection input - Remove member Id => Excel Issue
 1. Collection Input - Color coded Dormant Orange and closed - Green => Excel Issue
-1. print pdf branchwise details
+1. print pdf branchwise details => pdf issue
