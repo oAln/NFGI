@@ -66,7 +66,7 @@ export class CollectionComponent {
       memberDetails['installment'] = loanData?.installment;
       memberDetails['loanId'] = loanData?.id;
       memberDetails['loanStartDate'] = loanData?.issuedAt;
-      memberDetails['accountStatus'] = loanData?.status;
+      memberDetails['accountStatus'] = loanData?.status || 'Active';
       if (loanData?.repayments?.length) {
         memberDetails['collectionAmount'] = loanData?.repayments?.reduce(function (accumulator: any, currentValue: any) {
           const filteredAmount = ((currentValue?.amountPaid || 0) + (currentValue?.lateFees || 0));

@@ -45,7 +45,7 @@ export class HomeComponent {
       memberDetails['installment'] = loanData?.installment;
       memberDetails['loanId'] = loanData?.id;
       memberDetails['loanStartDate'] = loanData?.issuedAt;
-      memberDetails['accountStatus'] = loanData?.status;
+      memberDetails['accountStatus'] = loanData?.status || 'Active';
       if (loanData?.repayments?.length) {
         console.log(loanData?.repayments);
         memberDetails['collectionAmount'] = loanData?.repayments?.reduce(function (accumulator: any, currentValue: any) {
