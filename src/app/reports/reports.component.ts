@@ -312,8 +312,12 @@ export class ReportsComponent {
     generateReport(reportType?: string): void {
         let filteredMemberData;
         let filteredBranchMemberDetails;
+        let branchName = '';
+        let month = '';
         switch (reportType) {
             case 'simple':
+                branchName = this.monthReportBranch;
+                month = this.monthReportMonth;
                 filteredMemberData = this.getMemberMonthData(this.monthReportMonth, this.memberData);
                 filteredBranchMemberDetails = this.getMemberBranchWiseData(this.monthReportBranch, filteredMemberData);
                 filteredBranchMemberDetails.forEach((member: any, index: any) => {
@@ -336,6 +340,8 @@ export class ReportsComponent {
                     Recovery: 0,
                     Balance: 0
                 };
+                branchName = this.branchReportBranch;
+                month = this.branchReportMonth;
                 filteredMemberData = this.getMemberMonthData(this.branchReportMonth, this.memberData);
                 filteredBranchMemberDetails = this.getMemberBranchWiseData(this.branchReportBranch, filteredMemberData);
                 const branch = 'this.selectedBranch';
@@ -359,6 +365,8 @@ export class ReportsComponent {
                 break;
 
             case 'collection':
+                branchName = this.colReportBranch;
+                month = this.colReportMonth;
                 filteredMemberData = this.getMemberMonthData(this.colReportMonth, this.memberData);
                 filteredBranchMemberDetails = this.getMemberBranchWiseData(this.colReportBranch, filteredMemberData);
                 this.getCollectionData(filteredBranchMemberDetails);
@@ -374,6 +382,8 @@ export class ReportsComponent {
                 break;
         }
 
+        const currentYear = new Date().getFullYear();
+
         /* generate worksheet */
         const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(this.excelData);
 
@@ -382,7 +392,7 @@ export class ReportsComponent {
         XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
         /* save to file */
-        XLSX.writeFile(wb, 'NFGI-Report.xlsx');
+        XLSX.writeFile(wb, `${branchName}_${month}_${currentYear}.xlsx`);
         this.simpleExcelData = [];
         this.collectionExcelData = [];
         this.excelData = [];
