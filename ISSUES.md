@@ -16,10 +16,9 @@
 1. Balance Days to be shown => Done
 1. Delete member not working => Backend changes
 2. All documents are not downloading. Only 1 document downloading => Backend changes
-1. Add Name colomn in Collection and Disbursement template => Excel Issue
-1. Collection report, to have name  => Excel Issue
-1. Member Name in disbursement => Excel Issue
-1. Collection input - Remove member Id => Excel Issue
+1. Replace Name with Id colomn in Collection and Disbursement template => Excel Issue => Done
+1. Collection report, to have name  => Excel Issue => done
+1. Collection input - Remove member Id => Excel Issue => done
 1. Collection Input - Color coded Dormant Orange and closed - Green => Excel Issue
 1. change excel accept date format to dd/mm/yyyy => Excel Issue
-1. amount received from excel is wrong => Excel Issue
+1. amount received from excel is wrong => Excel Issue => done

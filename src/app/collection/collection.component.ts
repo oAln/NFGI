@@ -43,16 +43,14 @@ export class CollectionComponent {
       amountPaid: new FormControl(''),
       lateFees: new FormControl(''),
       accountStatus: new FormControl(''),
-      loanId: new FormControl(''),
-      memberId: new FormControl('')
+      loanId: new FormControl('')
     });
 
 
     this.disbursementForm = this.formBuilder.group({
       loanStartDate: new FormControl(''),
       amount: new FormControl(''),
-      installment: new FormControl(''),
-      memberId: new FormControl('')
+      installment: new FormControl('')
     });
 
     this.getMemberData();
@@ -176,7 +174,6 @@ export class CollectionComponent {
         body['paymentDate'] = new Date(currentDate.setDate(data));
         body['amountPaid'] = this.collectionData[0][data];
         body['status'] = 'Active';
-        body['memberId'] = this.collectionData[0].Membership_Id;
         body['loanId'] = this.collectionData[0].Loan_Id;
         body['lateFees'] = this.collectionData[0].Late_Fees;
         if (data && !isNaN(data)) {
@@ -188,7 +185,6 @@ export class CollectionComponent {
       this.disbursementData.forEach((data: any) => {
         body['issuedAt'] = new Date(data?.Loan_Start_Date);
         body['amount'] = data?.Loan_Amount;
-        body['memberId'] = data?.Membership_ID;
         body['accountStatus'] = 'Active';
         body['installment'] = data?.Installment;
         this.saveDisburseData(body);

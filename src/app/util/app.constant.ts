@@ -74,7 +74,7 @@ export class AppConstants {
             header: 'Installment'
         },
         {
-            key: 'collectionAmount',
+            key: 'lastMonthRecovery',
             header: 'Recovery Amount Previous Month' // only last month collection
         },
         {
@@ -129,7 +129,7 @@ export class AppConstants {
             header: 'Total Amount (Including Late Fees)' // cuurent month collection + late fees
         },
         {
-            key: 'finalCollection',   // total coll
+            key: 'finalCollection',
             header: 'Final Collection'
         },
         {

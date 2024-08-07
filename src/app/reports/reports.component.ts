@@ -37,7 +37,7 @@ export class ReportsComponent {
         this.monthReportMonth = this.totalMonths[currentDate.getMonth()];
         this.colReportMonth = this.totalMonths[currentDate.getMonth()];
     }
-    
+
     onBranchReportBranch(selectedBranch: any) {
         console.log('onBranchReportBranch', selectedBranch);
     }
@@ -71,14 +71,15 @@ export class ReportsComponent {
             memberDetails['loanId'] = loanData?.id;
             memberDetails['loanStartDate'] = loanData?.issuedAt;
             memberDetails['accountStatus'] = loanData?.status || 'Active';
+            memberDetails['repayments'] = loanData?.repayments;
             if (loanData?.repayments?.length) {
                 console.log(loanData?.repayments);
                 memberDetails['collectionAmount'] = loanData?.repayments?.reduce(function (accumulator: any, currentValue: any) {
-                  const filteredAmount = ((currentValue?.amountPaid || 0) + (currentValue?.lateFees || 0));
-                  return accumulator + filteredAmount;
+                    const filteredAmount = ((currentValue?.amountPaid || 0) + (currentValue?.lateFees || 0));
+                    return accumulator + filteredAmount;
                 }, 0);
                 memberDetails['paymentDays'] = loanData?.repayments?.length;
-              }
+            }
             this.memberData.push(memberDetails);
         });
     }
@@ -127,12 +128,33 @@ export class ReportsComponent {
         return filterMemberData;
     }
 
+    getMemberLoanData(loanId: string, memberDetails: any) {
+        const filterMemberData = memberDetails.filter((member: any) => {
+            if ((member?.accountStatus != 'Closed') && member?.loanId == loanId) {
+                return member;
+            }
+        })
+        return filterMemberData;
+    }
+
+    getMemberRepaymentData(month: string, memberDetails: any) {
+        const selectedMonthNumber = this.totalMonths.indexOf(month);
+        const filterMemberData = memberDetails.filter((member: any) => {
+            const loanDate = new Date(member?.loanStartDate).getMonth();
+            if ((member?.accountStatus != 'Closed') && member?.loanId && member?.loanStartDate && loanDate == selectedMonthNumber) {
+                return member;
+            }
+        })
+        return filterMemberData;
+    }
+
     getMemberExcelData(member: any, index: any) {
         const simpleExcelProperties = AppConstants.accountStatementHeaders;
         const obj: any = {};
         const loanDays: any = getDayDiff(member?.loanStartDate);
         let lateFees = 0;
         let totalCollectedamount = 0;
+        let lastMonthRecovery = 0;
         simpleExcelProperties.map((property: any) => {
             if (property.key == 'loanDuration') {
                 obj[property.header] = loanDays;
@@ -189,7 +211,26 @@ export class ReportsComponent {
                             obj[property.header] = loanTerm;
                         }
                         break;
+                    case 'lastMonthRecovery':
+                        const currentMonth = new Date().getMonth();
+                        const lastMonth = this.totalMonths[currentMonth - 1];
+                        // const lastMonthMemberData = this.getRepaymentMonthData(lastMonth);
+                        const memberLoanData = this.getMemberLoanData(member?.loanId, this.memberData);
+                        const memberRepaymentData = this.getMemberRepaymentData(lastMonth, memberLoanData);
+                        lastMonthRecovery = memberLoanData?.repayments.reduce(function (accumulator: any, currentValue: any) {
+                            const filteredAmount = (currentValue?.loanId === member?.loanId) ? currentValue?.collectionAmount : 0;
+                            return accumulator + filteredAmount;
+                        }, 0);
+                        obj[property.header] = lastMonthRecovery || 0;
+                        break;
                     case 'totalCollectedamount':
+                        totalCollectedamount = this.memberData.reduce(function (accumulator: any, currentValue: any) {
+                            const filteredAmount = (currentValue?.loanId === member?.loanId) ? currentValue?.collectionAmount : 0;
+                            return accumulator + filteredAmount;
+                        }, 0);
+                        obj[property.header] = totalCollectedamount || 0;
+                        break;
+                    case 'finalCollection':
                         totalCollectedamount = this.memberData.reduce(function (accumulator: any, currentValue: any) {
                             const filteredAmount = (currentValue?.loanId === member?.loanId) ? currentValue?.collectionAmount : 0;
                             return accumulator + filteredAmount;
@@ -353,7 +394,7 @@ export class ReportsComponent {
         );
 
         if (uniqueMemberData?.length && uniqueMemberData[0].loans?.length) {
-            uniqueMemberData[0].loans.forEach((data: any)=>{
+            uniqueMemberData[0].loans.forEach((data: any) => {
                 if (data?.repayments?.length) {
                     data?.repayments.forEach((member: any, index: any) => {
                         this.getMemberCollectionExcelData(data, index);
@@ -361,7 +402,7 @@ export class ReportsComponent {
                 }
             })
         }
-        
+
     }
 
     getTotalAmount(data: any, filterData: string, property: string, filterProperty: string = 'branch',) {
@@ -374,25 +415,25 @@ export class ReportsComponent {
 
     getTotal(members: any, property: string) {
         const totalAmount = members.reduce(function (accumulator: any, currentValue: any) {
-          const filteredAmount = currentValue?.[property] ? parseInt(currentValue?.[property]) : 0;
-          return accumulator + filteredAmount;
+            const filteredAmount = currentValue?.[property] ? parseInt(currentValue?.[property]) : 0;
+            return accumulator + filteredAmount;
         }, 0);
         return totalAmount;
-      }
+    }
 
     generatePDF() {
         const updatedLoanData = this.memberData;
         updatedLoanData.map((member: any) => {
-          member['loanData'] = getIntererstAmount(member, 180);
+            member['loanData'] = getIntererstAmount(member, 180);
         });
         const filteredMemberData = this.getMemberMonthData(this.monthReportMonth, updatedLoanData);
         const filteredBranchMemberDetails = this.getMemberBranchWiseData(this.monthReportBranch, filteredMemberData);
-		// Create a new PDF document.
-		const doc = new jsPDF();
-		// Add content to the PDF.
-		doc.setFontSize(16);
-		doc.text(`LOAN PAID TO MEMBERS PLACEWISE DETAILS - ${'and'}`, 10, 10);
-		doc.setFontSize(12);
+        // Create a new PDF document.
+        const doc = new jsPDF();
+        // Add content to the PDF.
+        doc.setFontSize(16);
+        doc.text(`LOAN PAID TO MEMBERS PLACEWISE DETAILS - ${'and'}`, 10, 10);
+        doc.setFontSize(12);
 
         const totalBranchWiseDetails = {
             total: 'Total',
@@ -401,12 +442,12 @@ export class ReportsComponent {
             totalInstallment: 0,
             totalRecovery: 0,
             totalBalance: 0
-          };
+        };
 
-		// Create a table using `jspdf-autotable`.
-		const headers = [['BRANCH', 'LOAN AMOUNT', 'MATURED LOAN AMOUNT - 180 DAYS', 'INSTALLMENTS', 'RECOVERY', 'BALANCE - 180 DAYS']];
+        // Create a table using `jspdf-autotable`.
+        const headers = [['BRANCH', 'LOAN AMOUNT', 'MATURED LOAN AMOUNT - 180 DAYS', 'INSTALLMENTS', 'RECOVERY', 'BALANCE - 180 DAYS']];
         const data: any = [];
-        filteredBranchMemberDetails.forEach((membeData: any)=>{
+        filteredBranchMemberDetails.forEach((membeData: any) => {
             const branchWiseDetails = {
                 branch: '',
                 loanAmount: 0,
@@ -414,13 +455,13 @@ export class ReportsComponent {
                 installment: 0,
                 recovery: 0,
                 balance: 0
-              };
+            };
             branchWiseDetails.branch = membeData?.branch;
             branchWiseDetails.loanAmount = membeData?.loanAmount || 0;
             branchWiseDetails.maturedLoanAmount = membeData?.loanData?.maturedAmount || 0;
             branchWiseDetails.installment = membeData?.installment || 0;
             branchWiseDetails.recovery = membeData?.collectionAmount || 0;
-            branchWiseDetails.balance = (membeData?.loanData?.maturedAmount || 0) - (membeData?.collectionAmount|| 0);
+            branchWiseDetails.balance = (membeData?.loanData?.maturedAmount || 0) - (membeData?.collectionAmount || 0);
             data.push(Object.values(branchWiseDetails));
             totalBranchWiseDetails.totalLoanAmount = totalBranchWiseDetails.totalLoanAmount + branchWiseDetails.loanAmount;
             totalBranchWiseDetails.totalMaturedLoanAmount = totalBranchWiseDetails.totalMaturedLoanAmount + branchWiseDetails.maturedLoanAmount;
@@ -431,14 +472,14 @@ export class ReportsComponent {
 
         data.push(Object.values(totalBranchWiseDetails));
 
-		autoTable(doc, {
-			head: headers,
-			body: data,
-			startY: 30, // Adjust the `startY` position as needed.
-		});
+        autoTable(doc, {
+            head: headers,
+            body: data,
+            startY: 30, // Adjust the `startY` position as needed.
+        });
 
-		// Save the PDF.
-		doc.save('table.pdf');
-	}   
+        // Save the PDF.
+        doc.save('table.pdf');
+    }
 
 }
