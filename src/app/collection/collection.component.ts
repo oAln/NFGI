@@ -50,7 +50,8 @@ export class CollectionComponent {
     this.disbursementForm = this.formBuilder.group({
       loanStartDate: new FormControl(''),
       amount: new FormControl(''),
-      installment: new FormControl('')
+      installment: new FormControl(''),
+      memberId: new FormControl('')
     });
 
     this.getMemberData();
@@ -185,6 +186,7 @@ export class CollectionComponent {
       this.disbursementData.forEach((data: any) => {
         body['issuedAt'] = new Date(data?.Loan_Start_Date);
         body['amount'] = data?.Loan_Amount;
+        body['memberId'] = data?.Membership_Id;
         body['accountStatus'] = 'Active';
         body['installment'] = data?.Installment;
         this.saveDisburseData(body);
