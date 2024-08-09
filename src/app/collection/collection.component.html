@@ -84,7 +84,7 @@
                     <div class="row align-center">
                         <label class="col-5 form-label">Upload Collection</label>
                         <div class="col-7">
-                            <input type="file" class="form-control" (change)="getExcelData($event, 'collection')">
+                            <input #collectionInput type="file" class="form-control" (change)="getExcelData($event, 'collection')">
                         </div>
                     </div>
                 </div>
@@ -99,7 +99,7 @@
                     <div class="row align-center">
                         <label class="col-5 form-label">Upload Disbursement</label>
                         <div class="col-7">
-                            <input type="file" class="form-control" (change)="getExcelData($event, 'disbursement')">
+                            <input #disburseInput type="file" class="form-control" (change)="getExcelData($event, 'disbursement')">
                         </div>
                     </div>
                 </div>

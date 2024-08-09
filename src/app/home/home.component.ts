@@ -23,8 +23,7 @@ export class HomeComponent {
     totalRecovey: 0,
     totalBalance: 0,
   };
-  newAccountDisburse = 0;
-  oldAccountDisburse = 0;
+  totalDisbursement = 0;
   totalCollection = 0;
   selectedLoanDuration = 120;
   loanDurationData = [30, 60, 90, 120, 150, 180];
@@ -86,8 +85,6 @@ export class HomeComponent {
         // this.getBranchwiseDetails(this.selectedBranch, filteredMemberDetails);
         // this.getMemberMonthWiseData(this.selectedMonth, filteredMemberDetails);
         this.onLoanDurationSelect("120");
-        this.newAccountDisburse = 0;
-        this.oldAccountDisburse = 0;
         this.filterCardData('Daily');
       });
   }
@@ -184,20 +181,8 @@ export class HomeComponent {
       default:
         break;
     }
-    const oldDisburse: any = [];
-    const newDisburse: any = [];
-    this.memberData.forEach((member: any) => {
-      if (member?.loans?.length > 1) {
-        oldDisburse.push(member)
-      } else {
-        newDisburse.push(member)
-      }
-    })
-    this.oldAccountDisburse = oldDisburse?.reduce(function (accumulator: any, currentValue: any) {
-      const filteredAmount = ((new Date(currentValue?.loanStartDate) > dateFilter) ? currentValue?.loanAmount : 0) || 0;
-      return accumulator + filteredAmount;
-    }, 0);
-    this.newAccountDisburse = newDisburse?.reduce(function (accumulator: any, currentValue: any) {
+
+    this.totalDisbursement = this.memberData?.reduce(function (accumulator: any, currentValue: any) {
       const filteredAmount = ((new Date(currentValue?.loanStartDate) > dateFilter) ? currentValue?.loanAmount : 0) || 0;
       return accumulator + filteredAmount;
     }, 0);

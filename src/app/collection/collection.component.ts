@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { HTTPService } from '../services/http.service';
 import * as XLSX from 'xlsx';
@@ -29,7 +29,8 @@ export class CollectionComponent {
   }
 
   currentDate = new Date();
-
+  @ViewChild('collectionInput') collectionUpload?: any;
+  @ViewChild('disburseInput') disburseUpload?: any;
   templateType = 'collection';
 
   public searchForm = this.formBuilder.group({
@@ -195,7 +196,8 @@ export class CollectionComponent {
     this.showAlert = true;
     this.alertText = "Template Submitted Successfully."
     this.hideAlert();
-    window.scrollTo(0, 0);
+    this.collectionUpload['nativeElement']['value'] = null;
+    this.disburseUpload['nativeElement']['value'] = null;
   }
 
   submitCollectionForm() {
