@@ -144,7 +144,7 @@ export class ReportsComponent {
     getMemberYearData(year: any, memberDetails: any) {
         const filterMemberData = memberDetails.filter((member: any) => {
             const loanYear = new Date(member?.loanStartDate).getFullYear();
-            if (member?.loanId && member?.loanStartDate && loanYear == year) {
+            if (member?.loanId && member?.loanStartDate && loanYear <= year) {
                 return member;
             }
         })
@@ -156,7 +156,7 @@ export class ReportsComponent {
         const selectedMonthNumber = this.totalMonths.indexOf(month);
         const filterMemberData = memberDetails.filter((member: any) => {
             const loanDate = new Date(member?.loanStartDate).getMonth();
-            if (member?.loanId && member?.loanStartDate && loanDate == selectedMonthNumber) {
+            if (member?.loanId && member?.loanStartDate && loanDate <= selectedMonthNumber) {
                 return member;
             }
         })
