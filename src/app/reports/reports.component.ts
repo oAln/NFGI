@@ -200,23 +200,18 @@ export class ReportsComponent {
             } else {
                 switch (property.key) {
                     case 'maturedAmount30':
-                        // lateFees = (loanDays > 30) ? (loanDays - 30) * 16.67 : 0;
                         obj[property.header] = (member?.loanAmount * 1.05 + lateFees) || 0;
                         break;
                     case 'maturedAmount60':
-                        // lateFees = (loanDays > 60) ? (loanDays - 60) * 16.67 : 0;
                         obj[property.header] = (member?.loanAmount * 1.1 + lateFees) || 0;
                         break;
                     case 'maturedAmount90':
-                        // lateFees = (loanDays > 90) ? (loanDays - 90) * 16.67 : 0;
                         obj[property.header] = (member?.loanAmount * 1.15 + lateFees) || 0;
                         break;
                     case 'maturedAmount120':
-                        // lateFees = (loanDays > 120) ? (loanDays - 120) * 16.67 : 0;
                         obj[property.header] = (member?.loanAmount * 1.2 + lateFees) || 0;
                         break;
                     case 'maturedAmount150':
-                        // lateFees = (loanDays > 150) ? (loanDays - 150) * 16.67 : 0;
                         obj[property.header] = (member?.loanAmount * 1.25 + lateFees) || 0;
                         break;
                     case 'maturedAmount180':
@@ -225,46 +220,48 @@ export class ReportsComponent {
                         break;
                     case 'term':
                     case 'lateFees':
-                        let loanTerm = 30;
-                        if (loanDays <= 35) {
-                            loanTerm = 30;
-                        } else if (loanDays > 35 && loanDays <= 65) {
-                            loanTerm = 60;
-                        } else if (loanDays > 65 && loanDays <= 95) {
-                            loanTerm = 90;
-                        } else if (loanDays > 95 && loanDays <= 125) {
-                            loanTerm = 120;
-                        } else if (loanDays > 125 && loanDays <= 155) {
-                            loanTerm = 150;
-                        } else {
-                            loanTerm = 180;
+                        {
+                            let loanTerm = 30;
+                            if (loanDays <= 35) {
+                                loanTerm = 30;
+                            } else if (loanDays > 35 && loanDays <= 65) {
+                                loanTerm = 60;
+                            } else if (loanDays > 65 && loanDays <= 95) {
+                                loanTerm = 90;
+                            } else if (loanDays > 95 && loanDays <= 125) {
+                                loanTerm = 120;
+                            } else if (loanDays > 125 && loanDays <= 155) {
+                                loanTerm = 150;
+                            } else {
+                                loanTerm = 180;
+                            }
+                            if (property.key == 'lateFees') {
+                                obj[property.header] = lateFees || 0;
+                            } else {
+                                obj[property.header] = loanTerm;
+                            }
+                            break;
                         }
-                        if (property.key == 'lateFees') {
-                            // lateFees = (loanDays > loanTerm) ? (loanDays - loanTerm) * 16.67 : 0;
-                            obj[property.header] = lateFees || 0;
-                        } else {
-                            obj[property.header] = loanTerm;
-                        }
-                        break;
                     case 'lastMonthRecovery':
-                        const currentMonth = new Date().getMonth();
-                        const lastMonth = this.totalMonths[currentMonth - 1];
-                        // const lastMonthMemberData = this.getRepaymentMonthData(lastMonth);
-                        const memberLoanData = this.getMemberLoanData(member?.loanId, this.memberData);
-                        const memberRepaymentData = this.getMemberRepaymentData(lastMonth, memberLoanData);
-                        lastMonthRecovery = memberLoanData?.repayments.reduce(function (accumulator: any, currentValue: any) {
-                            const filteredAmount = (currentValue?.loanId === member?.loanId) ? currentValue?.collectionAmount : 0;
-                            return accumulator + filteredAmount;
-                        }, 0);
-                        obj[property.header] = lastMonthRecovery || 0;
-                        break;
-                    case 'totalCollectedamount':
-                        totalCollectedamount = this.memberData.reduce(function (accumulator: any, currentValue: any) {
-                            const filteredAmount = (currentValue?.loanId === member?.loanId) ? currentValue?.collectionAmount : 0;
-                            return accumulator + filteredAmount;
-                        }, 0);
-                        obj[property.header] = totalCollectedamount || 0;
-                        break;
+                        {
+                            const lastMonth = new Date().getMonth() - 1;
+                            lastMonthRecovery = member?.repayments.reduce(function (accumulator: any, currentValue: any) {
+                                const filteredAmount = (new Date(currentValue.paymentDate).getMonth() == lastMonth) ? (currentValue?.amountPaid + currentValue?.lateFees) : 0;
+                                return accumulator + filteredAmount;
+                            }, 0);
+                            obj[property.header] = lastMonthRecovery || 0;
+                            break;
+                        }
+                    case 'totalCollectedAmount':
+                        {
+                            const currentMonth = new Date().getMonth();
+                            totalCollectedamount = this.memberData.reduce(function (accumulator: any, currentValue: any) {
+                                const filteredAmount = (new Date(currentValue.paymentDate).getMonth() == currentMonth) ? currentValue?.collectionAmount : 0;
+                                return accumulator + filteredAmount;
+                            }, 0);
+                            obj[property.header] = totalCollectedamount || 0;
+                            break;
+                        }
                     case 'finalCollection':
                         totalCollectedamount = this.memberData.reduce(function (accumulator: any, currentValue: any) {
                             const filteredAmount = (currentValue?.loanId === member?.loanId) ? currentValue?.collectionAmount : 0;
@@ -291,11 +288,13 @@ export class ReportsComponent {
                         obj[property.header] = (totalCollectedamount - obj[simpleExcelProperties[10].header]) || 0;
                         break;
                     case 'totalAmount':
-                        const appliedLoanTerm = obj[simpleExcelProperties[22].header];
-                        const defaultLoanTerms = AppConstants.loanTerms;
-                        const loanInterest = defaultLoanTerms.find((loanTerm: any) => loanTerm.term === appliedLoanTerm || {})?.rate || 1.05;
-                        obj[property.header] = (member?.loanAmount * loanInterest + obj[simpleExcelProperties[24].header]) || 0;
-                        break;
+                        {
+                            const appliedLoanTerm = obj[simpleExcelProperties[22].header];
+                            const defaultLoanTerms = AppConstants.loanTerms;
+                            const loanInterest = defaultLoanTerms.find((loanTerm: any) => loanTerm.term === appliedLoanTerm || {})?.rate || 1.05;
+                            obj[property.header] = (member?.loanAmount * loanInterest + obj[simpleExcelProperties[24].header]) || 0;
+                            break;
+                        }
                     case 'loanOverdue':
                         obj[property.header] = (member?.loanAmount + obj[simpleExcelProperties[24].header]) || 0;
                         break;
@@ -353,68 +352,74 @@ export class ReportsComponent {
         let year = new Date().getFullYear();
         switch (reportType) {
             case 'simple':
-                branchName = this.monthReportBranch;
-                month = this.monthReportMonth;
-                year = this.monthReportYear;
-                filteredYearMemberData = this.getMemberYearData(year, this.memberData);
-                filteredMonthMemberData = this.getMemberMonthData(month, filteredYearMemberData);
-                filteredBranchMemberDetails = this.getMemberBranchWiseData(branchName, filteredMonthMemberData);
-                filteredBranchMemberDetails.forEach((member: any, index: any) => {
-                    this.getMemberExcelData(member, index);
-                });
-                this.excelData.push(Object.keys(this.simpleExcelData[0]));
-                this.simpleExcelData.forEach((data: any) => {
-                    if (Object.keys(this.simpleExcelData[0])?.length == Object.values(data)?.length) {
-                        this.excelData.push(Object.values(data));
-                    }
-                });
-                break;
+                {
+                    branchName = this.monthReportBranch;
+                    month = this.monthReportMonth;
+                    year = this.monthReportYear;
+                    filteredYearMemberData = this.getMemberYearData(year, this.memberData);
+                    filteredMonthMemberData = this.getMemberMonthData(month, filteredYearMemberData);
+                    filteredBranchMemberDetails = this.getMemberBranchWiseData(branchName, filteredMonthMemberData);
+                    filteredBranchMemberDetails.forEach((member: any, index: any) => {
+                        this.getMemberExcelData(member, index);
+                    });
+                    this.excelData.push(Object.keys(this.simpleExcelData[0]));
+                    this.simpleExcelData.forEach((data: any) => {
+                        if (Object.keys(this.simpleExcelData[0])?.length == Object.values(data)?.length) {
+                            this.excelData.push(Object.values(data));
+                        }
+                    });
+                    break;
+                }
 
             case 'branchwise':
-                const branchWiseDetails: any = {
-                    Branch: '',
-                    LoanAmount: 0,
-                    MaturedLoanAmount: 0,
-                    Installments: 0,
-                    Recovery: 0,
-                    Balance: 0
-                };
-                branchName = this.branchReportBranch;
-                month = this.branchReportMonth;
-                year = this.branchReportYear;
-                filteredYearMemberData = this.getMemberYearData(year, this.memberData);
-                filteredMonthMemberData = this.getMemberMonthData(month, filteredYearMemberData);
-                filteredBranchMemberDetails = this.getMemberBranchWiseData(branchName, filteredMonthMemberData);
-                const defaultLoanTerms = AppConstants.loanTerms;
-                const loanterm = defaultLoanTerms.find((termData: any) => termData.term === this.selectedLoanDuration || {})?.term;
-                branchWiseDetails.Branch = this.branchReportBranch;
-                branchWiseDetails.LoanAmount = this.getTotal(filteredBranchMemberDetails, 'loanAmount');
-                branchWiseDetails.Installments = this.getTotal(filteredBranchMemberDetails, 'installment');
-                branchWiseDetails.MaturedLoanAmount = filteredBranchMemberDetails.reduce(function (accumulator: any, currentValue: any) {
-                    const filteredAmount = (currentValue?.loanData?.loanTerm == loanterm) ? currentValue?.loanData?.maturedAmount : 0;
-                    return accumulator + filteredAmount;
-                }, 0);
-                branchWiseDetails.Recovery = this.getTotal(filteredBranchMemberDetails, 'collectionAmount');
-                branchWiseDetails.Balance = branchWiseDetails.MaturedLoanAmount - branchWiseDetails.Recovery;
-                this.excelData.push(Object.keys(branchWiseDetails));
-                this.excelData.push(Object.values(branchWiseDetails));
-                break;
+                {
+                    const branchWiseDetails: any = {
+                        Branch: '',
+                        LoanAmount: 0,
+                        MaturedLoanAmount: 0,
+                        Installments: 0,
+                        Recovery: 0,
+                        Balance: 0
+                    };
+                    branchName = this.branchReportBranch;
+                    month = this.branchReportMonth;
+                    year = this.branchReportYear;
+                    filteredYearMemberData = this.getMemberYearData(year, this.memberData);
+                    filteredMonthMemberData = this.getMemberMonthData(month, filteredYearMemberData);
+                    filteredBranchMemberDetails = this.getMemberBranchWiseData(branchName, filteredMonthMemberData);
+                    const defaultLoanTerms = AppConstants.loanTerms;
+                    const loanterm = defaultLoanTerms.find((termData: any) => termData.term === this.selectedLoanDuration || {})?.term;
+                    branchWiseDetails.Branch = this.branchReportBranch;
+                    branchWiseDetails.LoanAmount = this.getTotal(filteredBranchMemberDetails, 'loanAmount');
+                    branchWiseDetails.Installments = this.getTotal(filteredBranchMemberDetails, 'installment');
+                    branchWiseDetails.MaturedLoanAmount = filteredBranchMemberDetails.reduce(function (accumulator: any, currentValue: any) {
+                        const filteredAmount = (currentValue?.loanData?.loanTerm == loanterm) ? currentValue?.loanData?.maturedAmount : 0;
+                        return accumulator + filteredAmount;
+                    }, 0);
+                    branchWiseDetails.Recovery = this.getTotal(filteredBranchMemberDetails, 'collectionAmount');
+                    branchWiseDetails.Balance = branchWiseDetails.MaturedLoanAmount - branchWiseDetails.Recovery;
+                    this.excelData.push(Object.keys(branchWiseDetails));
+                    this.excelData.push(Object.values(branchWiseDetails));
+                    break;
+                }
 
             case 'collection':
-                branchName = this.colReportBranch;
-                month = this.colReportMonth;
-                year = this.colReportYear;
-                filteredYearMemberData = this.getMemberYearData(year, this.memberData);
-                filteredMonthMemberData = this.getMemberMonthData(month, filteredYearMemberData);
-                filteredBranchMemberDetails = this.getMemberBranchWiseData(branchName, filteredMonthMemberData);
-                this.getCollectionData(filteredBranchMemberDetails);
-                this.excelData.push(Object.keys(this.collectionExcelData[0]));
-                this.collectionExcelData.forEach((data: any) => {
-                    if (Object.keys(this.collectionExcelData[0])?.length == Object.values(data)?.length) {
-                        this.excelData.push(Object.values(data));
-                    }
-                });
-                break;
+                {
+                    branchName = this.colReportBranch;
+                    month = this.colReportMonth;
+                    year = this.colReportYear;
+                    filteredYearMemberData = this.getMemberYearData(year, this.memberData);
+                    filteredMonthMemberData = this.getMemberMonthData(month, filteredYearMemberData);
+                    filteredBranchMemberDetails = this.getMemberBranchWiseData(branchName, filteredMonthMemberData);
+                    this.getCollectionData(filteredBranchMemberDetails);
+                    this.excelData.push(Object.keys(this.collectionExcelData[0]));
+                    this.collectionExcelData.forEach((data: any) => {
+                        if (Object.keys(this.collectionExcelData[0])?.length == Object.values(data)?.length) {
+                            this.excelData.push(Object.values(data));
+                        }
+                    });
+                    break;
+                }
 
             default:
                 break;
@@ -450,14 +455,6 @@ export class ReportsComponent {
         }
 
     }
-
-    // getTotalAmount(data: any, filterData: string) {
-    //     const totalAmount = data.reduce(function (accumulator: any, currentValue: any) {
-    //         const filteredAmount = (currentValue?.[filterData] === filterData) ? currentValue?.[property] : 0;
-    //         return accumulator + filteredAmount;
-    //     }, 0);
-    //     return totalAmount;
-    // }
 
     getTotal(members: any, property: string) {
         const totalAmount = members.reduce(function (accumulator: any, currentValue: any) {

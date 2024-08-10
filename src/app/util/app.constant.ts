@@ -75,10 +75,10 @@ export class AppConstants {
         },
         {
             key: 'lastMonthRecovery',
-            header: 'Recovery Amount Previous Month' // only last month collection
+            header: 'Recovery Amount Previous Month'
         },
         {
-            key: 'totalCollectedamount',
+            key: 'totalCollectedAmount',
             header: 'Total Collected Bal of this  Month (Recovery + Closing Bal)' // total coll for current month
         }, {
             key: 'remainingAmount30',
