@@ -144,7 +144,7 @@ export class ReportsComponent {
     getMemberYearData(year: any, memberDetails: any) {
         const filterMemberData = memberDetails.filter((member: any) => {
             const loanYear = new Date(member?.loanStartDate).getFullYear();
-            if (member?.loanId && member?.loanStartDate && loanYear <= year) {
+            if (member?.loanId && member?.loanStartDate && loanYear == year) {
                 return member;
             }
         })
@@ -153,6 +153,28 @@ export class ReportsComponent {
 
     // Filter data month wise
     getMemberMonthData(month: string, memberDetails: any) {
+        const selectedMonthNumber = this.totalMonths.indexOf(month);
+        const filterMemberData = memberDetails.filter((member: any) => {
+            const loanDate = new Date(member?.loanStartDate).getMonth();
+            if (member?.loanId && member?.loanStartDate && loanDate == selectedMonthNumber) {
+                return member;
+            }
+        })
+        return filterMemberData;
+    }
+
+    getAllMemberYearData(year: any, memberDetails: any) {
+        const filterMemberData = memberDetails.filter((member: any) => {
+            const loanYear = new Date(member?.loanStartDate).getFullYear();
+            if (member?.loanId && member?.loanStartDate && loanYear <= year) {
+                return member;
+            }
+        })
+        return filterMemberData;
+    }
+
+    // Filter data month wise
+    getAllMemberMonthData(month: string, memberDetails: any) {
         const selectedMonthNumber = this.totalMonths.indexOf(month);
         const filterMemberData = memberDetails.filter((member: any) => {
             const loanDate = new Date(member?.loanStartDate).getMonth();
@@ -348,8 +370,8 @@ export class ReportsComponent {
                     branchName = this.monthReportBranch;
                     month = this.monthReportMonth;
                     year = this.monthReportYear;
-                    filteredYearMemberData = this.getMemberYearData(year, this.memberData);
-                    filteredMonthMemberData = this.getMemberMonthData(month, filteredYearMemberData);
+                    filteredYearMemberData = this.getAllMemberYearData(year, this.memberData);
+                    filteredMonthMemberData = this.getAllMemberMonthData(month, filteredYearMemberData);
                     filteredBranchMemberDetails = this.getMemberBranchWiseData(branchName, filteredMonthMemberData);
                     filteredBranchMemberDetails.forEach((member: any, index: any) => {
                         this.getMemberExcelData(member, index);
@@ -376,8 +398,8 @@ export class ReportsComponent {
                     branchName = this.branchReportBranch;
                     month = this.branchReportMonth;
                     year = this.branchReportYear;
-                    filteredYearMemberData = this.getMemberYearData(year, this.memberData);
-                    filteredMonthMemberData = this.getMemberMonthData(month, filteredYearMemberData);
+                    filteredYearMemberData = this.getAllMemberYearData(year, this.memberData);
+                    filteredMonthMemberData = this.getAllMemberMonthData(month, filteredYearMemberData);
                     filteredBranchMemberDetails = this.getMemberBranchWiseData(branchName, filteredMonthMemberData);
                     const defaultLoanTerms = AppConstants.loanTerms;
                     const loanterm = defaultLoanTerms.find((termData: any) => termData.term === this.selectedLoanDuration || {})?.term;
