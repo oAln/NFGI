@@ -15,12 +15,15 @@ import jsPDF from 'jspdf';
 export class ReportsComponent {
     monthData: string[] = [];
     totalMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];;
-    branchReportMonth = '';
-    colReportMonth = '';
-    monthReportMonth = '';
     branchReportBranch = '';
+    branchReportMonth = '';
+    branchReportYear = '';
     monthReportBranch = '';
+    monthReportMonth = '';
+    monthReportYear = '';
     colReportBranch = '';
+    colReportMonth = '';
+    colReportYear = '';
     branchData: any;
     selectedLoanDuration = 30;
     loanDurationData = [30, 60, 90, 120, 150, 180];
@@ -344,22 +347,18 @@ export class ReportsComponent {
                 month = this.branchReportMonth;
                 filteredMemberData = this.getMemberMonthData(this.branchReportMonth, this.memberData);
                 filteredBranchMemberDetails = this.getMemberBranchWiseData(this.branchReportBranch, filteredMemberData);
-                const branch = 'this.selectedBranch';
+                const branch = this.branchReportBranch;
                 const defaultLoanTerms = AppConstants.loanTerms;
                 const loanterm = defaultLoanTerms.find((termData: any) => termData.term === this.selectedLoanDuration || {})?.term;
-                branchWiseDetails.Branch = 'this.selectedBranch';
-                branchWiseDetails.LoanAmount = this.getTotalAmount(filteredBranchMemberDetails, branch, 'loanAmount');
-                branchWiseDetails.Installments = this.getTotalAmount(filteredBranchMemberDetails, branch, 'installment');
+                branchWiseDetails.Branch = this.branchReportBranch;
+                branchWiseDetails.LoanAmount = this.getTotal(filteredBranchMemberDetails, 'loanAmount');
+                branchWiseDetails.Installments = this.getTotal(filteredBranchMemberDetails, 'installment');
                 branchWiseDetails.MaturedLoanAmount = filteredBranchMemberDetails.reduce(function (accumulator: any, currentValue: any) {
                     const filteredAmount = (currentValue?.loanData?.loanTerm == loanterm) ? currentValue?.loanData?.maturedAmount : 0;
                     return accumulator + filteredAmount;
                 }, 0);
-                branchWiseDetails.Recovery = this.getTotalAmount(filteredBranchMemberDetails, branch, 'collectionAmount');
-                const recovryAmount = filteredBranchMemberDetails.reduce(function (accumulator: any, currentValue: any) {
-                    const filteredAmount = (currentValue?.loanData?.loanTerm == loanterm) ? currentValue?.collectionAmount : 0;
-                    return accumulator + filteredAmount;
-                }, 0);
-                branchWiseDetails.Balance = branchWiseDetails.MaturedLoanAmount - recovryAmount;
+                branchWiseDetails.Recovery = this.getTotal(filteredBranchMemberDetails, 'collectionAmount');
+                branchWiseDetails.Balance = branchWiseDetails.MaturedLoanAmount - branchWiseDetails.Recovery;
                 this.excelData.push(Object.keys(branchWiseDetails));
                 this.excelData.push(Object.values(branchWiseDetails));
                 break;
@@ -415,13 +414,13 @@ export class ReportsComponent {
 
     }
 
-    getTotalAmount(data: any, filterData: string, property: string, filterProperty: string = 'branch',) {
-        const totalAmount = data.reduce(function (accumulator: any, currentValue: any) {
-            const filteredAmount = (currentValue?.[filterProperty] === filterData) ? currentValue?.[property] : 0;
-            return accumulator + filteredAmount;
-        }, 0);
-        return totalAmount;
-    }
+    // getTotalAmount(data: any, filterData: string) {
+    //     const totalAmount = data.reduce(function (accumulator: any, currentValue: any) {
+    //         const filteredAmount = (currentValue?.[filterData] === filterData) ? currentValue?.[property] : 0;
+    //         return accumulator + filteredAmount;
+    //     }, 0);
+    //     return totalAmount;
+    // }
 
     getTotal(members: any, property: string) {
         const totalAmount = members.reduce(function (accumulator: any, currentValue: any) {

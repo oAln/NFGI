@@ -229,10 +229,6 @@ export class HomeComponent {
       return accumulator + filteredAmount;
     }, 0);
     this.branchWiseDetails.totalRecovey = this.getTotalAmount(memberDetails, 'collectionAmount');
-    const recovryAmount = memberDetails.reduce(function (accumulator: any, currentValue: any) {
-      const filteredAmount = (currentValue?.loanData?.loanTerm == loanDuration) ? currentValue?.collectionAmount || 0 : 0;
-      return accumulator + filteredAmount;
-    }, 0);
-    this.branchWiseDetails.totalBalance = this.branchWiseDetails.totalMaturedLoanAmount - recovryAmount;
+    this.branchWiseDetails.totalBalance = this.branchWiseDetails.totalMaturedLoanAmount - this.branchWiseDetails.totalRecovey ;
   }
 }
