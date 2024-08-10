@@ -259,8 +259,9 @@ export class MemberComponent {
 
   deleteMemberData() {
     this.http.delete(`member`, this.selectedMemberId).subscribe((data) => {
-      this.memberData = data;
-    })
+      this.getMemberData();
+    });    
+    this.showDeleteDialog = false;
   }
 
   printPage(printSide: any, memberDetails: any) {
