@@ -28,6 +28,7 @@
 13. Collection template upload is reading only first row.Also, please ensure the data reading is minimum uypto 1000 lines. => Pending
 2. Delete member not working => Backend changes => Pending
 23. Report -> Collection Report -> report should add all the collection for a particular loan id in same row. Multiple entry should not be made for same loan id collection. => Pending
+26. multi Branch => Pending
 
 
 
