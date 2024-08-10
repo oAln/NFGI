@@ -21,13 +21,13 @@
 24. Report -> Collection Report -> Member name field is showing 0. It should show the name.
 25. Report -> Branchwise detail Report -> Not showing any data. => Done
 1. amount received from excel is wrong => Done
-3. NFGI Account Statement Report 1 -Done
-8. change excel accept date format to dd/mm/yyyy => Excel Issue
+3. NFGI Account Statement Report 1 - Done
+23. Report -> Collection Report -> report should add all the collection for a particular loan id in same row. Multiple entry should not be made for same loan id collection. => Done
+8. change excel accept date format to dd/mm/yyyy => Excel Issue => Controlled by Excel
 4. All documents are not downloading. Only 1 document downloading => Pending
 7. Collection Input - Color coded Dormant Orange and closed - Green => Pending
 13. Collection template upload is reading only first row.Also, please ensure the data reading is minimum uypto 1000 lines. => Pending
 2. Delete member not working => Backend changes => Pending
-23. Report -> Collection Report -> report should add all the collection for a particular loan id in same row. Multiple entry should not be made for same loan id collection. => Pending
 26. multi Branch => Pending
 
 
