@@ -224,6 +224,7 @@ export class CollectionComponent {
     const body = this.disbursementForm.value;
     body['issuedAt'] = new Date(this.disbursementForm?.value?.loanStartDate);
     body['accountStatus'] = 'Active';
+    body['memberId'] = this.disbursementForm?.value?.memberId.trim();
     this.saveDisburseData(body);
     this.disbursementForm.reset();
   }
