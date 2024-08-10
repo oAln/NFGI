@@ -6,6 +6,7 @@ import { AppConstants } from '../util/app.constant';
 import { ExcelService } from '../services/excel.service';
 import autoTable from 'jspdf-autotable';
 import jsPDF from 'jspdf';
+import { formatDate } from '@angular/common';
 
 @Component({
     templateUrl: 'reports.component.html',
@@ -176,35 +177,36 @@ export class ReportsComponent {
         const obj: any = {};
         const loanDays: any = getDayDiff(member?.loanStartDate);
         let lateFees = 0;
-        let totalCollectedamount = 0;
-        let lastMonthRecovery = 0;
+        let totalCollectedAmount = 0;
         simpleExcelProperties.map((property: any) => {
             if (property.key == 'loanDuration') {
                 obj[property.header] = loanDays;
             } else if (property.key == 'index') {
                 obj[property.header] = index + 1;
+            } else if (property.key == 'loanStartDate') {
+                obj[property.header] = formatDate(member[property.key], 'dd/MM/yyyy', 'en');;
             } else if (member?.[property.key]) {
                 obj[property.header] = member[property.key];
             } else {
                 switch (property.key) {
                     case 'maturedAmount30':
-                        obj[property.header] = (member?.loanAmount * 1.05 + lateFees) || 0;
+                        obj[property.header] = (member?.loanAmount * 1.05 + lateFees)?.toFixed(2) || 0;
                         break;
                     case 'maturedAmount60':
-                        obj[property.header] = (member?.loanAmount * 1.1 + lateFees) || 0;
+                        obj[property.header] = (member?.loanAmount * 1.1 + lateFees)?.toFixed(2) || 0;
                         break;
                     case 'maturedAmount90':
-                        obj[property.header] = (member?.loanAmount * 1.15 + lateFees) || 0;
+                        obj[property.header] = (member?.loanAmount * 1.15 + lateFees)?.toFixed(2) || 0;
                         break;
                     case 'maturedAmount120':
-                        obj[property.header] = (member?.loanAmount * 1.2 + lateFees) || 0;
+                        obj[property.header] = (member?.loanAmount * 1.2 + lateFees)?.toFixed(2) || 0;
                         break;
                     case 'maturedAmount150':
-                        obj[property.header] = (member?.loanAmount * 1.25 + lateFees) || 0;
+                        obj[property.header] = (member?.loanAmount * 1.25 + lateFees)?.toFixed(2) || 0;
                         break;
                     case 'maturedAmount180':
                         lateFees = (loanDays > 180) ? (loanDays - 180) * 16.67 : 0;
-                        obj[property.header] = (member?.loanAmount * 1.3 + lateFees) || 0;
+                        obj[property.header] = (member?.loanAmount * 1.3 + lateFees)?.toFixed(2) || 0;
                         break;
                     case 'term':
                     case 'lateFees':
@@ -233,54 +235,56 @@ export class ReportsComponent {
                     case 'lastMonthRecovery':
                         {
                             const lastMonth = new Date().getMonth() - 1;
-                            lastMonthRecovery = member?.repayments.reduce(function (accumulator: any, currentValue: any) {
+                            const lastMonthRecovery = member?.repayments.reduce(function (accumulator: any, currentValue: any) {
                                 const filteredAmount = (new Date(currentValue.paymentDate).getMonth() == lastMonth) ? (currentValue?.amountPaid + currentValue?.lateFees) : 0;
                                 return accumulator + filteredAmount;
                             }, 0);
-                            obj[property.header] = lastMonthRecovery || 0;
+                            obj[property.header] = lastMonthRecovery?.toFixed(2) || 0;
                             break;
                         }
                     case 'totalCollectedAmount':
                         {
                             const currentMonth = new Date().getMonth();
-                            totalCollectedamount = this.memberData.reduce(function (accumulator: any, currentValue: any) {
+                            const totalAmount = this.memberData.reduce(function (accumulator: any, currentValue: any) {
                                 const filteredAmount = (new Date(currentValue.paymentDate).getMonth() == currentMonth) ? currentValue?.collectionAmount : 0;
                                 return accumulator + filteredAmount;
                             }, 0);
-                            obj[property.header] = totalCollectedamount || 0;
+                            obj[property.header] = totalAmount?.toFixed(2) || 0;
                             break;
                         }
                     case 'finalCollection':
-                        totalCollectedamount = this.memberData.reduce(function (accumulator: any, currentValue: any) {
+                        totalCollectedAmount = this.memberData.reduce(function (accumulator: any, currentValue: any) {
                             const filteredAmount = (currentValue?.loanId === member?.loanId) ? currentValue?.collectionAmount : 0;
                             return accumulator + filteredAmount;
                         }, 0);
-                        obj[property.header] = totalCollectedamount || 0;
+                        obj[property.header] = totalCollectedAmount?.toFixed(2) || 0;
                         break;
                     case 'remainingAmount30':
-                        obj[property.header] = (totalCollectedamount - obj[simpleExcelProperties[5].header]) || 0;
+                        obj[property.header] = (totalCollectedAmount - obj[simpleExcelProperties[5].header])?.toFixed(2) || 0;
                         break;
                     case 'remainingAmount60':
-                        obj[property.header] = (totalCollectedamount - obj[simpleExcelProperties[6].header]) || 0;
+                        obj[property.header] = (totalCollectedAmount - obj[simpleExcelProperties[6].header])?.toFixed(2) || 0;
                         break;
                     case 'remainingAmount90':
-                        obj[property.header] = (totalCollectedamount - obj[simpleExcelProperties[7].header]) || 0;
+                        obj[property.header] = (totalCollectedAmount - obj[simpleExcelProperties[7].header])?.toFixed(2) || 0;
                         break;
                     case 'remainingAmount120':
-                        obj[property.header] = (totalCollectedamount - obj[simpleExcelProperties[8].header]) || 0;
+                        obj[property.header] = (totalCollectedAmount - obj[simpleExcelProperties[8].header])?.toFixed(2) || 0;
                         break;
                     case 'remainingAmount150':
-                        obj[property.header] = (totalCollectedamount - obj[simpleExcelProperties[9].header] || 0);
+                        obj[property.header] = (totalCollectedAmount - obj[simpleExcelProperties[9].header])?.toFixed(2) || 0;
                         break;
                     case 'remainingAmount180':
-                        obj[property.header] = (totalCollectedamount - obj[simpleExcelProperties[10].header]) || 0;
+                        obj[property.header] = (totalCollectedAmount - obj[simpleExcelProperties[10].header])?.toFixed(2) || 0;
                         break;
                     case 'totalAmount':
                         {
-                            const appliedLoanTerm = obj[simpleExcelProperties[22].header];
-                            const defaultLoanTerms = AppConstants.loanTerms;
-                            const loanInterest = defaultLoanTerms.find((loanTerm: any) => loanTerm.term === appliedLoanTerm || {})?.rate || 1.05;
-                            obj[property.header] = (member?.loanAmount * loanInterest + obj[simpleExcelProperties[24].header]) || 0;
+                            const currentMonth = new Date().getMonth();
+                            const recovery = member?.repayments.reduce(function (accumulator: any, currentValue: any) {
+                                const filteredAmount = (new Date(currentValue.paymentDate).getMonth() == currentMonth) ? currentValue?.amountPaid : 0;
+                                return accumulator + filteredAmount;
+                            }, 0);
+                            obj[property.header] = recovery?.toFixed(2) || 0;
                             break;
                         }
                     case 'loanOverdue':

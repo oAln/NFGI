@@ -79,7 +79,7 @@ export class AppConstants {
         },
         {
             key: 'totalCollectedAmount',
-            header: 'Total Collected Bal of this  Month (Recovery + Closing Bal)' // total coll for current month
+            header: 'Total Collected Bal of this  Month (Recovery + Closing Bal)'
         }, {
             key: 'remainingAmount30',
             header: '30 Days Remaining'
@@ -109,7 +109,7 @@ export class AppConstants {
             header: 'Loan Duration (Days)'
         },
         {
-            key: 'paymentDays',    // default props
+            key: 'paymentDays',
             header: 'Payment Days'
         },
         {
@@ -117,7 +117,7 @@ export class AppConstants {
             header: 'Applicable Term'
         },
         {
-            key: 'loanOverdue',  // check doc
+            key: 'loanOverdue',  // check Kaustubh
             header: 'Loan Overdue (Days)'
         },
         {

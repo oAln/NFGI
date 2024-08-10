@@ -28,3 +28,10 @@
 7. Collection Input - Color coded Dormant Orange and closed - Green => Excel Issue
 8. change excel accept date format to dd/mm/yyyy => Excel Issue
 13. Collection template upload is reading only first row.Also, please ensure the data reading is minimum uypto 1000 lines.
+
+
+
+
+<!-- Notes -->
+Check Loan Overdue
+Generating Excel with Active member records
