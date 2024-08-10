@@ -14,16 +14,17 @@ import jsPDF from 'jspdf';
 })
 export class ReportsComponent {
     monthData: string[] = [];
+    totalYears: any;
     totalMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];;
     branchReportBranch = '';
     branchReportMonth = '';
-    branchReportYear = '';
+    branchReportYear: any;
     monthReportBranch = '';
     monthReportMonth = '';
-    monthReportYear = '';
+    monthReportYear: any;
     colReportBranch = '';
     colReportMonth = '';
-    colReportYear = '';
+    colReportYear: any;
     branchData: any;
     selectedLoanDuration = 30;
     loanDurationData = [30, 60, 90, 120, 150, 180];
@@ -39,6 +40,9 @@ export class ReportsComponent {
         this.branchReportMonth = this.totalMonths[currentDate.getMonth()];
         this.monthReportMonth = this.totalMonths[currentDate.getMonth()];
         this.colReportMonth = this.totalMonths[currentDate.getMonth()];
+        this.branchReportYear = new Date().getFullYear();
+        this.monthReportYear = new Date().getFullYear();
+        this.colReportYear = new Date().getFullYear();
     }
 
     onBranchReportBranch(selectedBranch: any) {
@@ -49,6 +53,10 @@ export class ReportsComponent {
         console.log('onBranchReportMonthSelect', selectedMonth);
     }
 
+    onBranchReportYearSelect(selectedYear: any) {
+        console.log('onBranchReportYearSelect', selectedYear);
+    }
+
     onColReportBranchSelect(selectedBranch: any) {
         console.log('onColReportBranchSelect', selectedBranch);
     }
@@ -57,12 +65,20 @@ export class ReportsComponent {
         console.log('onColReportMonthSelect', selectedMonth);
     }
 
+    onColReportYearSelect(selectedYear: any) {
+        console.log('onColReportYearSelect', selectedYear);
+    }
+
     onMonthReportBranchSelect(selectedBranch: any) {
         console.log('onMonthReportBranchSelect', selectedBranch);
     }
 
     onMonthReportMonthSelect(selectedMonth: any) {
         console.log('onMonthReportMonthSelect', selectedMonth);
+    }
+
+    onMonthReportYearSelect(selectedYear: any) {
+        console.log('onMonthReportYearSelect', selectedYear);
     }
 
     updateMemberData(member: any) {
@@ -108,6 +124,12 @@ export class ReportsComponent {
                     }
                     return acc;
                 }, []);
+                this.totalYears = this.memberData.reduce((acc: any, data: any) => {
+                    if (!acc.includes(new Date(data.loanStartDate).getFullYear())) {
+                        acc.push(new Date(data.loanStartDate).getFullYear());
+                    }
+                    return acc;
+                }, []);
                 this.branchReportBranch = this.branchData?.length ? this.branchData[0] : "";
                 this.monthReportBranch = this.branchData?.length ? this.branchData[0] : "";
                 this.colReportBranch = this.branchData?.length ? this.branchData[0] : "";
@@ -117,6 +139,16 @@ export class ReportsComponent {
 
     onLoanDurationSelect(loanDuration: any) {
         console.log('loanDuration', loanDuration);
+    }
+
+    getMemberYearData(year: any, memberDetails: any) {
+        const filterMemberData = memberDetails.filter((member: any) => {
+            const loanYear = new Date(member?.loanStartDate).getFullYear();
+            if ((member?.accountStatus != 'Closed') && member?.loanId && member?.loanStartDate && loanYear == year) {
+                return member;
+            }
+        })
+        return filterMemberData;
     }
 
     // Filter data month wise
@@ -313,16 +345,20 @@ export class ReportsComponent {
     }
 
     generateReport(reportType?: string): void {
-        let filteredMemberData;
+        let filteredYearMemberData;
+        let filteredMonthMemberData;
         let filteredBranchMemberDetails;
         let branchName = '';
         let month = '';
+        let year = new Date().getFullYear();
         switch (reportType) {
             case 'simple':
                 branchName = this.monthReportBranch;
                 month = this.monthReportMonth;
-                filteredMemberData = this.getMemberMonthData(this.monthReportMonth, this.memberData);
-                filteredBranchMemberDetails = this.getMemberBranchWiseData(this.monthReportBranch, filteredMemberData);
+                year = this.monthReportYear;
+                filteredYearMemberData = this.getMemberYearData(year, this.memberData);
+                filteredMonthMemberData = this.getMemberMonthData(month, filteredYearMemberData);
+                filteredBranchMemberDetails = this.getMemberBranchWiseData(branchName, filteredMonthMemberData);
                 filteredBranchMemberDetails.forEach((member: any, index: any) => {
                     this.getMemberExcelData(member, index);
                 });
@@ -345,9 +381,10 @@ export class ReportsComponent {
                 };
                 branchName = this.branchReportBranch;
                 month = this.branchReportMonth;
-                filteredMemberData = this.getMemberMonthData(this.branchReportMonth, this.memberData);
-                filteredBranchMemberDetails = this.getMemberBranchWiseData(this.branchReportBranch, filteredMemberData);
-                const branch = this.branchReportBranch;
+                year = this.branchReportYear;
+                filteredYearMemberData = this.getMemberYearData(year, this.memberData);
+                filteredMonthMemberData = this.getMemberMonthData(month, filteredYearMemberData);
+                filteredBranchMemberDetails = this.getMemberBranchWiseData(branchName, filteredMonthMemberData);
                 const defaultLoanTerms = AppConstants.loanTerms;
                 const loanterm = defaultLoanTerms.find((termData: any) => termData.term === this.selectedLoanDuration || {})?.term;
                 branchWiseDetails.Branch = this.branchReportBranch;
@@ -366,8 +403,10 @@ export class ReportsComponent {
             case 'collection':
                 branchName = this.colReportBranch;
                 month = this.colReportMonth;
-                filteredMemberData = this.getMemberMonthData(this.colReportMonth, this.memberData);
-                filteredBranchMemberDetails = this.getMemberBranchWiseData(this.colReportBranch, filteredMemberData);
+                year = this.colReportYear;
+                filteredYearMemberData = this.getMemberYearData(year, this.memberData);
+                filteredMonthMemberData = this.getMemberMonthData(month, filteredYearMemberData);
+                filteredBranchMemberDetails = this.getMemberBranchWiseData(branchName, filteredMonthMemberData);
                 this.getCollectionData(filteredBranchMemberDetails);
                 this.excelData.push(Object.keys(this.collectionExcelData[0]));
                 this.collectionExcelData.forEach((data: any) => {
@@ -381,8 +420,6 @@ export class ReportsComponent {
                 break;
         }
 
-        const currentYear = new Date().getFullYear();
-
         /* generate worksheet */
         const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(this.excelData);
 
@@ -391,7 +428,7 @@ export class ReportsComponent {
         XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
         /* save to file */
-        XLSX.writeFile(wb, `${branchName}_${month}_${currentYear}.xlsx`);
+        XLSX.writeFile(wb, `${branchName}_${month}_${year}.xlsx`);
         this.simpleExcelData = [];
         this.collectionExcelData = [];
         this.excelData = [];

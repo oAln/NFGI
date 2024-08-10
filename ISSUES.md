@@ -10,7 +10,7 @@
 19. Application logged out after 1 hour. Make it 8 hours. => Done
 21. Report -> NFGI Account Statement for Month ->Remove generate Pdf button from here and put it in Branchwise Detail section (3rd report). => Done
 15. Add Year filter for all the reports. => Done
-16. Branchwise Report -> (Both Home Page and Excel report section) - 
+16. Branchwise Report -> (Both Home Page and Excel report section) - Done
    a) Loan Amount -> Total loan amount for all the loan id, in the selected branch upto selected month and year. => Done
    b) Matured Loan Amount -> Total matured loan amount for all the loan id, in the selected branch and duration upto selected month and year. => Done
    c) Installment -> Totalk of all the installments for all loan id for the branch => Done

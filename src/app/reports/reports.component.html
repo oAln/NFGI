@@ -35,9 +35,9 @@
                     <div class="row">
                         <label class="col-5 form-label">Year</label>
                         <div class="col-7">
-                            <select [(ngModel)]="monthReportYear" (ngModelChange)="onLoanDurationSelect($event)">
-                                <option *ngFor="let loanDuration of loanDurationData" [value]="loanDuration">
-                                    {{loanDuration}}
+                            <select [(ngModel)]="monthReportYear" (ngModelChange)="onMonthReportYearSelect($event)">
+                                <option *ngFor="let year of totalYears" [value]="year">
+                                    {{year}}
                                 </option>
                             </select>
                         </div>
@@ -97,9 +97,9 @@
                     <div class="row">
                         <label class="col-5 form-label">Year</label>
                         <div class="col-7">
-                            <select [(ngModel)]="colReportYear" (ngModelChange)="onLoanDurationSelect($event)">
-                                <option *ngFor="let loanDuration of loanDurationData" [value]="loanDuration">
-                                    {{loanDuration}}
+                            <select [(ngModel)]="colReportYear" (ngModelChange)="onColReportYearSelect($event)">
+                                <option *ngFor="let year of totalYears" [value]="year">
+                                    {{year}}
                                 </option>
                             </select>
                         </div>
@@ -172,9 +172,9 @@
                     <div class="row">
                         <label class="col-5 form-label">Year</label>
                         <div class="col-7">
-                            <select [(ngModel)]="branchReportYear" (ngModelChange)="onLoanDurationSelect($event)">
-                                <option *ngFor="let loanDuration of loanDurationData" [value]="loanDuration">
-                                    {{loanDuration}}
+                            <select [(ngModel)]="branchReportYear" (ngModelChange)="onBranchReportYearSelect($event)">
+                                <option *ngFor="let year of totalYears" [value]="year">
+                                    {{year}}
                                 </option>
                             </select>
                         </div>
