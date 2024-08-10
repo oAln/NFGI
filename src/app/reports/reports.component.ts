@@ -538,7 +538,7 @@ export class ReportsComponent {
         });
 
         // Save the PDF.
-        doc.save('table.pdf');
+        doc.save('Branchwise_Report.pdf');
     }
 
 }
