@@ -6,7 +6,6 @@ import { AppConstants } from '../util/app.constant';
 import { ExcelService } from '../services/excel.service';
 import autoTable from 'jspdf-autotable';
 import jsPDF from 'jspdf';
-// import * as Excel from "exceljs";
 
 @Component({
     templateUrl: 'reports.component.html',
@@ -166,17 +165,6 @@ export class ReportsComponent {
     getMemberLoanData(loanId: string, memberDetails: any) {
         const filterMemberData = memberDetails.filter((member: any) => {
             if ((member?.accountStatus != 'Closed') && member?.loanId == loanId) {
-                return member;
-            }
-        })
-        return filterMemberData;
-    }
-
-    getMemberRepaymentData(month: string, memberDetails: any) {
-        const selectedMonthNumber = this.totalMonths.indexOf(month);
-        const filterMemberData = memberDetails.filter((member: any) => {
-            const loanDate = new Date(member?.loanStartDate).getMonth();
-            if ((member?.accountStatus != 'Closed') && member?.loanId && member?.loanStartDate && loanDate == selectedMonthNumber) {
                 return member;
             }
         })
