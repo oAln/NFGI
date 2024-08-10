@@ -403,7 +403,9 @@ export class ReportsComponent {
                     filteredYearMemberData = this.getMemberYearData(year, this.memberData);
                     filteredMonthMemberData = this.getMemberMonthData(month, filteredYearMemberData);
                     filteredBranchMemberDetails = this.getMemberBranchWiseData(branchName, filteredMonthMemberData);
-                    this.getCollectionData(filteredBranchMemberDetails);
+                    filteredBranchMemberDetails.forEach((member: any, index: any) => {
+                        this.getMemberCollectionExcelData(member, index);
+                    });
                     this.excelData.push(Object.keys(this.collectionExcelData[0]));
                     this.collectionExcelData.forEach((data: any) => {
                         if (Object.keys(this.collectionExcelData[0])?.length == Object.values(data)?.length) {
@@ -431,22 +433,22 @@ export class ReportsComponent {
         this.excelData = [];
     }
 
-    getCollectionData(filteredBranchMemberDetails: any) {
-        const uniqueMemberData = filteredBranchMemberDetails.filter((member: any, i: any, arr: any) =>
-            arr.findIndex((arrMember: any) => (arrMember?.id === member?.id)) === i
-        );
+    // getCollectionData(filteredBranchMemberDetails: any) {
+    //     const uniqueMemberData = filteredBranchMemberDetails.filter((member: any, i: any, arr: any) =>
+    //         arr.findIndex((arrMember: any) => (arrMember?.id === member?.id)) === i
+    //     );
 
-        if (uniqueMemberData?.length && uniqueMemberData[0].loans?.length) {
-            uniqueMemberData[0].loans.forEach((data: any) => {
-                if (data?.repayments?.length) {
-                    data?.repayments.forEach((member: any, index: any) => {
-                        this.getMemberCollectionExcelData(data, index);
-                    });
-                }
-            })
-        }
+    //     if (uniqueMemberData?.length && uniqueMemberData[0].loans?.length) {
+    //         uniqueMemberData[0].loans.forEach((data: any) => {
+    //             if (data?.repayments?.length) {
+    //                 data?.repayments.forEach((member: any, index: any) => {
+    //                     this.getMemberCollectionExcelData(data, index);
+    //                 });
+    //             }
+    //         })
+    //     }
 
-    }
+    // }
 
     getTotal(members: any, property: string) {
         const totalAmount = members.reduce(function (accumulator: any, currentValue: any) {

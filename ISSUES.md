@@ -15,19 +15,19 @@
    b) Matured Loan Amount -> Total matured loan amount for all the loan id, in the selected branch and duration upto selected month and year. => Done
    c) Installment -> Totalk of all the installments for all loan id for the branch => Done
    d) Recovery -> Total recovery till date, for all the loan id's. => Done
-   e) Balance -> Matured Loan amount for the selected durtation - Recovery amount. Done
-20. Report -> NFGI Account Statement for Month -> Generate Report button is not working
-22. Report -> Collection Report -> FOrmat is wrong, the S.No, Member Name, late fees is coming at the last. It should come at the beginning. Member Id and Loan Id colomn are missing in the report.
-23. Report -> Collection Report -> report should add all the collection for a particular loan id in same row. Multiple entry should not be made for same loan id collection.
+   e) Balance -> Matured Loan amount for the selected durtation - Recovery amount. => Done
+20. Report -> NFGI Account Statement for Month -> Generate Report button is not working => Done
+22. Report -> Collection Report -> Format is wrong, the S.No, Member Name, late fees is coming at the last. It should come at the beginning. Member Id and Loan Id colomn are missing in the report.
 24. Report -> Collection Report -> Member name field is showing 0. It should show the name.
-25. Report -> Branchwise detail Report -> Not showing any data.
-1. amount received from excel is wrong => Excel Issue
-2. Delete member not working => Backend changes
-3. NFGI Account Statement Report 1 - Recovery Amount Previous month is wrong
-4. All documents are not downloading. Only 1 document downloading => Backend changes
-7. Collection Input - Color coded Dormant Orange and closed - Green => Excel Issue
+25. Report -> Branchwise detail Report -> Not showing any data. => Done
+1. amount received from excel is wrong => Done
+3. NFGI Account Statement Report 1 -Done
 8. change excel accept date format to dd/mm/yyyy => Excel Issue
-13. Collection template upload is reading only first row.Also, please ensure the data reading is minimum uypto 1000 lines.
+4. All documents are not downloading. Only 1 document downloading => Pending
+7. Collection Input - Color coded Dormant Orange and closed - Green => Pending
+13. Collection template upload is reading only first row.Also, please ensure the data reading is minimum uypto 1000 lines. => Pending
+2. Delete member not working => Backend changes => Pending
+23. Report -> Collection Report -> report should add all the collection for a particular loan id in same row. Multiple entry should not be made for same loan id collection. => Pending
 
 
 
