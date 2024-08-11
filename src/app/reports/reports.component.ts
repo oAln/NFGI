@@ -207,7 +207,7 @@ export class ReportsComponent {
                 obj[property.header] = index + 1;
             } else if (property.key == 'loanStartDate') {
                 obj[property.header] = formatDate(member[property.key], 'dd/MM/yyyy', 'en');;
-            } else if (member?.[property.key]) {
+            } else if (Object.keys(member).indexOf(property.key) > -1) {
                 obj[property.header] = member[property.key] || 'NA';
             } else {
                 switch (property.key) {
