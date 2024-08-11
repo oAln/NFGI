@@ -321,15 +321,17 @@ export class ReportsComponent {
         this.simpleExcelData.push(obj);
     }
 
-    getMemberCollectionExcelData(member: any, index: any) {
+    getMemberCollectionExcelData(member: any, index: any, month: any) {
         const collectionExcelProperties = AppConstants.accountCollectionStatement;
         const obj: any = {};
+        const selectedMonthNumber = this.totalMonths.indexOf(month);
         collectionExcelProperties.map((property: any) => {
             if (property.key == 'index') {
                 obj[property.header] = index + 1;
             } else if (property.key == 'lateFees') {
                 const lateFees = member?.repayments.reduce(function (accumulator: any, currentValue: any) {
-                    const filteredAmount = currentValue?.lateFees;
+                    const paymentMonth = new Date(currentValue?.paymentDate).getMonth();
+                    const filteredAmount = (paymentMonth == selectedMonthNumber) ? currentValue?.lateFees : 0;
                     return accumulator + filteredAmount;
                 }, 0);
                 obj[property.header] = lateFees || 0;
@@ -337,7 +339,9 @@ export class ReportsComponent {
                 obj[property.header] = member[property.key];
             } else {
                 const amountPaid = member?.repayments.reduce(function (accumulator: any, currentValue: any) {
-                    const filteredAmount = (new Date(currentValue.paymentDate).getDate() == property.key) ? currentValue?.amountPaid : 0;
+                    const paymentDate = new Date(currentValue?.paymentDate).getDate();
+                    const paymentMonth = new Date(currentValue?.paymentDate).getMonth();
+                    const filteredAmount = ((paymentMonth == selectedMonthNumber) && (paymentDate == property.key)) ? currentValue?.amountPaid : 0;
                     return accumulator + filteredAmount;
                 }, 0);
 
@@ -422,11 +426,11 @@ export class ReportsComponent {
                     branchName = this.colReportBranch;
                     month = this.colReportMonth;
                     year = this.colReportYear;
-                    filteredYearMemberData = this.getMemberYearData(year, this.memberData);
-                    filteredMonthMemberData = this.getMemberMonthData(month, filteredYearMemberData);
+                    filteredYearMemberData = this.getAllMemberYearData(year, this.memberData);
+                    filteredMonthMemberData = this.getAllMemberMonthData(month, filteredYearMemberData); // filter on repayment show all id with current month data if payemnt thern show payemt if no then 0
                     filteredBranchMemberDetails = this.getMemberBranchWiseData(branchName, filteredMonthMemberData);
                     filteredBranchMemberDetails.forEach((member: any, index: any) => {
-                        this.getMemberCollectionExcelData(member, index);
+                        this.getMemberCollectionExcelData(member, index, month);
                     });
                     this.excelData.push(Object.keys(this.collectionExcelData[0]));
                     this.collectionExcelData.forEach((data: any) => {
