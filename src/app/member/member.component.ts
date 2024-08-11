@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { HTTPService } from '../services/http.service';
 import { environment } from '../../enviornment/enviornment';
+import { SubjectService } from '../services/subject.service';
 
 @Component({
   selector: 'app-member',
@@ -17,42 +18,9 @@ export class MemberComponent {
   currentId = null;
   showDeleteDialog = false;
   showPrintDialog = false;
-  showFrontPrint = false;
-  showBackPrint = false;
   selectedMemberId: any;
-  printDetails = {
-    memberId: '',
-    accountId: '',
-    name: '',
-    memberRelation: '',
-    annualIncome: '',
-    gender: '',
-    dateOfBirth: '',
-    occupation: '',
-    townCity: '',
-    branch: '',
-    memTaluka: '',
-    areaLandmark: '',
-    state: '',
-    pinCode: '',
-    contact: '',
-    caste: 'NA',
-    martialStatus: 'NA',
-    age: 'NA',
-    emailId: 'NA',
-    memAadharNO: '',
-    memPanNo: '',
-    guarantorName: '',
-    guarantorBusinessName: '',
-    guarAadharNO: '',
-    guarPanNo: '',
-    guarantorContact: '',
-    holderName: '',
-    accountNo: '',
-    bankName: '',
-    bankAddress: '',
-    ifscCode: ''
-  }
+  printDetails: any;
+  printPageSide: any;
 
   public searchForm = this.formBuilder.group({
     customerName: new FormControl(''),
@@ -100,7 +68,10 @@ export class MemberComponent {
     document: new FormControl('')
   });
 
-  constructor(private http: HTTPService, private httpClient: HttpClient, private formBuilder: FormBuilder) {
+  constructor(private http: HTTPService,
+    private httpClient: HttpClient,
+    private formBuilder: FormBuilder,
+    private subjectService: SubjectService) {
     this.getMemberData();
   }
 
@@ -268,19 +239,14 @@ export class MemberComponent {
     this.printDetails = {...memberDetails}; 
     this.printDetails['name'] = memberDetails?.firstName + ' ' + memberDetails?.lastName;
     this.showPrintDialog = true;
-    if (printSide == 'front') {
-      this.showFrontPrint = true;
-      this.showBackPrint = false;
-    } else {
-      this.showFrontPrint = false;
-      this.showBackPrint = true;
-    }
+    this.printPageSide = printSide;
     console.log(printSide);
-
+    this.subjectService.updateSubjectData(true);
   }
 
   cancelPrint() {
     this.showPrintDialog = false;
+    this.subjectService.updateSubjectData(false);
   }
 
   printData() {

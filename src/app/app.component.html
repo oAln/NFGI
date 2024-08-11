@@ -16,11 +16,11 @@
     <router-outlet></router-outlet>
 </div> -->
 
-<ng-container *ngIf="this.currentUser; then notauthenticated; else authenticate">
+<ng-container *ngIf="currentUser; then authenticated; else notauthenticate">
 </ng-container>
 
-<ng-template #notauthenticated>
-    <header *ngIf="currentUser">
+<ng-template #authenticated>
+    <header *ngIf="currentUser && !printPage">
         <nav>
             <div>
                 <img src="assets/images/logo.png" alt="logo" />
@@ -38,12 +38,12 @@
             </div>
         </nav>
     </header>
-    <app-sidebar></app-sidebar>
-    <div class="content">
+    <app-sidebar *ngIf="currentUser && !printPage"></app-sidebar>
+    <div [ngClass]="{'content': currentUser && !printPage}">
         <router-outlet></router-outlet>
     </div>
 </ng-template>
 
-<ng-template #authenticate>
+<ng-template #notauthenticate>
     <router-outlet></router-outlet>
 </ng-template>

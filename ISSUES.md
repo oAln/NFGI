@@ -1,34 +1,18 @@
-5. Collection report, to have name  => Done
-6. Collection input - Remove member Id => Done
-17. Home Page Dashboard -> Remove New Account Disbursement field => Done
-18. Home Page Dashboard -> Remane "Renual Account Disbursement" as Total Disbursement => Done
-9. Member Create Form -> Remove Account status dropdown. => Done
-10. Member List -> Branch colomn is showing the Town /City data. Make it show the Branch data. => Done
-11. The Print preview to have a print button for Front and Back print => Done.
-12. The Text entered should be all caps for Front and Back print. => Done
-14. Remove the excel attachment file after the uploaded file is submitted. => Done
-19. Application logged out after 1 hour. Make it 8 hours. => Done
-21. Report -> NFGI Account Statement for Month ->Remove generate Pdf button from here and put it in Branchwise Detail section (3rd report). => Done
-15. Add Year filter for all the reports. => Done
-16. Branchwise Report -> (Both Home Page and Excel report section) - Done
-   a) Loan Amount -> Total loan amount for all the loan id, in the selected branch upto selected month and year. => Done
-   b) Matured Loan Amount -> Total matured loan amount for all the loan id, in the selected branch and duration upto selected month and year. => Done
-   c) Installment -> Totalk of all the installments for all loan id for the branch => Done
-   d) Recovery -> Total recovery till date, for all the loan id's. => Done
-   e) Balance -> Matured Loan amount for the selected durtation - Recovery amount. => Done
-20. Report -> NFGI Account Statement for Month -> Generate Report button is not working => Done
-22. Report -> Collection Report -> Format is wrong, the S.No, Member Name, late fees is coming at the last. It should come at the beginning. Member Id and Loan Id colomn are missing in the report.
-24. Report -> Collection Report -> Member name field is showing 0. It should show the name.
-25. Report -> Branchwise detail Report -> Not showing any data. => Done
-1. amount received from excel is wrong => Done
-3. NFGI Account Statement Report 1 - Done
-23. Report -> Collection Report -> report should add all the collection for a particular loan id in same row. Multiple entry should not be made for same loan id collection. => Done
-8. change excel accept date format to dd/mm/yyyy => Excel Issue => Controlled by Excel
-4. All documents are not downloading. Only 1 document downloading => Pending
-7. Collection Input - Color coded Dormant Orange and closed - Green => Pending
-13. Collection template upload is reading only first row.Also, please ensure the data reading is minimum uypto 1000 lines. => Pending
-2. Delete member not working => Backend changes => Pending
-26. multi Branch => Pending
+Test Bugs on 10th August
+1. Disbursement Excel upload not working.
+2. Report -> NFGI Account Statement for Month ->Total Collected Bal of this  Month (Recovery + Closing Bal) colomn data not coming
+3. Report -> NFGI Account Statement for Month -> Recovery Amount Previous Month is wrong. It should show the collection till last month.
+4. Report -> NFGI Account Statement for Month -> If loan duration exceeds 180 days and still "Matured Loan Amount With 180 Days Profit" colomn > "Final Collection", show account status as dormant in report as well as on the New member table.
+5. Report -> Branchwise detail Report ->Excel -> Show total at the last row of the report.
+6. change excel accept date format to dd/mm/yyyy => Done
+7. All documents are not downloading. Only 1 document downloading => Pending
+8. Collection Input - Color coded Dormant Orange and closed - Green => Pending
+9. Collection template upload is reading only first row.Also, please ensure the data reading is minimum uypto 1000 lines. => Pending
+10. Delete member not working => Backend changes => Pending
+11. multi Branch => Pending
+12. Report -> Collection Report -> Format is wrong, the S.No, Member Name, late fees is coming at the last. It should come at the beginning.
+13. The Print preview to have a print button for Front and Back print => Reopen. Explained over call.
+14. Yellow fields are to be dynamically filled
 
 
 

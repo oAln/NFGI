@@ -1,1 +1,167 @@
-print
+<div class="container">
+    <div class="row">
+        <img *ngIf="showFront" src="assets/images/print-header.png" alt="logo" />
+        <h3 *ngIf="showBack">BANK DETAILS</h3>
+    </div>
+    <div class="row" *ngIf="showFront">
+        <div class="row">
+            <div class="col-md-6">
+                <label class="col-5 form-label">MEMBER ID</label>
+                <label class="col-7 form-value">{{printDetails.name}}</label>
+            </div>
+            <div class="col-md-6">
+                <label class="col-5 form-label">ACCOUNT NO.</label>
+                <label class="col-7 form-value">{{printDetails.memberRelation}}</label>
+            </div>
+        </div>
+        <div class="data-container">
+            <div class="col-md-6 data-block">
+                <div class="col-md-12">
+                    <label class="col-5 form-label">MEMBER NAME</label>
+                    <label class="col-7 form-value">{{printDetails.name}}</label>
+                </div>
+                <div class="col-md-12">
+                    <label class="col-5 form-label">S/O/W/O</label>
+                    <label class="col-7 form-value">{{printDetails.memberRelation}}</label>
+                </div>
+                <div class="col-md-12">
+                    <label class="col-5 form-label">ANNUAL INCOME</label>
+                    <label class="col-7 form-value">{{printDetails.annualIncome}}</label>
+                </div>
+                <div class="col-md-12">
+                    <label class="col-5 form-label">CASTE</label>
+                    <label class="col-7 form-value">{{printDetails.memberRelation}}</label>
+                </div>
+                <div class="col-md-12">
+                    <label class="col-5 form-label">GENDER</label>
+                    <label class="col-7 form-value">{{printDetails.annualIncome}}</label>
+                </div>
+                <div class="col-md-12">
+                    <label class="col-5 form-label">D.O.B.</label>
+                    <label class="col-7 form-value">{{printDetails.memberRelation}}</label>
+                </div>
+                <div class="col-md-12">
+                    <label class="col-5 form-label">AGE</label>
+                    <label class="col-7 form-value">{{printDetails.annualIncome}}</label>
+                </div>
+            </div>
+            <div class="profile-pic">
+
+            </div>
+        </div>
+        <div class="row row-gap p-0">
+            <div class="col-md-6">
+                <label class="col-5 form-label">MARTIAL STATUS</label>
+                <label class="col-7 form-value">{{printDetails.name}}</label>
+            </div>
+            <div class="col-md-6">
+                <label class="col-5 form-label">OCCUPATION</label>
+                <label class="col-7 form-value">{{printDetails.memberRelation}}</label>
+            </div>
+            <div class="col-md-6">
+                <label class="col-5 form-label">CITY</label>
+                <label class="col-7 form-value">{{printDetails.memberRelation}}</label>
+            </div>
+            <div class="col-md-6">
+                <label class="col-5 form-label">AREA</label>
+                <label class="col-7 form-value">{{printDetails.memberRelation}}</label>
+            </div>
+            <div class="col-md-6">
+                <label class="col-5 form-label">TALUKA/TEHSIL</label>
+                <label class="col-7 form-value">{{printDetails.memberRelation}}</label>
+            </div>
+            <div class="col-md-6">
+                <label class="col-5 form-label">LANDMARK</label>
+                <label class="col-7 form-value">{{printDetails.memberRelation}}</label>
+            </div>
+            <div class="col-md-6">
+                <label class="col-5 form-label">STATE</label>
+                <label class="col-7 form-value">{{printDetails.memberRelation}}</label>
+            </div>
+            <div class="col-md-6">
+                <label class="col-4 form-label">PIN CODE</label>
+                <label class="col-4 form-value">{{printDetails.pinCode}}</label>
+            </div>
+            <div class="row row-gap p-0">
+                <label class="form-label form-header">CONTACT DETAILS</label>
+            </div>
+            <div class="col-md-6">
+                <label class="col-4 form-label">MOBILE</label>
+                <label class="col-4 form-value">{{printDetails.contact}}</label>
+            </div>
+            <div class="col-md-6">
+                <label class="col-4 form-label">EMAIL ID</label>
+                <label class="col-4 form-value">{{printDetails.emailId}}</label>
+            </div>
+            <div class="row row-gap p-0">
+                <label class="form-label form-header">IDENTITY DETAILS</label>
+            </div>
+            <div class="col-md-6">
+                <label class="col-4 form-label">PAN NO.</label>
+                <label class="col-4 form-value">{{printDetails.memPanNo}}</label>
+            </div>
+            <div class="col-md-6">
+                <label class="col-4 form-label">AADHAR NO.</label>
+                <label class="col-4 form-value">{{printDetails.memAadharNO}}</label>
+            </div>
+            <div class="row row-gap p-0">
+                <label class="form-label form-header">OTHER MEMBER AS WITNESS DETAILS</label>
+            </div>
+            <div class="col-md-6">
+                <label class="col-4 form-label">NAME</label>
+                <label class="col-4 form-value">{{printDetails.guarantorName}}</label>
+            </div>
+            <div class="col-md-6">
+                <label class="col-4 form-label">BUSINESS</label>
+                <label class="col-4 form-value">{{printDetails.guarantorBusinessName}}</label>
+            </div>
+            <div class="col-md-6">
+                <label class="col-4 form-label">PAN NO.</label>
+                <label class="col-4 form-value">{{printDetails.guarPanNo}}</label>
+            </div>
+            <div class="col-md-6">
+                <label class="col-4 form-label">AADHAR NO.</label>
+                <label class="col-4 form-value">{{printDetails.guarAadharNO}}</label>
+            </div>
+            <div class="col-md-6">
+                <label class="col-4 form-label">MOBILE</label>
+                <label class="col-4 form-value">{{printDetails.guarantorContact}}</label>
+            </div>
+        </div>
+
+    </div>
+    <table class="table table-bordered" *ngIf="showBack">
+        <tbody>
+            <tr>
+                <th class="table-header">HOLDER NAME</th>
+                <td class="table-value">Mark</td>
+            </tr>
+            <tr>
+                <th class="table-header">ACCOUNT NO.</th>
+                <td class="table-value">Jacob</td>
+            </tr>
+            <tr>
+                <th class="table-header">BANK NAME</th>
+                <td class="table-value">Mark</td>
+            </tr>
+            <tr>
+                <th class="table-header">BANK ADDRESS</th>
+                <td class="table-value">Jacob</td>
+            </tr>
+            <tr>
+                <th class="table-header">IFSC CODE</th>
+                <td class="table-value">Mark</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row sign-block">
+        <div class="col-6 left-sign">
+            <div class="sign-box"></div>
+            <label>SIGN OF WITNESS</label>
+        </div>
+        <div class="col-6 right-sign">
+            <div class="sign-box"></div>
+            <label>SIGN OF MEMBER</label>
+        </div>
+    </div>
+</div>

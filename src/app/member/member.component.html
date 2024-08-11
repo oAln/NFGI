@@ -1,420 +1,422 @@
-<div class="member-list" *ngIf="showMember">
-  <div class="row justify-content-between m-0">
-    <h3 class="col-4">Member List</h3>
-    <div class="col-2 text-end">
-      <button class="custom-button member-btn" (click)="createMember()">
-        Create New Member
-      </button>
-    </div>
-  </div>
-
-
-  <form [formGroup]="searchForm">
-    <div class="row row-gap justify-content-between">
-      <div class="col-5">
-        <div class="row">
-          <label class="col-4 form-label">Customer Name</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="customerName" />
-          </div>
-        </div>
-      </div>
-      <div class="col-5">
-        <div class="row">
-          <label class="col-5 form-label">Membership Number</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="memberId" />
-          </div>
-        </div>
-      </div>
-      <div class="col-2 text-end p-0">
-        <button class="custom-button" (click)="getFilteredData()">
-          Search
+<div *ngIf="!showPrintDialog">
+  <div class="member-list" *ngIf="showMember">
+    <div class="row justify-content-between m-0">
+      <h3 class="col-4">Member List</h3>
+      <div class="col-2 text-end">
+        <button class="custom-button member-btn" (click)="createMember()">
+          Create New Member
         </button>
       </div>
     </div>
-  </form>
-
-  <div class="row mt-30">
-    <table class="table table-bordered member-table">
-      <thead>
-        <tr>
-          <th>S.No</th>
-          <th>Customer Name</th>
-          <th>Membership Id</th>
-          <th>Account No</th>
-          <th>Loan Id</th>
-          <th>Branch</th>
-          <th>Loan Amount</th>
-          <th>Loan Start Date</th>
-          <th>Status</th>
-          <th>Document</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <ng-container *ngFor="let member of memberData; let sNo = index">
-          <tr>
-            <td>{{ sNo + 1 }}</td>
-            <td>{{ member?.firstName }}</td>
-            <td>{{ member?.memberId }}</td>
-            <td>{{ member?.accountId }}</td>
-            <td>{{ member?.loanId || "-" }}</td>
-            <td>{{ member?.branch }}</td>
-            <td>{{ member?.loanAmount || 0}}</td>
-            <td>{{ member?.loanStartDate | date : 'dd/MM/yyyy'}}</td>
-            <td>{{ member?.accountStatus }}</td>
-            <td>
-              <span class="action-icon" (click)="downloadFile(member)">
-                <i class="bi bi-file-earmark-arrow-down"></i>
-              </span>
-            </td>
-            <td>
-              <span class="mr-10 action-icon" (click)="editMemberData(member)">
-                <i class="bi bi-pencil-square"></i>
-              </span>
-              <span class="mr-10 action-icon" (click)="deleteMember(member)">
-                <i class="bi bi-trash3"></i>
-              </span>
-              <span title="Front Print" class="mr-10 action-icon" (click)="printPage('front', member)">
-                <i class="bi bi-front"></i>
-              </span>
-              <span title="Back Print" class="action-icon" (click)="printPage('back', member)">
-                <i class="bi bi-back"></i>
-              </span>
-            </td>
-          </tr>
-        </ng-container>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<div class="create-member" *ngIf="!showMember">
-  <div class="row justify-content-between m-0">
-    <h3 class="col-4">
-      {{ createMemberTitle }}
-    </h3>
-  </div>
-  <div class="row m-0">
-    <form [formGroup]="memberForm" class="row g-3">
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">First Name</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="firstName" />
+  
+  
+    <form [formGroup]="searchForm">
+      <div class="row row-gap justify-content-between">
+        <div class="col-5">
+          <div class="row">
+            <label class="col-4 form-label">Customer Name</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="customerName" />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Last Name</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="lastName" />
+        <div class="col-5">
+          <div class="row">
+            <label class="col-5 form-label">Membership Number</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="memberId" />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">S/O or W/O</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="memberRelation" />
-          </div>
+        <div class="col-2 text-end p-0">
+          <button class="custom-button" (click)="getFilteredData()">
+            Search
+          </button>
         </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Member ID</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="memberId" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Account Id</label>
-          <div class="col-7">
-            <input type="number" class="form-control" formControlName="accountId" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Gender</label>
-          <div class="col-7">
-            <select class="form-select" style="width: 100%" formControlName="gender">
-              <option>Male</option>
-              <option>Female</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Occupation</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="occupation" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Date of Birth</label>
-          <div class="col-7">
-            <input type="date" [max]="getToday()" class="form-control" formControlName="dateOfBirth" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Town/City</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="townCity" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Branch</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="branch" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Taluka/Tehsil</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="memTaluka" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Area/Landmark</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="areaLandmark" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">State</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="state" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Pin Code</label>
-          <div class="col-7">
-            <input type="number" class="form-control" formControlName="pinCode" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Contact</label>
-          <div class="col-7">
-            <input type="number" class="form-control" formControlName="contact" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Aadhar No.</label>
-          <div class="col-7">
-            <input type="number" class="form-control" formControlName="memAadharNO" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Pan No.</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="memPanNo" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Annual Income (&#8377;)</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="annualIncome" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Purpose of Loan</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="loanPurpose" />
-          </div>
-        </div>
-      </div>
-      <div class="row row-gap p-0">
-        <h5>Bank Details</h5>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Holder Name</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="holderName" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Bank Account No.</label>
-          <div class="col-7">
-            <input type="number" class="form-control" formControlName="accountNo" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Bank Name</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="bankName" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Bank Address</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="bankAddress" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">IFSC Code</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="ifscCode" />
-          </div>
-        </div>
-      </div>
-      <div class="row row-gap p-0">
-        <h5>Nominee Details</h5>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Nominee Name</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="nomineeName" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Relation</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="nomineeRelation" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Date of Birth</label>
-          <div class="col-7">
-            <input type="date" [max]="getToday()" class="form-control" formControlName="nomineeDOB" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Phone No.</label>
-          <div class="col-7">
-            <input type="number" class="form-control" formControlName="nomineeContact" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Address</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="nomineeAddress" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">City/Town</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="nomineeCity" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">District</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="nomineeDistrict" />
-          </div>
-        </div>
-      </div>
-      <div class="row row-gap p-0">
-        <h5>Guarantor Details</h5>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Name</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="guarantorName" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Business Name</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="guarantorBusinessName" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Aadhar No.</label>
-          <div class="col-7">
-            <input type="number" class="form-control" formControlName="guarAadharNO" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Pan No.</label>
-          <div class="col-7">
-            <input type="text" class="form-control" formControlName="guarPanNo" />
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Contact</label>
-          <div class="col-7">
-            <input type="number" class="form-control" formControlName="guarantorContact" />
-          </div>
-        </div>
-      </div>
-      <div class="row row-gap p-0">
-        <h5>Upload Documents</h5>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <label class="col-4 form-label">Document</label>
-          <div class="col-7">
-            <input type="file" class="form-control" multiple (change)="uploadDoc($event)" />
-          </div>
-        </div>
-      </div>
-      <div class="col-12 text-center row-gap">
-        <button type="submit" class="custom-button" (click)="submitForm()">
-          Submit
-        </button>
       </div>
     </form>
+  
+    <div class="row mt-30">
+      <table class="table table-bordered member-table">
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>Customer Name</th>
+            <th>Membership Id</th>
+            <th>Account No</th>
+            <th>Loan Id</th>
+            <th>Branch</th>
+            <th>Loan Amount</th>
+            <th>Loan Start Date</th>
+            <th>Status</th>
+            <th>Document</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let member of memberData; let sNo = index">
+            <tr>
+              <td>{{ sNo + 1 }}</td>
+              <td>{{ member?.firstName }}</td>
+              <td>{{ member?.memberId }}</td>
+              <td>{{ member?.accountId }}</td>
+              <td>{{ member?.loanId || "-" }}</td>
+              <td>{{ member?.branch }}</td>
+              <td>{{ member?.loanAmount || 0}}</td>
+              <td>{{ member?.loanStartDate | date : 'dd/MM/yyyy'}}</td>
+              <td>{{ member?.accountStatus }}</td>
+              <td>
+                <span class="action-icon" (click)="downloadFile(member)">
+                  <i class="bi bi-file-earmark-arrow-down"></i>
+                </span>
+              </td>
+              <td>
+                <span class="mr-10 action-icon" (click)="editMemberData(member)">
+                  <i class="bi bi-pencil-square"></i>
+                </span>
+                <span class="mr-10 action-icon" (click)="deleteMember(member)">
+                  <i class="bi bi-trash3"></i>
+                </span>
+                <span title="Front Print" class="mr-10 action-icon" (click)="printPage('front', member)">
+                  <i class="bi bi-front"></i>
+                </span>
+                <span title="Back Print" class="action-icon" (click)="printPage('back', member)">
+                  <i class="bi bi-back"></i>
+                </span>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <div class="create-member" *ngIf="!showMember">
+    <div class="row justify-content-between m-0">
+      <h3 class="col-4">
+        {{ createMemberTitle }}
+      </h3>
+    </div>
+    <div class="row m-0">
+      <form [formGroup]="memberForm" class="row g-3">
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">First Name</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="firstName" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Last Name</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="lastName" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">S/O or W/O</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="memberRelation" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Member ID</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="memberId" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Account Id</label>
+            <div class="col-7">
+              <input type="number" class="form-control" formControlName="accountId" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Gender</label>
+            <div class="col-7">
+              <select class="form-select" style="width: 100%" formControlName="gender">
+                <option>Male</option>
+                <option>Female</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Occupation</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="occupation" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Date of Birth</label>
+            <div class="col-7">
+              <input type="date" [max]="getToday()" class="form-control" formControlName="dateOfBirth" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Town/City</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="townCity" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Branch</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="branch" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Taluka/Tehsil</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="memTaluka" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Area/Landmark</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="areaLandmark" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">State</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="state" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Pin Code</label>
+            <div class="col-7">
+              <input type="number" class="form-control" formControlName="pinCode" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Contact</label>
+            <div class="col-7">
+              <input type="number" class="form-control" formControlName="contact" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Aadhar No.</label>
+            <div class="col-7">
+              <input type="number" class="form-control" formControlName="memAadharNO" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Pan No.</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="memPanNo" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Annual Income (&#8377;)</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="annualIncome" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Purpose of Loan</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="loanPurpose" />
+            </div>
+          </div>
+        </div>
+        <div class="row row-gap p-0">
+          <h5>Bank Details</h5>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Holder Name</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="holderName" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Bank Account No.</label>
+            <div class="col-7">
+              <input type="number" class="form-control" formControlName="accountNo" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Bank Name</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="bankName" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Bank Address</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="bankAddress" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">IFSC Code</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="ifscCode" />
+            </div>
+          </div>
+        </div>
+        <div class="row row-gap p-0">
+          <h5>Nominee Details</h5>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Nominee Name</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="nomineeName" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Relation</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="nomineeRelation" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Date of Birth</label>
+            <div class="col-7">
+              <input type="date" [max]="getToday()" class="form-control" formControlName="nomineeDOB" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Phone No.</label>
+            <div class="col-7">
+              <input type="number" class="form-control" formControlName="nomineeContact" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Address</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="nomineeAddress" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">City/Town</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="nomineeCity" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">District</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="nomineeDistrict" />
+            </div>
+          </div>
+        </div>
+        <div class="row row-gap p-0">
+          <h5>Guarantor Details</h5>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Name</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="guarantorName" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Business Name</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="guarantorBusinessName" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Aadhar No.</label>
+            <div class="col-7">
+              <input type="number" class="form-control" formControlName="guarAadharNO" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Pan No.</label>
+            <div class="col-7">
+              <input type="text" class="form-control" formControlName="guarPanNo" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Contact</label>
+            <div class="col-7">
+              <input type="number" class="form-control" formControlName="guarantorContact" />
+            </div>
+          </div>
+        </div>
+        <div class="row row-gap p-0">
+          <h5>Upload Documents</h5>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-4 form-label">Document</label>
+            <div class="col-7">
+              <input type="file" class="form-control" multiple (change)="uploadDoc($event)" />
+            </div>
+          </div>
+        </div>
+        <div class="col-12 text-center row-gap">
+          <button type="submit" class="custom-button" (click)="submitForm()">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 
@@ -439,162 +441,6 @@
   </div>
 </div>
 
-<div class="modal fade show print-dialog" tabindex="-1" role="dialog" *ngIf="showPrintDialog">
-  <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalCenterTitle">Print Member Data</h5>
-        <button type="button" class="close" (click)="cancelPrint()">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body print-data">
-        <div class="row" *ngIf="showFrontPrint">
-          <div class="col-md-6">
-            <label class="col-4 form-label">MEMBER ID</label>
-            <label class="col-4 form-value">{{printDetails.memberId}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">ACCOUNT NO.</label>
-            <label class="col-4 form-value">{{printDetails.accountId}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">MEMBER NAME</label>
-            <label class="col-4 form-value">{{printDetails.name}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">S/O/W/O</label>
-            <label class="col-4 form-value">{{printDetails.memberRelation}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">ANNUAL INCOME</label>
-            <label class="col-4 form-value">{{printDetails.annualIncome}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">CASTE</label>
-            <label class="col-4 form-value">{{printDetails.caste}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">GENDER</label>
-            <label class="col-4 form-value">{{printDetails.gender}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">D.O.B.</label>
-            <label class="col-4 form-value">{{printDetails.dateOfBirth}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">AGE</label>
-            <label class="col-4 form-value">{{printDetails.age}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">MARTIAL STATUS</label>
-            <label class="col-4 form-value">{{printDetails.martialStatus}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">OCCUPATION</label>
-            <label class="col-4 form-value">{{printDetails.occupation}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">CITY</label>
-            <label class="col-4 form-value">{{printDetails.townCity}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">AREA</label>
-            <label class="col-4 form-value">{{printDetails.branch}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">TALUKA/TEHSIL</label>
-            <label class="col-4 form-value">{{printDetails.memTaluka}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">LANDMARK</label>
-            <label class="col-4 form-value">{{printDetails.areaLandmark}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">STATE</label>
-            <label class="col-4 form-value">{{printDetails.state}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">PIN CODE</label>
-            <label class="col-4 form-value">{{printDetails.pinCode}}</label>
-          </div>
-          <div class="row row-gap p-0">
-            <label class="form-label form-header">CONTACT DETAILS</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">MOBILE</label>
-            <label class="col-4 form-value">{{printDetails.contact}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">EMAIL ID</label>
-            <label class="col-4 form-value">{{printDetails.emailId}}</label>
-          </div>
-          <div class="row row-gap p-0">
-            <label class="form-label form-header">IDENTITY DETAILS</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">PAN NO.</label>
-            <label class="col-4 form-value">{{printDetails.memPanNo}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">AADHAR NO.</label>
-            <label class="col-4 form-value">{{printDetails.memAadharNO}}</label>
-          </div>
-          <div class="row row-gap p-0">
-            <label class="form-label form-header">OTHER MEMBER AS WITNESS DETAILS</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">NAME</label>
-            <label class="col-4 form-value">{{printDetails.guarantorName}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">BUSINESS</label>
-            <label class="col-4 form-value">{{printDetails.guarantorBusinessName}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">PAN NO.</label>
-            <label class="col-4 form-value">{{printDetails.guarPanNo}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">AADHAR NO.</label>
-            <label class="col-4 form-value">{{printDetails.guarAadharNO}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">MOBILE</label>
-            <label class="col-4 form-value">{{printDetails.guarantorContact}}</label>
-          </div>
-        </div>
-        <div class="row" *ngIf="showBackPrint">
-          <div class="col-md-6">
-            <label class="col-4 form-label">HOLDER NAME</label>
-            <label class="col-4 form-value">{{printDetails.holderName}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">ACCOUNT NO.</label>
-            <label class="col-4 form-value">{{printDetails.accountNo}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">BANK NAME</label>
-            <label class="col-4 form-value">{{printDetails.bankName}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">BANK ADDRESS</label>
-            <label class="col-4 form-value">{{printDetails.bankAddress}}</label>
-          </div>
-          <div class="col-md-6">
-            <label class="col-4 form-label">IFSC CODE</label>
-            <label class="col-4 form-value">{{printDetails.ifscCode}}</label>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer justify-content-between" *ngIf="showFrontPrint">
-        <label>SIGN OF WITNESS</label>
-        <label>SIGN OF MEMBER</label>
-      </div>
-      <div class="modal-footer justify-content-between" *ngIf="showBackPrint">
-        <label>SIGN OF WITNESS</label>
-        <label>SIGN OF MEMBER</label>
-      </div>
-    </div>
-  </div>
+<div *ngIf="showPrintDialog">
+  <app-print-page [printData]="printDetails" [printSide]="printPageSide"></app-print-page>
 </div>

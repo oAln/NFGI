@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { User } from './model/user';
 import { Router } from '@angular/router';
 import { AuthenticationService } from './services/auth.service';
+import { SubjectService } from './services/subject.service';
 
 @Component({
   selector: 'app-root',
@@ -13,10 +13,12 @@ export class AppComponent {
   currentUser = false;
   userMenu = false;
   userName: any;
+  printPage = false;
 
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private subjectService: SubjectService
   ) {
     this.authenticationService.currentUser.subscribe(user => {
       if (localStorage['token']) {
@@ -43,5 +45,11 @@ export class AppComponent {
 
   createUser() {
     this.router.navigate(['/create-user']);
+  }
+
+  ngOnInit(): void {
+    this.subjectService.printData.subscribe(
+      data => this.printPage = data
+    );
   }
 }

@@ -1,0 +1,55 @@
+h3 {
+    text-align: center;
+    text-decoration-line: underline;
+}
+
+.sign-block {
+    margin-top: 50px;
+
+    .sign-box {
+        border: 2px solid black;
+        width: 60%;
+        height: 60px;
+    }
+}
+
+.container {
+    margin-top: 50px;
+}
+
+table {
+    margin-top: 20px;
+
+    th.table-header {
+        width: 25%;
+        text-align: left;
+    }
+
+    td.table-value {
+        text-transform: uppercase;
+    }
+}
+
+label {
+    text-transform: uppercase;
+}
+
+.data-container {
+    display: flex;
+    margin-top: 20px;
+
+    .data-block {
+        width: 60%;
+    }
+
+    .profile-pic {
+        border: 2px solid black;
+        height: 200px;
+        width: 200px;
+    }
+}
+
+// .data-container {
+//     display: flex;
+//     width: 50%;
+// }
