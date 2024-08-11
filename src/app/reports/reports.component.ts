@@ -399,6 +399,14 @@ export class ReportsComponent {
                         Recovery: 0,
                         Balance: 0
                     };
+                    const totalBranchWiseDetails = {
+                        total: 'Total',
+                        totalLoanAmount: 0,
+                        totalMaturedLoanAmount: 0,
+                        totalInstallment: 0,
+                        totalRecovery: 0,
+                        totalBalance: 0
+                    };
                     branchName = this.branchReportBranch;
                     month = this.branchReportMonth;
                     year = this.branchReportYear;
@@ -418,6 +426,12 @@ export class ReportsComponent {
                     branchWiseDetails.Balance = branchWiseDetails.MaturedLoanAmount - branchWiseDetails.Recovery;
                     this.excelData.push(Object.keys(branchWiseDetails));
                     this.excelData.push(Object.values(branchWiseDetails));
+                    totalBranchWiseDetails.totalLoanAmount = totalBranchWiseDetails.totalLoanAmount + branchWiseDetails.LoanAmount;
+                    totalBranchWiseDetails.totalMaturedLoanAmount = totalBranchWiseDetails.totalMaturedLoanAmount + branchWiseDetails.MaturedLoanAmount;
+                    totalBranchWiseDetails.totalInstallment = totalBranchWiseDetails.totalInstallment + branchWiseDetails.Installments;
+                    totalBranchWiseDetails.totalRecovery = totalBranchWiseDetails.totalRecovery + branchWiseDetails.Recovery;
+                    totalBranchWiseDetails.totalBalance = totalBranchWiseDetails.totalBalance + branchWiseDetails.Balance;
+                    this.excelData.push(Object.values(totalBranchWiseDetails));
                     break;
                 }
 
@@ -458,23 +472,6 @@ export class ReportsComponent {
         this.collectionExcelData = [];
         this.excelData = [];
     }
-
-    // getCollectionData(filteredBranchMemberDetails: any) {
-    //     const uniqueMemberData = filteredBranchMemberDetails.filter((member: any, i: any, arr: any) =>
-    //         arr.findIndex((arrMember: any) => (arrMember?.id === member?.id)) === i
-    //     );
-
-    //     if (uniqueMemberData?.length && uniqueMemberData[0].loans?.length) {
-    //         uniqueMemberData[0].loans.forEach((data: any) => {
-    //             if (data?.repayments?.length) {
-    //                 data?.repayments.forEach((member: any, index: any) => {
-    //                     this.getMemberCollectionExcelData(data, index);
-    //                 });
-    //             }
-    //         })
-    //     }
-
-    // }
 
     getTotal(members: any, property: string) {
         const totalAmount = members.reduce(function (accumulator: any, currentValue: any) {
