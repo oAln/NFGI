@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { HTTPService } from '../services/http.service';
 import * as XLSX from 'xlsx';
 import { HttpParams } from '@angular/common/http';
+import { getDayDiff } from '../util/helper';
 
 @Component({
   selector: 'app-collection',
@@ -25,7 +26,8 @@ export class CollectionComponent {
     memberId: 0,
     loanAmount: 0,
     branch: '',
-    accountStatus: ''
+    accountStatus: '',
+    loanStartDate: ''
   }
 
   currentDate = new Date();
@@ -99,11 +101,12 @@ export class CollectionComponent {
     const member = this.memberData.filter((data: any) => data?.loanId == memberDetails?.loanId)[0];
     const collectedAmount = memberDetails?.amountPaid ? parseInt(memberDetails?.amountPaid) : 0;
     const totalCollectedAmount = collectedAmount + member?.collectionAmount;
-    if (closeLoan || (totalCollectedAmount >= member?.loanAmount)) {
+    const loanDays = getDayDiff(this.memberDetails?.loanStartDate);
+    if ((closeLoan || (totalCollectedAmount >= member?.loanAmount)) || (loanDays > 180)) {
       const loanId = member?.loanId;
       const url = 'loans';
       const body = {
-        status: 'Closed'
+        status: loanDays > 180 ? 'Dormant' : 'Closed'
       }
       this.http.putUpdate(`${url}/${loanId}`, body).subscribe(
         (data) => {
@@ -126,6 +129,7 @@ export class CollectionComponent {
     this.memberDetails.loanAmount = member?.loanAmount || 0;
     this.memberDetails.branch = member?.branch;
     this.memberDetails.accountStatus = member?.accountStatus;
+    this.memberDetails.loanStartDate = member?.loanStartDate;
     this.showCollectionForm = true;
     this.showMemberData = false;
     this.showDisbursementForm = false;
@@ -172,7 +176,7 @@ export class CollectionComponent {
     if (this.templateType == 'collection') {
       let body: any = {};
       const currentDate = new Date();
-      this.collectionData.forEach((collection: any) =>{
+      this.collectionData.forEach((collection: any) => {
         Object.keys(collection).forEach((data: any) => {
           body['paymentDate'] = new Date(currentDate.setDate(data));
           body['amountPaid'] = collection[data];
