@@ -7,11 +7,11 @@
         <div class="row">
             <div class="col-md-6">
                 <label class="col-5 form-label">MEMBER ID</label>
-                <label class="col-7 form-value">{{printDetails.name}}</label>
+                <label class="col-7 form-value">{{printDetails.memberId}}</label>
             </div>
             <div class="col-md-6">
                 <label class="col-5 form-label">ACCOUNT NO.</label>
-                <label class="col-7 form-value">{{printDetails.memberRelation}}</label>
+                <label class="col-7 form-value">{{printDetails.accountId}}</label>
             </div>
         </div>
         <div class="data-container">
@@ -30,53 +30,51 @@
                 </div>
                 <div class="col-md-12">
                     <label class="col-5 form-label">CASTE</label>
-                    <label class="col-7 form-value">{{printDetails.memberRelation}}</label>
+                    <label class="col-7 form-value">{{printDetails.caste}}</label>
                 </div>
                 <div class="col-md-12">
                     <label class="col-5 form-label">GENDER</label>
-                    <label class="col-7 form-value">{{printDetails.annualIncome}}</label>
+                    <label class="col-7 form-value">{{printDetails.gender}}</label>
                 </div>
                 <div class="col-md-12">
                     <label class="col-5 form-label">D.O.B.</label>
-                    <label class="col-7 form-value">{{printDetails.memberRelation}}</label>
+                    <label class="col-7 form-value">{{printDetails.dateOfBirth}}</label>
                 </div>
                 <div class="col-md-12">
                     <label class="col-5 form-label">AGE</label>
-                    <label class="col-7 form-value">{{printDetails.annualIncome}}</label>
+                    <label class="col-7 form-value">{{printDetails.age}}</label>
                 </div>
             </div>
-            <div class="profile-pic">
-
-            </div>
+            <div class="profile-pic"> </div>
         </div>
         <div class="row row-gap p-0">
             <div class="col-md-6">
                 <label class="col-5 form-label">MARTIAL STATUS</label>
-                <label class="col-7 form-value">{{printDetails.name}}</label>
+                <label class="col-7 form-value">{{printDetails.martialStatus}}</label>
             </div>
             <div class="col-md-6">
                 <label class="col-5 form-label">OCCUPATION</label>
-                <label class="col-7 form-value">{{printDetails.memberRelation}}</label>
+                <label class="col-7 form-value">{{printDetails.occupation}}</label>
             </div>
             <div class="col-md-6">
                 <label class="col-5 form-label">CITY</label>
-                <label class="col-7 form-value">{{printDetails.memberRelation}}</label>
+                <label class="col-7 form-value">{{printDetails.townCity}}</label>
             </div>
             <div class="col-md-6">
                 <label class="col-5 form-label">AREA</label>
-                <label class="col-7 form-value">{{printDetails.memberRelation}}</label>
+                <label class="col-7 form-value">{{printDetails.branch}}</label>
             </div>
             <div class="col-md-6">
                 <label class="col-5 form-label">TALUKA/TEHSIL</label>
-                <label class="col-7 form-value">{{printDetails.memberRelation}}</label>
+                <label class="col-7 form-value">{{printDetails.memTaluka}}</label>
             </div>
             <div class="col-md-6">
                 <label class="col-5 form-label">LANDMARK</label>
-                <label class="col-7 form-value">{{printDetails.memberRelation}}</label>
+                <label class="col-7 form-value">{{printDetails.areaLandmark}}</label>
             </div>
             <div class="col-md-6">
                 <label class="col-5 form-label">STATE</label>
-                <label class="col-7 form-value">{{printDetails.memberRelation}}</label>
+                <label class="col-7 form-value">{{printDetails.state}}</label>
             </div>
             <div class="col-md-6">
                 <label class="col-4 form-label">PIN CODE</label>
@@ -134,23 +132,23 @@
         <tbody>
             <tr>
                 <th class="table-header">HOLDER NAME</th>
-                <td class="table-value">Mark</td>
+                <td class="table-value">{{printDetails.holderName}}</td>
             </tr>
             <tr>
                 <th class="table-header">ACCOUNT NO.</th>
-                <td class="table-value">Jacob</td>
+                <td class="table-value">{{printDetails.accountNo}}</td>
             </tr>
             <tr>
                 <th class="table-header">BANK NAME</th>
-                <td class="table-value">Mark</td>
+                <td class="table-value">{{printDetails.bankName}}</td>
             </tr>
             <tr>
                 <th class="table-header">BANK ADDRESS</th>
-                <td class="table-value">Jacob</td>
+                <td class="table-value">{{printDetails.bankAddress}}</td>
             </tr>
             <tr>
                 <th class="table-header">IFSC CODE</th>
-                <td class="table-value">Mark</td>
+                <td class="table-value">{{printDetails.ifscCode}}</td>
             </tr>
         </tbody>
     </table>

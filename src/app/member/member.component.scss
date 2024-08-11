@@ -16,3 +16,20 @@
         text-transform: uppercase;
     }
 }
+
+
+.custom-btn-group {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+
+    .ml-30 {
+        margin-left: 30px;
+    }
+}
+
+@media print {
+    .custom-btn-group {
+        display: none;
+    }
+}

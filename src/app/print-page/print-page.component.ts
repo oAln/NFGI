@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-print-page',
@@ -46,7 +47,7 @@ export class PrintPageComponent implements OnInit {
     ifscCode: ''
   }
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     if (this.printSide == 'front') {
@@ -62,5 +63,4 @@ export class PrintPageComponent implements OnInit {
       this.printDetails = {...printData}; 
     }
   }
-
 }

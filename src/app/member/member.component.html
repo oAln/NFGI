@@ -444,3 +444,9 @@
 <div *ngIf="showPrintDialog">
   <app-print-page [printData]="printDetails" [printSide]="printPageSide"></app-print-page>
 </div>
+
+
+<div class="custom-btn-group" *ngIf="showPrintDialog">
+  <button type="button" class="custom-button" (click)="cancelPrint()">Cancel</button>
+  <button type="button" class="custom-button ml-30" (click)="printData()">Print</button>
+</div>
