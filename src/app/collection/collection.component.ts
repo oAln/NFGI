@@ -171,16 +171,18 @@ export class CollectionComponent {
   submitTemplateData() {
     if (this.templateType == 'collection') {
       let body: any = {};
-      Object.keys(this.collectionData[0]).forEach((data: any) => {
-        const currentDate = new Date();
-        body['paymentDate'] = new Date(currentDate.setDate(data));
-        body['amountPaid'] = this.collectionData[0][data];
-        body['status'] = 'Active';
-        body['loanId'] = this.collectionData[0].Loan_Id;
-        body['lateFees'] = this.collectionData[0].Late_Fees;
-        if (data && !isNaN(data)) {
-          this.saveCollectionData(body);
-        }
+      const currentDate = new Date();
+      this.collectionData.forEach((collection: any) =>{
+        Object.keys(collection).forEach((data: any) => {
+          body['paymentDate'] = new Date(currentDate.setDate(data));
+          body['amountPaid'] = collection[data];
+          body['status'] = 'Active';
+          body['loanId'] = collection.Loan_Id;
+          body['lateFees'] = collection.Late_Fees;
+          if (data && !isNaN(data)) {
+            this.saveCollectionData(body);
+          }
+        });
       });
     } else {
       let body: any = {};
@@ -277,12 +279,13 @@ export class CollectionComponent {
         return initial;
       }, {});
       if (jsonData?.Sheet1?.length > 1) {
+        jsonData?.Sheet1?.splice(jsonData?.Sheet1?.length - 1, 1);
         if (dataType === 'collection') {
-          this.collectionData = jsonData?.Sheet1?.splice(0, jsonData?.Sheet1?.length - 1);
+          this.collectionData = jsonData?.Sheet1;
           this.templateType = 'collection';
           console.log('this.collectionData', this.collectionData);
         } else {
-          this.disbursementData = jsonData?.Sheet1?.splice(0, jsonData?.Sheet1?.length - 1);
+          this.disbursementData = jsonData?.Sheet1;
           this.templateType = 'disburse';
           console.log('this.disbursementData', this.disbursementData);
         }
