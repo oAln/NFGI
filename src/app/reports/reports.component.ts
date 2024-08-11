@@ -208,7 +208,7 @@ export class ReportsComponent {
             } else if (property.key == 'loanStartDate') {
                 obj[property.header] = formatDate(member[property.key], 'dd/MM/yyyy', 'en');;
             } else if (member?.[property.key]) {
-                obj[property.header] = member[property.key];
+                obj[property.header] = member[property.key] || 'NA';
             } else {
                 switch (property.key) {
                     case 'maturedAmount30':
@@ -258,7 +258,7 @@ export class ReportsComponent {
                         {
                             const lastMonth = new Date().getMonth() - 1;
                             const lastMonthRecovery = member?.repayments.reduce(function (accumulator: any, currentValue: any) {
-                                const filteredAmount = (new Date(currentValue.paymentDate).getMonth() == lastMonth) ? (currentValue?.amountPaid + currentValue?.lateFees) : 0;
+                                const filteredAmount = (new Date(currentValue.paymentDate).getMonth() <= lastMonth) ? currentValue?.amountPaid : 0;
                                 return accumulator + filteredAmount;
                             }, 0);
                             obj[property.header] = lastMonthRecovery?.toFixed(2) || 0;
@@ -267,8 +267,8 @@ export class ReportsComponent {
                     case 'totalCollectedAmount':
                         {
                             const currentMonth = new Date().getMonth();
-                            const totalAmount = this.memberData.reduce(function (accumulator: any, currentValue: any) {
-                                const filteredAmount = (new Date(currentValue.paymentDate).getMonth() == currentMonth) ? currentValue?.collectionAmount : 0;
+                            const totalAmount = member?.repayments?.reduce(function (accumulator: any, currentValue: any) {
+                                const filteredAmount = (new Date(currentValue.paymentDate).getMonth() == currentMonth) ? currentValue?.amountPaid : 0;
                                 return accumulator + filteredAmount;
                             }, 0);
                             obj[property.header] = totalAmount?.toFixed(2) || 0;
@@ -382,9 +382,7 @@ export class ReportsComponent {
                     });
                     this.excelData.push(Object.keys(this.simpleExcelData[0]));
                     this.simpleExcelData.forEach((data: any) => {
-                        if (Object.keys(this.simpleExcelData[0])?.length == Object.values(data)?.length) {
-                            this.excelData.push(Object.values(data));
-                        }
+                        this.excelData.push(Object.values(data));
                     });
                     break;
                 }
