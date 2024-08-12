@@ -11,11 +11,11 @@ Test Bugs on 10th August
 10. Delete member not working => Backend changes => Done
 7. All documents are not downloading. Only 1 document downloading => Done
 15. search Data => done
+12. Report -> Collection Report -> Format is wrong, the S.No, Member Name, late fees is coming at the last. It should come at the beginning. => Done
 
 
 8. Collection Input - Color coded Dormant Orange and closed - Green => Pending
 11. multi Branch => Pending
-12. Report -> Collection Report -> Format is wrong, the S.No, Member Name, late fees is coming at the last. It should come at the beginning. => Pending
 14. Yellow fields are to be dynamically filled => Pending
 
 
