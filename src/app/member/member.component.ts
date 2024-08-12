@@ -21,6 +21,7 @@ export class MemberComponent {
   selectedMemberId: any;
   printDetails: any;
   printPageSide: any;
+  uploadedFiles: string[] = [];
 
   public searchForm = this.formBuilder.group({
     customerName: new FormControl(''),
@@ -64,8 +65,7 @@ export class MemberComponent {
     guarantorBusinessName: new FormControl(''),
     guarantorContact: new FormControl(''),
     guarAadharNO: new FormControl(''),
-    guarPanNo: new FormControl(''),
-    document: new FormControl('')
+    guarPanNo: new FormControl('')
   });
 
   constructor(private http: HTTPService,
@@ -103,12 +103,33 @@ export class MemberComponent {
       )
     } else {
       this.http.create(url, formParams).subscribe(
-        (data) => {
-          this.memberForm.reset();
-          this.getMemberData();
+        (data: any) => {
+          if (data?.id && this.uploadedFiles.length) {
+            this.uploadFiles(data?.id)
+          } else {
+            this.memberForm.reset();
+            this.getMemberData();
+          }
         }
       )
     }
+  }
+
+  uploadFiles(id: any) {
+    const url = 'member';
+    for (var i = 0; i < this.uploadedFiles.length; i++) {
+      const formParams = new FormData();
+      formParams.append("document", this.uploadedFiles[i]);
+      this.http.update(`${url}/${id}`, formParams).subscribe(
+        (data) => {
+          console.log(data);
+        }, (error) => {
+          console.log(error);
+        }
+      )
+    }
+    this.memberForm.reset();
+    this.getMemberData();
   }
 
   updateMemberData(member: any) {
@@ -150,22 +171,22 @@ export class MemberComponent {
   }
 
   uploadDoc(event: any) {
-    const file = event?.target?.files;
-    this.memberForm.patchValue({ document: file });
+    const files = event?.target?.files;
+    if (files?.length) {
+      for (var i = 0; i < files.length; i++) {
+        this.uploadedFiles.push(files[i]);
+      }
+    }
   }
 
   getToday(): string {
     return new Date().toISOString().split('T')[0]
   }
 
-  downloadFile(memberInfo: any) {
-    const fileId = memberInfo?.files?.[0]?.id;
-    if (!fileId) {
-      throw new Error("File id not present")
-    }
+  downloadAllFile(memberInfo: any) {
     const id = memberInfo?.id
     this.httpClient
-      .get(`${environment.apiUrl}/files/download/${id}/${fileId}`, { responseType: 'blob' as 'json', observe: 'response' })
+      .get(`${environment.apiUrl}/files/download-all/${id}`, { responseType: 'blob' as 'json', observe: 'response' })
       .subscribe((response: any) => {
         const fileName = this.getFileNameFromContentDisposition(response)
         const url = window.URL.createObjectURL(response.body);
@@ -225,18 +246,18 @@ export class MemberComponent {
 
   deleteMember(memberDetails: any) {
     this.showDeleteDialog = true;
-    this.selectedMemberId = memberDetails?.memberId;
+    this.selectedMemberId = memberDetails?.id;
   }
 
   deleteMemberData() {
     this.http.delete(`member`, this.selectedMemberId).subscribe((data) => {
       this.getMemberData();
-    });    
+    });
     this.showDeleteDialog = false;
   }
 
   printPage(printSide: any, memberDetails: any) {
-    this.printDetails = {...memberDetails}; 
+    this.printDetails = { ...memberDetails };
     this.printDetails['name'] = memberDetails?.firstName + ' ' + memberDetails?.lastName;
     this.showPrintDialog = true;
     this.printPageSide = printSide;
