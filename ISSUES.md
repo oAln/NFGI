@@ -8,11 +8,11 @@ Test Bugs on 10th August
 4. Report -> NFGI Account Statement for Month -> If loan duration exceeds 180 days and still "Matured Loan Amount With 180 Days Profit" colomn > "Final Collection", show account status as dormant in report as well as on the New member table. => Done(Only Status)
 
 6. change excel accept date format to dd/mm/yyyy => Done
+10. Delete member not working => Backend changes => Done
+7. All documents are not downloading. Only 1 document downloading => Done
 
 
-7. All documents are not downloading. Only 1 document downloading => Pending
 8. Collection Input - Color coded Dormant Orange and closed - Green => Pending
-10. Delete member not working => Backend changes => Pending
 11. multi Branch => Pending
 12. Report -> Collection Report -> Format is wrong, the S.No, Member Name, late fees is coming at the last. It should come at the beginning. => Pending
 14. Yellow fields are to be dynamically filled => Pending
