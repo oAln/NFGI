@@ -335,8 +335,8 @@ export class ReportsComponent {
                     return accumulator + filteredAmount;
                 }, 0);
                 obj[property.header] = lateFees || 0;
-            } else if (member?.[property.key]) {
-                obj[property.header] = member[property.key];
+            } else if (Object.keys(member).indexOf(property.key) > -1) {
+                obj[property.header] = member[property.key] || 'NA';
             } else {
                 const amountPaid = member?.repayments.reduce(function (accumulator: any, currentValue: any) {
                     const paymentDate = new Date(currentValue?.paymentDate).getDate();
@@ -444,11 +444,16 @@ export class ReportsComponent {
                     filteredBranchMemberDetails.forEach((member: any, index: any) => {
                         this.getMemberCollectionExcelData(member, index, month);
                     });
-                    this.excelData.push(Object.keys(this.collectionExcelData[0]));
+                    const propHeaderArray = Object.keys(this.collectionExcelData[0]);
+                    const srIndex = propHeaderArray?.indexOf('Sr No.');
+                    const valueHeaderArray = propHeaderArray?.splice(srIndex);
+                    const sortedHeaderArray = [...valueHeaderArray, ...propHeaderArray];
+                    this.excelData.push(sortedHeaderArray);
                     this.collectionExcelData.forEach((data: any) => {
-                        if (Object.keys(this.collectionExcelData[0])?.length == Object.values(data)?.length) {
-                            this.excelData.push(Object.values(data));
-                        }
+                        const propDataArray = Object.values(data);
+                        const valueDataArray = propDataArray?.splice(srIndex);
+                        const sortedDataArray = [...valueDataArray, ...propDataArray];
+                        this.excelData.push(sortedDataArray);
                     });
                     break;
                 }

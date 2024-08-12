@@ -280,7 +280,7 @@ export class AppConstants {
         },
         {
             key: 'lateFees',
-            header: 'Late Fees(If Applicable'
+            header: 'Late Fees(If Applicable)'
         }
     ]
 
