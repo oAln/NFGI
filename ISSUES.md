@@ -10,6 +10,7 @@ Test Bugs on 10th August
 6. change excel accept date format to dd/mm/yyyy => Done
 10. Delete member not working => Backend changes => Done
 7. All documents are not downloading. Only 1 document downloading => Done
+15. search Data => done
 
 
 8. Collection Input - Color coded Dormant Orange and closed - Green => Pending
