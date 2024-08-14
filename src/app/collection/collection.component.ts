@@ -4,6 +4,7 @@ import { HTTPService } from '../services/http.service';
 import * as XLSX from 'xlsx';
 import { HttpParams } from '@angular/common/http';
 import { getDayDiff } from '../util/helper';
+import { AppConstants } from '../util/app.constant';
 
 @Component({
   selector: 'app-collection',
@@ -13,6 +14,7 @@ import { getDayDiff } from '../util/helper';
 export class CollectionComponent {
   showAlert = false;
   alertText = '';
+  totalMonths = AppConstants.totalMonths;
   collectionForm: FormGroup;
   disbursementForm: FormGroup;
   collectionData: any;
@@ -21,6 +23,8 @@ export class CollectionComponent {
   showMemberData = true;
   showCollectionForm = false;
   showDisbursementForm = false;
+  selectedCollectionMonth = ''
+  selectedCollectionYear;
   memberDetails = {
     firstName: '',
     memberId: 0,
@@ -41,6 +45,8 @@ export class CollectionComponent {
   })
 
   constructor(private http: HTTPService, private formBuilder: FormBuilder) {
+    this.selectedCollectionMonth = this.totalMonths[this.currentDate.getMonth()];
+    this.selectedCollectionYear = this.currentDate.getFullYear();
     this.collectionForm = this.formBuilder.group({
       collectionDate: new FormControl(''),
       amountPaid: new FormControl(''),
@@ -176,6 +182,8 @@ export class CollectionComponent {
     if (this.templateType == 'collection') {
       let body: any = {};
       const currentDate = new Date();
+      currentDate.setMonth(this.totalMonths.indexOf(this.selectedCollectionMonth));
+      currentDate.setFullYear(this.selectedCollectionYear);
       this.collectionData.forEach((collection: any) => {
         Object.keys(collection).forEach((data: any) => {
           body['paymentDate'] = new Date(currentDate.setDate(data));

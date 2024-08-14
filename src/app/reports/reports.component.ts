@@ -495,7 +495,7 @@ export class ReportsComponent {
         const doc = new jsPDF();
         // Add content to the PDF.
         doc.setFontSize(16);
-        doc.text(`LOAN PAID TO MEMBERS PLACEWISE DETAILS - ${'and'}`, 10, 10);
+        doc.text(`LOAN PAID TO MEMBERS PLACEWISE DETAILS - ${this.branchReportMonth.toUpperCase()} ${this.branchReportYear}`, 10, 10);
         doc.setFontSize(12);
 
         const totalBranchWiseDetails = {
@@ -508,7 +508,7 @@ export class ReportsComponent {
         };
 
         // Create a table using `jspdf-autotable`.
-        const headers = [['BRANCH', 'LOAN AMOUNT', 'MATURED LOAN AMOUNT - 180 DAYS', 'INSTALLMENTS', 'RECOVERY', 'BALANCE - 180 DAYS']];
+        const headers = [['BRANCH', 'LOAN AMOUNT', `MATURED LOAN AMOUNT - ${this.selectedLoanDuration} DAYS`, 'INSTALLMENTS', 'RECOVERY', `BALANCE - ${this.selectedLoanDuration} DAYS`]];
         const data: any = [];
         filteredBranchMemberDetails.forEach((membeData: any) => {
             const branchWiseDetails = {

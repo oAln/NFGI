@@ -1,4 +1,8 @@
 export class AppConstants {
+    
+    public static totalMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];;
+    
+    
     public static loanTerms = [{
         term: 30,
         rate: 1.05
@@ -32,6 +36,10 @@ export class AppConstants {
         {
             key: 'loanStartDate',
             header: 'Loan Passed Date'
+        },
+        {
+            key: 'loanId',
+            header: 'Loan Id'
         },
         {
             key: 'memberId',

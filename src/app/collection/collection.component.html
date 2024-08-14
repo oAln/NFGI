@@ -16,7 +16,7 @@
                 <div class="row">
                     <label class="col-4 form-label">Customer Name</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="customerName">
+                        <input type="text" placeholder="Enter Customer Name" class="form-control" formControlName="customerName">
                     </div>
                 </div>
             </div>
@@ -24,7 +24,7 @@
                 <div class="row">
                     <label class="col-5 form-label">Membership Number</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="memberId">
+                        <input type="text" placeholder="Enter Membership Number" class="form-control" formControlName="memberId">
                     </div>
                 </div>
             </div>
@@ -88,7 +88,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-6 text-center">
+                <div class="col-2 text-center">
+                    <select [(ngModel)]="selectedCollectionMonth" name="month">
+                        <option *ngFor="let month of totalMonths" [value]="month">
+                            {{month}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-2 text-center">
+                    <input type="number" placeholder="Enter Year" class="form-control" [(ngModel)]="selectedCollectionYear" name="year">
+                </div>
+                <div class="col-2 text-center">
                     <button class="custom-button">
                         <a href="assets/template/collection-template.xlsx" download>Template Download</a>
                     </button>
@@ -103,7 +113,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-6 text-center">
+                <div class="col-2 text-center">
                     <button class="custom-button">
                         <a href="assets/template/disbursement-template.xlsx" download>Template Download</a>
                     </button>
@@ -156,7 +166,7 @@
                 <div class="row align-center">
                     <label class="col-5 form-label">Amount Recieved</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="amountPaid">
+                        <input placeholder="Enter Amount Recieved" type="text" class="form-control" formControlName="amountPaid">
                     </div>
                 </div>
             </div>
@@ -164,7 +174,7 @@
                 <div class="row align-center">
                     <label class="col-5 form-label">Late Fees<small>(If Applicable)</small></label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="lateFees">
+                        <input placeholder="Enter Late Fees" type="text" class="form-control" formControlName="lateFees">
                     </div>
                 </div>
             </div>
@@ -239,7 +249,7 @@
                 <div class="row align-center">
                     <label class="col-5 form-label">Amount</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="amount">
+                        <input placeholder="Enter Amount" type="text" class="form-control" formControlName="amount">
                     </div>
                 </div>
             </div>
@@ -247,7 +257,7 @@
                 <div class="row align-center">
                     <label class="col-5 form-label">Installment</label>
                     <div class="col-7">
-                        <input type="text" class="form-control" formControlName="installment">
+                        <input placeholder="Enter Installment" type="text" class="form-control" formControlName="installment">
                     </div>
                 </div>
             </div>
