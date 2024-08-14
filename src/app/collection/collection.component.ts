@@ -182,16 +182,17 @@ export class CollectionComponent {
     if (this.templateType == 'collection') {
       let body: any = {};
       const currentDate = new Date();
+      const propertArray = ['Sr_No', 'Loan_Id', 'Membership_Name', 'Late_Fees'];
       currentDate.setMonth(this.totalMonths.indexOf(this.selectedCollectionMonth));
       currentDate.setFullYear(this.selectedCollectionYear);
       this.collectionData.forEach((collection: any) => {
         Object.keys(collection).forEach((data: any) => {
-          body['paymentDate'] = new Date(currentDate.setDate(data));
-          body['amountPaid'] = collection[data];
           body['status'] = 'Active';
           body['loanId'] = collection.Loan_Id;
           body['lateFees'] = collection.Late_Fees;
-          if (data && !isNaN(data)) {
+          if (propertArray.indexOf(data) < 0) {
+            body['paymentDate'] = new Date(currentDate.setDate(data));
+            body['amountPaid'] = collection[data];
             this.saveCollectionData(body);
           }
         });
@@ -199,7 +200,7 @@ export class CollectionComponent {
     } else {
       let body: any = {};
       this.disbursementData.forEach((data: any) => {
-        body['issuedAt'] = new Date(data?.Loan_Start_Date);
+        body['issuedAt'] = this.formatDate(data?.Loan_Start_Date);
         body['amount'] = data?.Loan_Amount;
         body['memberId'] = data?.Membership_Id;
         body['accountStatus'] = 'Active';
@@ -212,6 +213,13 @@ export class CollectionComponent {
     this.hideAlert();
     this.collectionUpload['nativeElement']['value'] = null;
     this.disburseUpload['nativeElement']['value'] = null;
+  }
+
+  formatDate(selectedDate: any) {
+    const dateParts = selectedDate.split("/");
+
+    // month is 0-based, that's why we need dataParts[1] - 1
+    return new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0])
   }
 
   submitCollectionForm() {
