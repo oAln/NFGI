@@ -7,9 +7,12 @@
 
 2. DOB format in Front print document is wrong. It should be DD/MM/YYYY => Done
 
-3. Calendar input is showing MM/DD/YYYY. Make it DD/MM/YYYY
+6. Collection Input - Color coded Dormant Orange and closed - Green => Done
+
+3. Calendar input is showing MM/DD/YYYY. Make it DD/MM/YYYY => Done
+
+
 5. Branch dropdown in all the reports should be multi-select => Pending
-6. Collection Input - Color coded Dormant Orange and closed - Green => Pending
 
 
 
@@ -17,3 +20,4 @@
 Check Loan Overdue
 https://stackblitz.com/edit/angular-ivy-9p6cch?file=src%2Fapp%2Fapp.component.ts
 https://stackblitz.com/edit/angular6-export-xlsx-zcwkib?file=src%2Fapp%2Fapp.component.ts
+https://kels0la.medium.com/creating-an-excel-file-download-with-exceljs-npm-in-react-1d1a57bc61d2

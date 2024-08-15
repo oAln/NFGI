@@ -7,6 +7,8 @@ import { ExcelService } from '../services/excel.service';
 import autoTable from 'jspdf-autotable';
 import jsPDF from 'jspdf';
 import { formatDate } from '@angular/common';
+import { Workbook } from 'exceljs';
+import { saveAs } from 'file-saver';
 
 @Component({
     templateUrl: 'reports.component.html',
@@ -474,6 +476,41 @@ export class ReportsComponent {
         this.simpleExcelData = [];
         this.collectionExcelData = [];
         this.excelData = [];
+    }
+
+    exportSimpleExcel() {
+        let branchName = this.monthReportBranch;
+        let month = this.monthReportMonth;
+        let year = this.monthReportYear;
+        let filteredYearMemberData = this.getAllMemberYearData(year, this.memberData);
+        let filteredMonthMemberData = this.getAllMemberMonthData(month, filteredYearMemberData);
+        let filteredBranchMemberDetails = this.getMemberBranchWiseData(branchName, filteredMonthMemberData);
+        filteredBranchMemberDetails.forEach((member: any, index: any) => {
+            this.getMemberExcelData(member, index);
+        });
+        console.log(this.simpleExcelData);
+
+        const workBook = new Workbook();
+        const workSheet = workBook.addWorksheet('test');
+        const headerNames = Object.keys(this.simpleExcelData[0]);
+        workSheet.addRow([...headerNames]);
+        this.simpleExcelData.forEach((item: any) => {
+            const row = workSheet.addRow([...Object.values(item)]);
+            const statusCell = row.getCell(29);
+            if (item["Member Status"] == "Active") {
+                statusCell.fill = {
+                    type: 'pattern',
+                    pattern: 'solid',
+                    fgColor: {argb: item["Member Status"] == "Dormant" ? 'FFC000':  item["Member Status"] == "Closed" ? '70AD47' : ''}
+                };
+            }
+        });
+        workBook.xlsx.writeBuffer().then(data => {
+            let blob = new Blob([data], {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            });
+            saveAs(blob, 'test.xlsx');
+        })
     }
 
     getTotal(members: any, property: string) {
