@@ -20,6 +20,7 @@ import { CommonModule } from '@angular/common';
 import { ReportsComponent } from './reports/reports.component';
 import { ReversePipe } from './shared/pipe/reverse.pipe';
 import { PrintPageComponent } from './print-page/print-page.component';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { PrintPageComponent } from './print-page/print-page.component';
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    AngularMultiSelectModule
   ],
   providers: [ AuthGuard,
     {

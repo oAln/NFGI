@@ -63,7 +63,7 @@
                         <td>{{member?.accountStatus}}</td>
                         <td>
                             <div class="custom-btn-group">
-                                <button type="button" class="custom-button"
+                                <button type="button" [ngClass]="{ 'custom-disabled': member?.accountStatus == 'Closed' }" class="custom-button"
                                     (click)="showCollection(member)">Collection</button>
                                 <button type="button" class="custom-button ml-10"
                                     (click)="showDisbursement(member)">Disbursement</button>

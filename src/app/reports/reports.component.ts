@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HTTPService } from '../services/http.service';
 import * as XLSX from 'xlsx';
 import { getDayDiff, getIntererstAmount } from '../util/helper';
@@ -14,7 +14,7 @@ import { saveAs } from 'file-saver';
     templateUrl: 'reports.component.html',
     styleUrls: ['./reports.component.scss']
 })
-export class ReportsComponent {
+export class ReportsComponent implements OnInit {
     monthData: string[] = [];
     totalYears: any;
     totalMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];;
@@ -34,6 +34,10 @@ export class ReportsComponent {
     simpleExcelData: any = [];
     collectionExcelData: any = [];
     excelData: any = [];
+    dropdownList: any = [];
+    selectedItems: any = [];
+    dropdownSettings = {};
+
 
     constructor(private http: HTTPService, private excelService: ExcelService) {
         this.getMemberData();
@@ -45,6 +49,34 @@ export class ReportsComponent {
         this.branchReportYear = new Date().getFullYear();
         this.monthReportYear = new Date().getFullYear();
         this.colReportYear = new Date().getFullYear();
+    }
+
+    ngOnInit() {
+        this.dropdownSettings = {
+            singleSelection: false,
+            text: 'Select Branch',
+            selectAllText: 'Select All',
+            unSelectAllText: 'UnSelect All',
+            enableSearchFilter: true,
+            badgeShowLimit: 1,
+            classes: 'multi-select-dropdown'
+        };
+    }
+
+    onItemSelect(item: any) {
+        this.selectedItems.push(item);
+        console.log(item);
+        console.log(this.selectedItems);
+    }
+    OnItemDeSelect(item: any) {
+        console.log(item);
+        console.log(this.selectedItems);
+    }
+    onSelectAll(items: any) {
+        console.log(items);
+    }
+    onDeSelectAll(items: any) {
+        console.log(items);
     }
 
     onBranchReportBranch(selectedBranch: any) {
@@ -126,6 +158,12 @@ export class ReportsComponent {
                     }
                     return acc;
                 }, []);
+                this.branchData.map((branch: any, index: any)=>{
+                    this.dropdownList.push({
+                        id: index + 1,
+                        branchName: branch
+                    });
+                });
                 this.totalYears = this.memberData.reduce((acc: any, data: any) => {
                     if (!acc.includes(new Date(data.loanStartDate).getFullYear())) {
                         acc.push(new Date(data.loanStartDate).getFullYear());
@@ -501,7 +539,7 @@ export class ReportsComponent {
                 statusCell.fill = {
                     type: 'pattern',
                     pattern: 'solid',
-                    fgColor: {argb: item["Member Status"] == "Dormant" ? 'FFC000':  item["Member Status"] == "Closed" ? '70AD47' : ''}
+                    fgColor: { argb: item["Member Status"] == "Dormant" ? 'FFC000' : item["Member Status"] == "Closed" ? '70AD47' : '' }
                 };
             }
         });

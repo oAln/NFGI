@@ -1,4 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+@import "../node_modules/angular2-multiselect-dropdown/themes/default.theme.scss";
+
 .custom-card {
     height: 150px;
     display: flex;
@@ -153,4 +155,29 @@ input[type='checkbox'] {
 
 .mt-30 {
     margin-top: 30px;
+}
+
+
+.multi-select-dropdown {
+    .selected-list .c-list .c-token {
+        background: #328f9a;
+    }
+
+    .pure-checkbox input[type=checkbox]+label:before {
+        color: #328f9a;
+        border: 1px solid #328f9a;
+    }
+
+    .pure-checkbox input[type=checkbox]:checked+label:before {
+        background: #328f9a;
+    }
+}
+
+.required-icon {
+    color: red;
+}
+
+.custom-disable {
+    background: grey;
+    pointer-events: none;
 }

@@ -209,7 +209,8 @@ export class CollectionComponent {
       });
     }
     this.showAlert = true;
-    this.alertText = "Template Submitted Successfully."
+    this.alertText = "Template Submitted Successfully.";
+    window.scrollTo(0,0);
     this.hideAlert();
     this.collectionUpload['nativeElement']['value'] = null;
     this.disburseUpload['nativeElement']['value'] = null;
