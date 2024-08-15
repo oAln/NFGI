@@ -239,7 +239,10 @@ export class ReportsComponent implements OnInit {
         const obj: any = {};
         const loanDays: any = getDayDiff(member?.loanStartDate);
         let lateFees = 0;
-        let totalCollectedAmount = 0;
+        const totalCollectedAmount = this.memberData.reduce(function (accumulator: any, currentValue: any) {
+            const filteredAmount = (currentValue?.loanId === member?.loanId) ? currentValue?.collectionAmount : 0;
+            return accumulator + filteredAmount;
+        }, 0);
         simpleExcelProperties.map((property: any) => {
             if (property.key == 'loanDuration') {
                 obj[property.header] = loanDays;
@@ -315,10 +318,6 @@ export class ReportsComponent implements OnInit {
                             break;
                         }
                     case 'finalCollection':
-                        totalCollectedAmount = this.memberData.reduce(function (accumulator: any, currentValue: any) {
-                            const filteredAmount = (currentValue?.loanId === member?.loanId) ? currentValue?.collectionAmount : 0;
-                            return accumulator + filteredAmount;
-                        }, 0);
                         obj[property.header] = totalCollectedAmount?.toFixed(2) || 0;
                         break;
                     case 'remainingAmount30':
