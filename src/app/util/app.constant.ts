@@ -54,6 +54,10 @@ export class AppConstants {
             header: 'Loan Amount'
         },
         {
+            key: 'finalCollection',
+            header: 'Final Collection'
+        },
+        {
             key: 'maturedAmount30',
             header: 'Matured Loan Amount With 30 Days Profit'
         },
@@ -135,10 +139,6 @@ export class AppConstants {
         {
             key: 'totalAmount',
             header: 'Total Amount (Including Late Fees)' // cuurent month collection + late fees
-        },
-        {
-            key: 'finalCollection',
-            header: 'Final Collection'
         },
         {
             key: 'accountStatus',

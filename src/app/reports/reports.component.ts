@@ -322,22 +322,22 @@ export class ReportsComponent implements OnInit {
                         obj[property.header] = totalCollectedAmount?.toFixed(2) || 0;
                         break;
                     case 'remainingAmount30':
-                        obj[property.header] = (totalCollectedAmount - obj[simpleExcelProperties[5].header])?.toFixed(2) || 0;
-                        break;
-                    case 'remainingAmount60':
-                        obj[property.header] = (totalCollectedAmount - obj[simpleExcelProperties[6].header])?.toFixed(2) || 0;
-                        break;
-                    case 'remainingAmount90':
                         obj[property.header] = (totalCollectedAmount - obj[simpleExcelProperties[7].header])?.toFixed(2) || 0;
                         break;
-                    case 'remainingAmount120':
+                    case 'remainingAmount60':
                         obj[property.header] = (totalCollectedAmount - obj[simpleExcelProperties[8].header])?.toFixed(2) || 0;
                         break;
-                    case 'remainingAmount150':
+                    case 'remainingAmount90':
                         obj[property.header] = (totalCollectedAmount - obj[simpleExcelProperties[9].header])?.toFixed(2) || 0;
                         break;
-                    case 'remainingAmount180':
+                    case 'remainingAmount120':
                         obj[property.header] = (totalCollectedAmount - obj[simpleExcelProperties[10].header])?.toFixed(2) || 0;
+                        break;
+                    case 'remainingAmount150':
+                        obj[property.header] = (totalCollectedAmount - obj[simpleExcelProperties[11].header])?.toFixed(2) || 0;
+                        break;
+                    case 'remainingAmount180':
+                        obj[property.header] = (totalCollectedAmount - obj[simpleExcelProperties[12].header])?.toFixed(2) || 0;
                         break;
                     case 'totalAmount':
                         {
@@ -350,7 +350,7 @@ export class ReportsComponent implements OnInit {
                             break;
                         }
                     case 'loanOverdue':
-                        obj[property.header] = (member?.loanAmount + obj[simpleExcelProperties[24].header]) || 0;
+                        obj[property.header] = (loanDays > 180) ? loanDays - 180 : 0;
                         break;
 
                     default:
