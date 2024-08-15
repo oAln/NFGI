@@ -159,6 +159,12 @@ input[type='checkbox'] {
 
 
 .multi-select-dropdown {
+
+    .selected-list > .c-btn {
+        height: 40px;
+        border: 1px solid grey !important;
+    }
+
     .selected-list .c-list .c-token {
         background: #328f9a;
     }

@@ -535,7 +535,7 @@ export class ReportsComponent implements OnInit {
         this.simpleExcelData.forEach((item: any) => {
             const row = workSheet.addRow([...Object.values(item)]);
             const statusCell = row.getCell(29);
-            if (item["Member Status"] == "Active") {
+            if (item["Member Status"] == "Closed" || item["Member Status"] == "Dormant") {
                 statusCell.fill = {
                     type: 'pattern',
                     pattern: 'solid',
@@ -547,7 +547,7 @@ export class ReportsComponent implements OnInit {
             let blob = new Blob([data], {
                 type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             });
-            saveAs(blob, 'test.xlsx');
+            saveAs(blob, `${branchName}_${month}_${year}.xlsx`);
         })
     }
 
