@@ -5,7 +5,8 @@
 
 4. Collection Report -> Excel upload -> For 1st row, it is correct, but for the next rows, its adding all the collection amount and showing the total in the last collection date. Its not showing the day wise collection data. => Done
 
-2. DOB format in Front print document is wrong. It should be DD/MM/YYYY
+2. DOB format in Front print document is wrong. It should be DD/MM/YYYY => Done
+
 3. Calendar input is showing MM/DD/YYYY. Make it DD/MM/YYYY
 5. Branch dropdown in all the reports should be multi-select => Pending
 6. Collection Input - Color coded Dormant Orange and closed - Green => Pending
@@ -14,6 +15,5 @@
 
 <!-- Notes -->
 Check Loan Overdue
-didn't get 4th point
-point-3 => adding collected amount till last month
-point-2 => adding collected amount only for current month
+https://stackblitz.com/edit/angular-ivy-9p6cch?file=src%2Fapp%2Fapp.component.ts
+https://stackblitz.com/edit/angular6-export-xlsx-zcwkib?file=src%2Fapp%2Fapp.component.ts
