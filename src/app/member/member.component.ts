@@ -94,7 +94,6 @@ export class MemberComponent {
           this.getMemberData();
           this.updateMember = false;
           this.memberForm.reset();
-          console.log(data);
         }, (error) => {
           this.memberForm.reset();
           this.updateMember = false;
@@ -142,7 +141,6 @@ export class MemberComponent {
       memberDetails['loanStartDate'] = new Date(loanData?.issuedAt);
       memberDetails['accountStatus'] = loanData?.status || 'Active';
       if (loanData?.repayments?.length) {
-        console.log(loanData?.repayments);
         memberDetails['collectionAmount'] = loanData?.repayments?.reduce(function (accumulator: any, currentValue: any) {
           const filteredAmount = ((currentValue?.amountPaid || 0) + (currentValue?.lateFees || 0));
           return accumulator + filteredAmount;
@@ -261,7 +259,6 @@ export class MemberComponent {
     this.printDetails['name'] = memberDetails?.firstName + ' ' + memberDetails?.lastName || '';
     this.showPrintDialog = true;
     this.printPageSide = printSide;
-    console.log(printSide);
     this.subjectService.updateSubjectData(true);
   }
 

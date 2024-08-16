@@ -46,7 +46,6 @@ export class HomeComponent {
       memberDetails['loanStartDate'] = loanData?.issuedAt;
       memberDetails['accountStatus'] = loanData?.status || 'Active';
       if (loanData?.repayments?.length) {
-        console.log(loanData?.repayments);
         memberDetails['collectionAmount'] = loanData?.repayments?.reduce(function (accumulator: any, currentValue: any) {
           const filteredAmount = ((currentValue?.amountPaid || 0) + (currentValue?.lateFees || 0));
           return accumulator + filteredAmount;
@@ -161,7 +160,6 @@ export class HomeComponent {
   }
 
   filterCardData(filterKey: any) {
-    console.log('filterKey', filterKey?.value);
     const currentDate = new Date();
     let dateFilter: any;
     switch (filterKey?.value || filterKey) {
@@ -213,7 +211,6 @@ export class HomeComponent {
   }
 
   onLoanDurationSelect(loanDuration: any) {
-    console.log('loanDuration', loanDuration);
     const selectedBranch = this.selectedBranch;
     const selectedMonth = this.selectedMonth;
     const updatedLoanData = this.memberData;

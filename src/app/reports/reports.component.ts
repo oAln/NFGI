@@ -91,39 +91,39 @@ export class ReportsComponent implements OnInit {
     }
 
     onBranchReportBranch(selectedBranch: any) {
-        console.log('onBranchReportBranch', selectedBranch);
+        // console.log('onBranchReportBranch', selectedBranch);
     }
 
     onBranchReportMonthSelect(selectedMonth: any) {
-        console.log('onBranchReportMonthSelect', selectedMonth);
+        // console.log('onBranchReportMonthSelect', selectedMonth);
     }
 
     onBranchReportYearSelect(selectedYear: any) {
-        console.log('onBranchReportYearSelect', selectedYear);
+        // console.log('onBranchReportYearSelect', selectedYear);
     }
 
     onColReportBranchSelect(selectedBranch: any) {
-        console.log('onColReportBranchSelect', selectedBranch);
+        // console.log('onColReportBranchSelect', selectedBranch);
     }
 
     onColReportMonthSelect(selectedMonth: any) {
-        console.log('onColReportMonthSelect', selectedMonth);
+        // console.log('onColReportMonthSelect', selectedMonth);
     }
 
     onColReportYearSelect(selectedYear: any) {
-        console.log('onColReportYearSelect', selectedYear);
+        // console.log('onColReportYearSelect', selectedYear);
     }
 
     onMonthReportBranchSelect(selectedBranch: any) {
-        console.log('onMonthReportBranchSelect', selectedBranch);
+        // console.log('onMonthReportBranchSelect', selectedBranch);
     }
 
     onMonthReportMonthSelect(selectedMonth: any) {
-        console.log('onMonthReportMonthSelect', selectedMonth);
+        // console.log('onMonthReportMonthSelect', selectedMonth);
     }
 
     onMonthReportYearSelect(selectedYear: any) {
-        console.log('onMonthReportYearSelect', selectedYear);
+        // console.log('onMonthReportYearSelect', selectedYear);
     }
 
     updateMemberData(member: any) {
@@ -137,7 +137,6 @@ export class ReportsComponent implements OnInit {
             memberDetails['accountStatus'] = loanData?.status || 'Active';
             memberDetails['repayments'] = loanData?.repayments;
             if (loanData?.repayments?.length) {
-                console.log(loanData?.repayments);
                 memberDetails['collectionAmount'] = loanData?.repayments?.reduce(function (accumulator: any, currentValue: any) {
                     const filteredAmount = ((currentValue?.amountPaid || 0) + (currentValue?.lateFees || 0));
                     return accumulator + filteredAmount;
@@ -486,7 +485,6 @@ export class ReportsComponent implements OnInit {
                         return accumulator;
                     }, Object.create(null));
                     Object.keys(uniqueBranchDetails).forEach((branch: any) => {
-                        console.log(uniqueBranchDetails[branch]);
                         let branchWiseDetails: any = {
                             Branch: '',
                             LoanAmount: 0,
@@ -570,7 +568,6 @@ export class ReportsComponent implements OnInit {
         filteredBranchMemberDetails.forEach((member: any, index: any) => {
             this.getMemberExcelData(member, index);
         });
-        console.log(this.simpleExcelData);
 
         const workBook = new Workbook();
         const workSheet = workBook.addWorksheet('test');
@@ -638,7 +635,6 @@ export class ReportsComponent implements OnInit {
             return accumulator;
         }, Object.create(null));
         Object.keys(uniqueBranchDetails).forEach((branch: any) => {
-            console.log(uniqueBranchDetails[branch]);
             let branchWiseDetails: any = {
                 Branch: '',
                 LoanAmount: 0,

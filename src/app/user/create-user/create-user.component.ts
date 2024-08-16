@@ -80,7 +80,6 @@ export class CreateUserComponent {
       (data) => {
         this.clearDeleteUserData();
         this.getUserData();
-        console.log(data);
         window.scrollTo(0,0);
         this.showAlert = true;
         this.alertText = "User Deleted Successfully."
@@ -111,8 +110,7 @@ export class CreateUserComponent {
       (data) => {
         this.submitted = false;
         this.showAlert = true;
-        this.alertText = "User Created Successfully."
-        console.log(data);
+        this.alertText = "User Created Successfully.";
         this.createUserForm.reset();
         this.getUserData();
         window.scrollTo(0, document.body.scrollHeight);
@@ -126,7 +124,6 @@ export class CreateUserComponent {
     const apiEndPoint = 'auth/reset-password'
     this.http.create(apiEndPoint, { loginId: this.changePasswordUser.loginId, ...this.passwordForm.value }).subscribe(
       (data) => {
-        console.log(data);
         this.showUsertemplate = true;
       }
     )
@@ -136,7 +133,6 @@ export class CreateUserComponent {
     const apiEndPoint = 'user'
     this.http.get(apiEndPoint).subscribe(
       (data) => {
-        console.log(data);
         this.userData = data;
       });
   }

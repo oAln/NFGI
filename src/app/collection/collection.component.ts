@@ -259,7 +259,6 @@ export class CollectionComponent {
       this.http.create(apiEndPoint, body).subscribe(
         (data) => {
           this.getMemberData();
-          console.log(data);
         }, (error) => {
           console.log(error);
         }
@@ -275,7 +274,6 @@ export class CollectionComponent {
       this.http.create(apiEndPoint, body).subscribe(
         (data) => {
           this.getMemberData();
-          console.log(data);
         }, (error) => {
           console.log(error);
         }
@@ -304,11 +302,9 @@ export class CollectionComponent {
         if (dataType === 'collection') {
           this.collectionData = jsonData?.Sheet1;
           this.templateType = 'collection';
-          console.log('this.collectionData', this.collectionData);
         } else {
           this.disbursementData = jsonData?.Sheet1;
           this.templateType = 'disburse';
-          console.log('this.disbursementData', this.disbursementData);
         }
       }
 
