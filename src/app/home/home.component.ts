@@ -183,11 +183,11 @@ export class HomeComponent {
     }
 
     this.totalDisbursement = this.memberData?.reduce(function (accumulator: any, currentValue: any) {
-      const filteredAmount = ((new Date(currentValue?.loanStartDate) > dateFilter) ? currentValue?.loanAmount : 0) || 0;
+      const filteredAmount = ((new Date(currentValue?.loanStartDate) >= dateFilter) ? currentValue?.loanAmount : 0) || 0;
       return accumulator + filteredAmount;
     }, 0);
     this.totalCollection = this.memberData?.reduce(function (accumulator: any, currentValue: any) {
-      const filteredAmount = ((new Date(currentValue?.loanStartDate) > dateFilter) ? currentValue?.collectionAmount : 0) || 0;
+      const filteredAmount = ((new Date(currentValue?.loanStartDate) >= dateFilter) ? currentValue?.collectionAmount : 0) || 0;
       return accumulator + filteredAmount;
     }, 0);
   }
