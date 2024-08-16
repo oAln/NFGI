@@ -139,9 +139,10 @@
                                     {{branch}}
                                 </option>
                             </select> -->
-                            <angular2-multiselect (click)="handlingMultiSelectLibBug()" [data]="multiSelectList" [(ngModel)]="selectedBranches"
-                                [settings]="multiSelectSettings" (onSelect)="onMultiBranchSelect($event)"
-                                (onDeSelect)="OnMultiBranchDeSelect($event)" (onSelectAll)="onMultiBranchSelectAll($event)"
+                            <angular2-multiselect (click)="handlingMultiSelectLibBug()" [data]="multiSelectList"
+                                [(ngModel)]="selectedBranches" [settings]="multiSelectSettings"
+                                (onSelect)="onMultiBranchSelect($event)" (onDeSelect)="OnMultiBranchDeSelect($event)"
+                                (onSelectAll)="onMultiBranchSelectAll($event)"
                                 (onDeSelectAll)="onMultiBranchDeSelectAll($event)">
                             </angular2-multiselect>
                         </div>
@@ -189,12 +190,14 @@
 
             <div class="row row-gap justify-content-between mt-30">
                 <div class="col-5 justify-content-end">
-                    <button class="custom-button" (click)="generateReport('branchwise')">
+                    <button class="custom-button" [ngClass]="{ 'custom-disabled': selectedBranches?.length < 1 }"
+                        (click)="generateReport('branchwise')">
                         Generate Report
                     </button>
                 </div>
                 <div class="col-5 justify-content-end">
-                    <button class="custom-button" (click)="generatePDF()">
+                    <button class="custom-button" [ngClass]="{ 'custom-disabled': selectedBranches?.length < 1 }"
+                        (click)="generatePDF()">
                         Generate PDF
                     </button>
                 </div>

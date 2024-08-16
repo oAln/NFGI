@@ -189,7 +189,9 @@ export class ReportsComponent implements OnInit {
     }
 
     onLoanDurationSelect(loanDuration: any) {
-        console.log('loanDuration', loanDuration);
+        this.memberData.map((member: any) => {
+          member['loanData'] = getIntererstAmount(member, loanDuration);
+        });
     }
 
     getMemberYearData(year: any, memberDetails: any) {
@@ -472,15 +474,14 @@ export class ReportsComponent implements OnInit {
                     filteredYearMemberData = this.getAllMemberYearData(year, this.memberData);
                     filteredMonthMemberData = this.getAllMemberMonthData(month, filteredYearMemberData);
                     filteredBranchMemberDetails = this.getMemberMultiBranchWiseData(this.selectedBranches, filteredMonthMemberData);
-                    const defaultLoanTerms = AppConstants.loanTerms;
-                    const loanterm = defaultLoanTerms.find((termData: any) => termData.term === this.selectedLoanDuration || {})?.term;
+                    const loanterm = this.selectedLoanDuration;
                     this.excelData.push(Object.keys(branchWiseDetails));
-                    const uniqueBranchDetails = filteredBranchMemberDetails.reduce(function(accumulator: any, currentValue: any) {
+                    const uniqueBranchDetails = filteredBranchMemberDetails.reduce(function (accumulator: any, currentValue: any) {
                         accumulator[currentValue.branch] = accumulator[currentValue.branch] || [];
                         accumulator[currentValue.branch].push(currentValue);
                         return accumulator;
-                      }, Object.create(null));
-                      Object.keys(uniqueBranchDetails).forEach((branch: any)=>{
+                    }, Object.create(null));
+                    Object.keys(uniqueBranchDetails).forEach((branch: any) => {
                         console.log(uniqueBranchDetails[branch]);
                         let branchWiseDetails: any = {
                             Branch: '',
@@ -507,7 +508,7 @@ export class ReportsComponent implements OnInit {
                         totalBranchWiseDetails.totalInstallment = totalBranchWiseDetails.totalInstallment + branchWiseDetails.Installments;
                         totalBranchWiseDetails.totalRecovery = totalBranchWiseDetails.totalRecovery + branchWiseDetails.Recovery;
                         totalBranchWiseDetails.totalBalance = totalBranchWiseDetails.totalBalance + branchWiseDetails.Balance;
-                    })
+                    });
                     this.excelData.push(Object.values(totalBranchWiseDetails));
                     break;
                 }
@@ -601,12 +602,13 @@ export class ReportsComponent implements OnInit {
     }
 
     generatePDF() {
-        const updatedLoanData = this.memberData;
-        updatedLoanData.map((member: any) => {
-            member['loanData'] = getIntererstAmount(member, 180);
-        });
-        const filteredMemberData = this.getMemberMonthData(this.monthReportMonth, updatedLoanData);
-        const filteredBranchMemberDetails = this.getMemberBranchWiseData(this.monthReportBranch, filteredMemberData);
+        const branchName = this.selectedBranches?.length > 1 ? 'All' : this.selectedBranches[0]?.branchName;
+        const month = this.branchReportMonth;
+        const year = this.branchReportYear;
+        const loanterm = this.selectedLoanDuration;
+        const filteredYearMemberData = this.getAllMemberYearData(year, this.memberData);
+        const filteredMemberData = this.getMemberMonthData(this.monthReportMonth, filteredYearMemberData);
+        const filteredBranchMemberDetails = this.getMemberMultiBranchWiseData(this.selectedBranches, filteredMemberData);
         // Create a new PDF document.
         const doc = new jsPDF();
         // Add content to the PDF.
@@ -626,27 +628,38 @@ export class ReportsComponent implements OnInit {
         // Create a table using `jspdf-autotable`.
         const headers = [['BRANCH', 'LOAN AMOUNT', `MATURED LOAN AMOUNT - ${this.selectedLoanDuration} DAYS`, 'INSTALLMENTS', 'RECOVERY', `BALANCE - ${this.selectedLoanDuration} DAYS`]];
         const data: any = [];
-        filteredBranchMemberDetails.forEach((membeData: any) => {
-            const branchWiseDetails = {
-                branch: '',
-                loanAmount: 0,
-                maturedLoanAmount: 0,
-                installment: 0,
-                recovery: 0,
-                balance: 0
+        const uniqueBranchDetails = filteredBranchMemberDetails.reduce(function (accumulator: any, currentValue: any) {
+            accumulator[currentValue.branch] = accumulator[currentValue.branch] || [];
+            accumulator[currentValue.branch].push(currentValue);
+            return accumulator;
+        }, Object.create(null));
+        Object.keys(uniqueBranchDetails).forEach((branch: any) => {
+            console.log(uniqueBranchDetails[branch]);
+            let branchWiseDetails: any = {
+                Branch: '',
+                LoanAmount: 0,
+                MaturedLoanAmount: 0,
+                Installments: 0,
+                Recovery: 0,
+                Balance: 0
             };
-            branchWiseDetails.branch = membeData?.branch;
-            branchWiseDetails.loanAmount = membeData?.loanAmount || 0;
-            branchWiseDetails.maturedLoanAmount = membeData?.loanData?.maturedAmount || 0;
-            branchWiseDetails.installment = membeData?.installment || 0;
-            branchWiseDetails.recovery = membeData?.collectionAmount || 0;
-            branchWiseDetails.balance = (membeData?.loanData?.maturedAmount || 0) - (membeData?.collectionAmount || 0);
+            const branchData = uniqueBranchDetails[branch];
+            branchWiseDetails.Branch = branch;
+            branchWiseDetails.LoanAmount = this.getTotal(branchData, 'loanAmount');
+            branchWiseDetails.Installments = this.getTotal(branchData, 'installment');
+            branchWiseDetails.MaturedLoanAmount = branchData.reduce(function (accumulator: any, currentValue: any) {
+                const filteredAmount = (currentValue?.loanData?.loanTerm == loanterm) ? currentValue?.loanData?.maturedAmount : 0;
+                return accumulator + filteredAmount;
+            }, 0);
+            branchWiseDetails.Recovery = this.getTotal(branchData, 'collectionAmount');
+            branchWiseDetails.Balance = branchWiseDetails.MaturedLoanAmount - branchWiseDetails.Recovery;
             data.push(Object.values(branchWiseDetails));
-            totalBranchWiseDetails.totalLoanAmount = totalBranchWiseDetails.totalLoanAmount + branchWiseDetails.loanAmount;
-            totalBranchWiseDetails.totalMaturedLoanAmount = totalBranchWiseDetails.totalMaturedLoanAmount + branchWiseDetails.maturedLoanAmount;
-            totalBranchWiseDetails.totalInstallment = totalBranchWiseDetails.totalInstallment + branchWiseDetails.installment;
-            totalBranchWiseDetails.totalRecovery = totalBranchWiseDetails.totalRecovery + branchWiseDetails.recovery;
-            totalBranchWiseDetails.totalBalance = totalBranchWiseDetails.totalBalance + branchWiseDetails.balance;
+
+            totalBranchWiseDetails.totalLoanAmount = totalBranchWiseDetails.totalLoanAmount + branchWiseDetails.LoanAmount;
+            totalBranchWiseDetails.totalMaturedLoanAmount = totalBranchWiseDetails.totalMaturedLoanAmount + branchWiseDetails.MaturedLoanAmount;
+            totalBranchWiseDetails.totalInstallment = totalBranchWiseDetails.totalInstallment + branchWiseDetails.Installments;
+            totalBranchWiseDetails.totalRecovery = totalBranchWiseDetails.totalRecovery + branchWiseDetails.Recovery;
+            totalBranchWiseDetails.totalBalance = totalBranchWiseDetails.totalBalance + branchWiseDetails.Balance;
         });
 
         data.push(Object.values(totalBranchWiseDetails));
@@ -658,7 +671,7 @@ export class ReportsComponent implements OnInit {
         });
 
         // Save the PDF.
-        doc.save('Branchwise_Report.pdf');
+        doc.save(`${branchName}_${month}_${year}.pdf`);
     }
 
 }
