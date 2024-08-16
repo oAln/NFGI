@@ -34,9 +34,9 @@ export class ReportsComponent implements OnInit {
     simpleExcelData: any = [];
     collectionExcelData: any = [];
     excelData: any = [];
-    dropdownList: any = [];
-    selectedItems: any = [];
-    dropdownSettings = {};
+    multiSelectList: any = [];
+    selectedBranches: any = [];
+    multiSelectSettings = {};
 
 
     constructor(private http: HTTPService, private excelService: ExcelService) {
@@ -51,32 +51,43 @@ export class ReportsComponent implements OnInit {
         this.colReportYear = new Date().getFullYear();
     }
 
+    handlingMultiSelectLibBug() {
+        this.multiSelectList = [...this.multiSelectList]
+    }
+
     ngOnInit() {
-        this.dropdownSettings = {
+        this.multiSelectSettings = {
             singleSelection: false,
             text: 'Select Branch',
             selectAllText: 'Select All',
             unSelectAllText: 'UnSelect All',
             enableSearchFilter: true,
             badgeShowLimit: 1,
+            labelKey: 'branchName',
             classes: 'multi-select-dropdown'
         };
     }
 
-    onItemSelect(item: any) {
-        this.selectedItems.push(item);
-        console.log(item);
-        console.log(this.selectedItems);
+    // Lib is handling the functionality
+    onMultiBranchSelect(branch: any) {
+        // this.selectedBranches.push(branch);
     }
-    OnItemDeSelect(item: any) {
-        console.log(item);
-        console.log(this.selectedItems);
+
+    // Lib is handling the functionality
+    OnMultiBranchDeSelect(branch: any) {
+        // const selectBranchIndex = this.selectedBranches.findIndex((selectBranch: any) => selectBranch?.id == branch?.id);
+        // this.selectedBranches.splice(selectBranchIndex, 1);
     }
-    onSelectAll(items: any) {
-        console.log(items);
+
+    // Lib is handling the functionality
+    onMultiBranchSelectAll(branches: any) {
+        // this.selectedBranches = [];
+        // this.selectedBranches = [...branches]
     }
-    onDeSelectAll(items: any) {
-        console.log(items);
+
+    // Lib is handling the functionality
+    onMultiBranchDeSelectAll(event: any) {
+        // this.selectedBranches = [];
     }
 
     onBranchReportBranch(selectedBranch: any) {
@@ -159,7 +170,7 @@ export class ReportsComponent implements OnInit {
                     return acc;
                 }, []);
                 this.branchData.map((branch: any, index: any) => {
-                    this.dropdownList.push({
+                    this.multiSelectList.push({
                         id: index + 1,
                         branchName: branch
                     });
@@ -400,6 +411,16 @@ export class ReportsComponent implements OnInit {
         return filterMemberData;
     }
 
+    getMemberMultiBranchWiseData(selectedBranches: any, memberDetails: any) {
+        const filterMemberData = memberDetails.filter((member: any) => {
+            const memberBranchIndex = selectedBranches?.findIndex((selectBranch: any) => selectBranch?.branchName == member?.branch);;
+            if (member?.loanId && ((memberBranchIndex > -1))) {
+                return member;
+            }
+        })
+        return filterMemberData;
+    }
+
     generateReport(reportType?: string): void {
         let filteredYearMemberData;
         let filteredMonthMemberData;
@@ -428,7 +449,7 @@ export class ReportsComponent implements OnInit {
 
             case 'branchwise':
                 {
-                    const branchWiseDetails: any = {
+                    let branchWiseDetails: any = {
                         Branch: '',
                         LoanAmount: 0,
                         MaturedLoanAmount: 0,
@@ -436,6 +457,7 @@ export class ReportsComponent implements OnInit {
                         Recovery: 0,
                         Balance: 0
                     };
+
                     const totalBranchWiseDetails = {
                         total: 'Total',
                         totalLoanAmount: 0,
@@ -444,30 +466,48 @@ export class ReportsComponent implements OnInit {
                         totalRecovery: 0,
                         totalBalance: 0
                     };
-                    branchName = this.branchReportBranch;
+                    branchName = this.selectedBranches?.length > 1 ? 'All' : this.selectedBranches[0]?.branchName;
                     month = this.branchReportMonth;
                     year = this.branchReportYear;
                     filteredYearMemberData = this.getAllMemberYearData(year, this.memberData);
                     filteredMonthMemberData = this.getAllMemberMonthData(month, filteredYearMemberData);
-                    filteredBranchMemberDetails = this.getMemberBranchWiseData(branchName, filteredMonthMemberData);
+                    filteredBranchMemberDetails = this.getMemberMultiBranchWiseData(this.selectedBranches, filteredMonthMemberData);
                     const defaultLoanTerms = AppConstants.loanTerms;
                     const loanterm = defaultLoanTerms.find((termData: any) => termData.term === this.selectedLoanDuration || {})?.term;
-                    branchWiseDetails.Branch = this.branchReportBranch;
-                    branchWiseDetails.LoanAmount = this.getTotal(filteredBranchMemberDetails, 'loanAmount');
-                    branchWiseDetails.Installments = this.getTotal(filteredBranchMemberDetails, 'installment');
-                    branchWiseDetails.MaturedLoanAmount = filteredBranchMemberDetails.reduce(function (accumulator: any, currentValue: any) {
-                        const filteredAmount = (currentValue?.loanData?.loanTerm == loanterm) ? currentValue?.loanData?.maturedAmount : 0;
-                        return accumulator + filteredAmount;
-                    }, 0);
-                    branchWiseDetails.Recovery = this.getTotal(filteredBranchMemberDetails, 'collectionAmount');
-                    branchWiseDetails.Balance = branchWiseDetails.MaturedLoanAmount - branchWiseDetails.Recovery;
                     this.excelData.push(Object.keys(branchWiseDetails));
-                    this.excelData.push(Object.values(branchWiseDetails));
-                    totalBranchWiseDetails.totalLoanAmount = totalBranchWiseDetails.totalLoanAmount + branchWiseDetails.LoanAmount;
-                    totalBranchWiseDetails.totalMaturedLoanAmount = totalBranchWiseDetails.totalMaturedLoanAmount + branchWiseDetails.MaturedLoanAmount;
-                    totalBranchWiseDetails.totalInstallment = totalBranchWiseDetails.totalInstallment + branchWiseDetails.Installments;
-                    totalBranchWiseDetails.totalRecovery = totalBranchWiseDetails.totalRecovery + branchWiseDetails.Recovery;
-                    totalBranchWiseDetails.totalBalance = totalBranchWiseDetails.totalBalance + branchWiseDetails.Balance;
+                    const uniqueBranchDetails = filteredBranchMemberDetails.reduce(function(accumulator: any, currentValue: any) {
+                        accumulator[currentValue.branch] = accumulator[currentValue.branch] || [];
+                        accumulator[currentValue.branch].push(currentValue);
+                        return accumulator;
+                      }, Object.create(null));
+                      Object.keys(uniqueBranchDetails).forEach((branch: any)=>{
+                        console.log(uniqueBranchDetails[branch]);
+                        let branchWiseDetails: any = {
+                            Branch: '',
+                            LoanAmount: 0,
+                            MaturedLoanAmount: 0,
+                            Installments: 0,
+                            Recovery: 0,
+                            Balance: 0
+                        };
+                        const branchData = uniqueBranchDetails[branch];
+                        branchWiseDetails.Branch = branch;
+                        branchWiseDetails.LoanAmount = this.getTotal(branchData, 'loanAmount');
+                        branchWiseDetails.Installments = this.getTotal(branchData, 'installment');
+                        branchWiseDetails.MaturedLoanAmount = branchData.reduce(function (accumulator: any, currentValue: any) {
+                            const filteredAmount = (currentValue?.loanData?.loanTerm == loanterm) ? currentValue?.loanData?.maturedAmount : 0;
+                            return accumulator + filteredAmount;
+                        }, 0);
+                        branchWiseDetails.Recovery = this.getTotal(branchData, 'collectionAmount');
+                        branchWiseDetails.Balance = branchWiseDetails.MaturedLoanAmount - branchWiseDetails.Recovery;
+                        this.excelData.push(Object.values(branchWiseDetails));
+
+                        totalBranchWiseDetails.totalLoanAmount = totalBranchWiseDetails.totalLoanAmount + branchWiseDetails.LoanAmount;
+                        totalBranchWiseDetails.totalMaturedLoanAmount = totalBranchWiseDetails.totalMaturedLoanAmount + branchWiseDetails.MaturedLoanAmount;
+                        totalBranchWiseDetails.totalInstallment = totalBranchWiseDetails.totalInstallment + branchWiseDetails.Installments;
+                        totalBranchWiseDetails.totalRecovery = totalBranchWiseDetails.totalRecovery + branchWiseDetails.Recovery;
+                        totalBranchWiseDetails.totalBalance = totalBranchWiseDetails.totalBalance + branchWiseDetails.Balance;
+                    })
                     this.excelData.push(Object.values(totalBranchWiseDetails));
                     break;
                 }

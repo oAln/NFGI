@@ -134,16 +134,16 @@
                     <div class="row">
                         <label class="col-5 form-label">Branch</label>
                         <div class="col-7">
-                            <select [(ngModel)]="branchReportBranch" (ngModelChange)="onBranchReportBranch($event)">
+                            <!-- <select [(ngModel)]="branchReportBranch" (ngModelChange)="onBranchReportBranch($event)">
                                 <option *ngFor="let branch of branchData" [value]="branch">
                                     {{branch}}
                                 </option>
-                            </select>
-                            <!-- <angular2-multiselect [data]="dropdownList" [(ngModel)]="selectedItems"
-                                [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"
-                                (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
-                                (onDeSelectAll)="onDeSelectAll($event)">
-                            </angular2-multiselect> -->
+                            </select> -->
+                            <angular2-multiselect (click)="handlingMultiSelectLibBug()" [data]="multiSelectList" [(ngModel)]="selectedBranches"
+                                [settings]="multiSelectSettings" (onSelect)="onMultiBranchSelect($event)"
+                                (onDeSelect)="OnMultiBranchDeSelect($event)" (onSelectAll)="onMultiBranchSelectAll($event)"
+                                (onDeSelectAll)="onMultiBranchDeSelectAll($event)">
+                            </angular2-multiselect>
                         </div>
                     </div>
                 </div>
