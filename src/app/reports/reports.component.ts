@@ -272,6 +272,8 @@ export class ReportsComponent implements OnInit {
                 obj[property.header] = loanDays;
             } else if (property.key == 'index') {
                 obj[property.header] = index + 1;
+            } else if (property.key == 'paymentDays') {
+                obj[property.header] = member[property.key] || 'NA';
             } else if (property.key == 'loanStartDate') {
                 obj[property.header] = formatDate(member[property.key], 'dd/MM/yyyy', 'en');;
             } else if (Object.keys(member).indexOf(property.key) > -1) {
