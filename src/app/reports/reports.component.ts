@@ -161,7 +161,7 @@ export class ReportsComponent implements OnInit {
                     }
                 });
                 this.memberData.map((member: any) => {
-                    member['loanData'] = getIntererstAmount(member);
+                    member['loanData'] = getIntererstAmount(member, this.selectedLoanDuration);
                 });
                 this.branchData = this.memberData.reduce((acc: any, data: any) => {
                     if (!acc.includes(data.branch)) {
@@ -232,6 +232,17 @@ export class ReportsComponent implements OnInit {
         const filterMemberData = memberDetails.filter((member: any) => {
             const loanDate = new Date(member?.loanStartDate).getMonth();
             if (member?.loanId && member?.loanStartDate && loanDate <= selectedMonthNumber) {
+                return member;
+            }
+        })
+        return filterMemberData;
+    }
+
+    getAllActiveMemberMonthData(month: string, memberDetails: any) {
+        const selectedMonthNumber = this.totalMonths.indexOf(month);
+        const filterMemberData = memberDetails.filter((member: any) => {
+            const loanDate = new Date(member?.loanStartDate).getMonth();
+            if (member?.loanId && member?.loanStartDate && (member?.accountStatus != 'Closed') && loanDate <= selectedMonthNumber) {
                 return member;
             }
         })
@@ -451,15 +462,6 @@ export class ReportsComponent implements OnInit {
 
             case 'branchwise':
                 {
-                    let branchWiseDetails: any = {
-                        Branch: '',
-                        LoanAmount: 0,
-                        MaturedLoanAmount: 0,
-                        Installments: 0,
-                        Recovery: 0,
-                        Balance: 0
-                    };
-
                     const totalBranchWiseDetails = {
                         total: 'Total',
                         totalLoanAmount: 0,
@@ -472,10 +474,10 @@ export class ReportsComponent implements OnInit {
                     month = this.branchReportMonth;
                     year = this.branchReportYear;
                     filteredYearMemberData = this.getAllMemberYearData(year, this.memberData);
-                    filteredMonthMemberData = this.getAllMemberMonthData(month, filteredYearMemberData);
+                    filteredMonthMemberData = this.getAllActiveMemberMonthData(month, filteredYearMemberData);
                     filteredBranchMemberDetails = this.getMemberMultiBranchWiseData(this.selectedBranches, filteredMonthMemberData);
                     const loanterm = this.selectedLoanDuration;
-                    this.excelData.push(Object.keys(branchWiseDetails));
+                    this.excelData.push(['Branch', 'Loan Amount', 'Matured Loan Amount', 'Installments', 'Recovery', 'Balance']);
                     const uniqueBranchDetails = filteredBranchMemberDetails.reduce(function (accumulator: any, currentValue: any) {
                         accumulator[currentValue.branch] = accumulator[currentValue.branch] || [];
                         accumulator[currentValue.branch].push(currentValue);
