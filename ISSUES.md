@@ -3,6 +3,6 @@
 4. Color the complete row of the excel report => Done
 
 
-2. Branchwise report (3rd report) - Pdf report is always getting generated for the first branch name in the dropdown, irrespective of which branch the user selects. => pending
+2. Branchwise report (3rd report) - Pdf report is always getting generated for the first branch name in the dropdown, irrespective of which branch the user selects. => Done
 New Feedback 
 1. Add a status column in the collection report (2nd report) and the color coding as well
