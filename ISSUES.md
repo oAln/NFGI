@@ -1,23 +1,7 @@
-1. Yellow fields marked in branchwise word format I shared for pdf report (3rd report in the report tab) are to be dynamically filled => Done
-1. Add a month & year input just beside the collection excel upload. System will insert the data in the selected month of the selected year => Done
-2. In "NFGI Account Statement for the Month" report, add one colomn for Loan Id, after loan passed date colomn => Done
-3. Read Disbursement Excel date in DD/MM/YYYY => Done
+1. Disable the collection button for Closed status => Done
+2. Branchwise report (3rd report) - Pdf report is always getting generated for the first branch name in the dropdown, irrespective of which branch the user selects.
+3. Multiselect dropdown for 3rd report
+4. Color the complete row of the excel report => Done
 
-4. Collection Report -> Excel upload -> For 1st row, it is correct, but for the next rows, its adding all the collection amount and showing the total in the last collection date. Its not showing the day wise collection data. => Done
-
-2. DOB format in Front print document is wrong. It should be DD/MM/YYYY => Done
-
-6. Collection Input - Color coded Dormant Orange and closed - Green => Done
-
-3. Calendar input is showing MM/DD/YYYY. Make it DD/MM/YYYY => Done
-
-
-5. Branch dropdown in all the reports should be multi-select => Pending
-
-
-
-<!-- Notes -->
-Check Loan Overdue
-https://stackblitz.com/edit/angular-ivy-9p6cch?file=src%2Fapp%2Fapp.component.ts
-https://stackblitz.com/edit/angular6-export-xlsx-zcwkib?file=src%2Fapp%2Fapp.component.ts
-https://kels0la.medium.com/creating-an-excel-file-download-with-exceljs-npm-in-react-1d1a57bc61d2
+New Feedback 
+1. Add a status column in the collection report (2nd report) and the color coding as well

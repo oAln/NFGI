@@ -158,7 +158,7 @@ export class ReportsComponent implements OnInit {
                     }
                     return acc;
                 }, []);
-                this.branchData.map((branch: any, index: any)=>{
+                this.branchData.map((branch: any, index: any) => {
                     this.dropdownList.push({
                         id: index + 1,
                         branchName: branch
@@ -531,15 +531,17 @@ export class ReportsComponent implements OnInit {
         const workSheet = workBook.addWorksheet('test');
         const headerNames = Object.keys(this.simpleExcelData[0]);
         workSheet.addRow([...headerNames]);
-        this.simpleExcelData.forEach((item: any) => {
+        this.simpleExcelData.forEach((item: any, index: any) => {
             const row = workSheet.addRow([...Object.values(item)]);
-            const statusCell = row.getCell(29);
             if (item["Member Status"] == "Closed" || item["Member Status"] == "Dormant") {
-                statusCell.fill = {
-                    type: 'pattern',
-                    pattern: 'solid',
-                    fgColor: { argb: item["Member Status"] == "Dormant" ? 'FFC000' : item["Member Status"] == "Closed" ? '70AD47' : '' }
-                };
+                for (let i = 1; i < 30; i++) {
+                    const statusCell = row.getCell(i);
+                    statusCell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: item["Member Status"] == "Dormant" ? 'FFC000' : item["Member Status"] == "Closed" ? '70AD47' : '' }
+                    };
+                }
             }
         });
         workBook.xlsx.writeBuffer().then(data => {
