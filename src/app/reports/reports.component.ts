@@ -576,7 +576,7 @@ export class ReportsComponent implements OnInit {
         const workSheet = workBook.addWorksheet('test');
         const headerNames = Object.keys(this.simpleExcelData[0]);
         workSheet.addRow([...headerNames]);
-        this.simpleExcelData.forEach((item: any, index: any) => {
+        this.simpleExcelData.forEach((item: any) => {
             const row = workSheet.addRow([...Object.values(item)]);
             if (item["Member Status"] == "Closed" || item["Member Status"] == "Dormant") {
                 for (let i = 1; i < 30; i++) {
@@ -611,8 +611,8 @@ export class ReportsComponent implements OnInit {
         const year = this.branchReportYear;
         const loanterm = this.selectedLoanDuration;
         const filteredYearMemberData = this.getAllMemberYearData(year, this.memberData);
-        const filteredMemberData = this.getMemberMonthData(this.monthReportMonth, filteredYearMemberData);
-        const filteredBranchMemberDetails = this.getMemberMultiBranchWiseData(this.selectedBranches, filteredMemberData);
+        const filteredMonthMemberData = this.getAllActiveMemberMonthData(month, filteredYearMemberData);
+        const filteredBranchMemberDetails = this.getMemberMultiBranchWiseData(this.selectedBranches, filteredMonthMemberData);
         // Create a new PDF document.
         const doc = new jsPDF();
         // Add content to the PDF.
@@ -630,7 +630,7 @@ export class ReportsComponent implements OnInit {
         };
 
         // Create a table using `jspdf-autotable`.
-        const headers = [['BRANCH', 'LOAN AMOUNT', `MATURED LOAN AMOUNT - ${this.selectedLoanDuration} DAYS`, 'INSTALLMENTS', 'RECOVERY', `BALANCE - ${this.selectedLoanDuration} DAYS`]];
+        const headers = [['BRANCH', 'LOAN AMOUNT', `MATURED LOAN AMOUNT (${this.selectedLoanDuration} DAYS)`, 'INSTALLMENTS', 'RECOVERY', `BALANCE (${this.selectedLoanDuration} DAYS)`]];
         const data: any = [];
         const uniqueBranchDetails = filteredBranchMemberDetails.reduce(function (accumulator: any, currentValue: any) {
             accumulator[currentValue.branch] = accumulator[currentValue.branch] || [];
