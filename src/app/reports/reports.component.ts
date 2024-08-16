@@ -468,7 +468,7 @@ export class ReportsComponent implements OnInit {
                         totalRecovery: 0,
                         totalBalance: 0
                     };
-                    branchName = this.selectedBranches?.length > 1 ? 'All' : this.selectedBranches[0]?.branchName;
+                    branchName = (this.selectedBranches?.length == this.multiSelectList?.length) ? 'All' : (this.selectedBranches?.length > 1) ? 'Branchwise' :this.selectedBranches[0]?.branchName;
                     month = this.branchReportMonth;
                     year = this.branchReportYear;
                     filteredYearMemberData = this.getAllMemberYearData(year, this.memberData);
@@ -602,7 +602,7 @@ export class ReportsComponent implements OnInit {
     }
 
     generatePDF() {
-        const branchName = this.selectedBranches?.length > 1 ? 'All' : this.selectedBranches[0]?.branchName;
+        const branchName = (this.selectedBranches?.length == this.multiSelectList?.length) ? 'All' : (this.selectedBranches?.length > 1) ? 'Branchwise' :this.selectedBranches[0]?.branchName;
         const month = this.branchReportMonth;
         const year = this.branchReportYear;
         const loanterm = this.selectedLoanDuration;

@@ -258,7 +258,7 @@ export class MemberComponent {
 
   printPage(printSide: any, memberDetails: any) {
     this.printDetails = { ...memberDetails };
-    this.printDetails['name'] = memberDetails?.firstName + ' ' + memberDetails?.lastName;
+    this.printDetails['name'] = memberDetails?.firstName + ' ' + memberDetails?.lastName || '';
     this.showPrintDialog = true;
     this.printPageSide = printSide;
     console.log(printSide);
