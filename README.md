@@ -6,3 +6,4 @@
 6.	open git bash folder wise.
 7.	Run npm i – this is only one time on both folder
 8.	Run npm run start on both folder
+9. Login admin/ admin@321

@@ -38,7 +38,7 @@
                 <div class="row row-gap justify-content-center">
                     <label class="col-2 form-label">Password</label>
                     <div class="col-4">
-                        <input type="text" placeholder="Enter Password" class="form-control" formControlName="password">
+                        <input type="password" placeholder="Enter Password" class="form-control" formControlName="password">
                         <div *ngIf="submitted" class="form-error">
                             <span *ngIf="createUserForm['controls']['password']['errors']">
                                 Please enter the password
@@ -49,7 +49,7 @@
                 <div class="row row-gap justify-content-center">
                     <label class="col-2 form-label">Confirm Password</label>
                     <div class="col-4">
-                        <input type="text" placeholder="Confirm Password" class="form-control" formControlName="confirmPassword">
+                        <input type="password" placeholder="Confirm Password" class="form-control" formControlName="confirmPassword">
                         <div *ngIf="submitted" class="form-error">
                             <span *ngIf="!passwordMatch || createUserForm['controls']['confirmPassword']['errors']">
                                 Passsword and Confirm Password didn't match
