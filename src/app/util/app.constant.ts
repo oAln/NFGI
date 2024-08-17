@@ -164,6 +164,10 @@ export class AppConstants {
             header: 'Loan Id'
         },
         {
+            key: 'accountStatus',
+            header: 'Member Status'
+        },
+        {
             key: '1',
             header: '1'
         },

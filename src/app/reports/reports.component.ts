@@ -594,6 +594,48 @@ export class ReportsComponent implements OnInit {
         })
     }
 
+    exportCollectionExcel() {
+        const branchName = this.colReportBranch;
+        const month = this.colReportMonth;
+        const year = this.colReportYear;
+        const filteredYearMemberData = this.getAllMemberYearData(year, this.memberData);
+        const filteredMonthMemberData = this.getAllMemberMonthData(month, filteredYearMemberData); // filter on repayment show all id with current month data if payemnt thern show payemt if no then 0
+        const filteredBranchMemberDetails = this.getMemberBranchWiseData(branchName, filteredMonthMemberData);
+        filteredBranchMemberDetails.forEach((member: any, index: any) => {
+            this.getMemberCollectionExcelData(member, index, month);
+        });
+
+        const workBook = new Workbook();
+        const workSheet = workBook.addWorksheet('test');
+        const propHeaderArray = Object.keys(this.collectionExcelData[0]);
+        const srIndex = propHeaderArray?.indexOf('Sr No.');
+        const valueHeaderArray = propHeaderArray?.splice(srIndex);
+        const sortedHeaderArray = [...valueHeaderArray, ...propHeaderArray];
+        workSheet.addRow([...sortedHeaderArray]);
+        this.collectionExcelData.forEach((item: any) => {
+            const propDataArray = Object.values(item);
+            const valueDataArray = propDataArray?.splice(srIndex);
+            const sortedDataArray = [...valueDataArray, ...propDataArray];
+            const row = workSheet.addRow([...sortedDataArray]);
+            if (item["Member Status"] == "Closed" || item["Member Status"] == "Dormant") {
+                for (let i = 1; i < 37; i++) {
+                    const statusCell = row.getCell(i);
+                    statusCell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: item["Member Status"] == "Dormant" ? 'FFC000' : item["Member Status"] == "Closed" ? '70AD47' : '' }
+                    };
+                }
+            }
+        });
+        workBook.xlsx.writeBuffer().then(data => {
+            let blob = new Blob([data], {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            });
+            saveAs(blob, `${branchName}_${month}_${year}.xlsx`);
+        })
+    }
+
     getTotal(members: any, property: string) {
         const totalAmount = members.reduce(function (accumulator: any, currentValue: any) {
             const filteredAmount = currentValue?.[property] ? parseInt(currentValue?.[property]) : 0;
